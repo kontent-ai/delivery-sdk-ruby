@@ -23,7 +23,7 @@ gem "delivery-sdk-ruby"
 
 ## Usage
 
-You will use`Delivery::DeliveryClient to obtain content from Kentico Cloud. First, create an instance of the client:
+You will use `Delivery::DeliveryClient` to obtain content from Kentico Cloud. First, create an instance of the client:
 
 ```ruby
 client = Delivery::DeliveryClient.new 'your-project-id'
@@ -35,7 +35,7 @@ Use `.item` or `.items` to create a Delivery::DeliveryQuery, then call `.execute
 client = Delivery::DeliveryClient.new('<your-project-id>')
 client.items.execute do |response|
   response.items.each do |item|
-    puts item.system.codename
+    # Do something
   end
 end
 ```
