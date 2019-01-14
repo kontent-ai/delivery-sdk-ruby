@@ -90,6 +90,16 @@ client.items('system.type'.eq 'coffee')
   end
 ```
 
+## Responses
+
+When you execute the DeliveryQuery, you will get a `DeliveryItemResponse` for single item queries, or a `DeliveryItemListingResponse` for multiple item queries. You can access the return ContentItem(s) at `.item` or `.items` respectively.
+
+The `ContentItem` object gives you access to all system elements and content type elements at the `.system` and `.elements` properies. These are dynamic objects, so you can simply type the name of the element you need:
+
+```ruby
+response.item.elements.price.value
+```
+
 ## Feedback & Contributing
 
 Check out the [contributing](https://github.com/Kentico/delivery-sdk-ruby/blob/master/CONTRIBUTING.md) page to see the best places to file issues, start discussions, and begin contributing.
