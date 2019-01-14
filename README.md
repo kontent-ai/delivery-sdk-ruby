@@ -15,7 +15,7 @@ Then run `bundle install`. To build the Gem yourself for local installation, clo
 ```ruby
 gem install delivery-sdk-ruby-<version>.gem
 ```
-Add the Gem to your Gemfile:
+Then, add the Gem to your Gemfile:
 
 ```ruby
 gem "delivery-sdk-ruby"
