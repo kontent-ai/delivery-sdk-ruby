@@ -32,7 +32,7 @@ client = Delivery::DeliveryClient.new 'your-project-id'
 Use `.item` or `.items` to create a Delivery::DeliveryQuery, then call `.execute` to perform the request.
 
 ```ruby
-client = Delivery::DeliveryClient.new('2695019d-6404-00c1-fea5-e0f187569329')
+client = Delivery::DeliveryClient.new('<your-project-id>')
 client.items.execute do |response|
   response.items.each do |item|
     puts item.system.codename
