@@ -10,17 +10,12 @@ module Delivery
       @project_id = project_id
     end
 
-    def items(*params)
-      query = DeliveryQuery.new(@project_id)
-      query.params = *params
-      DeliveryItemListingResponse.new(JSON.parse(query.execute))
+    def items(query_parameters = [])
+      DeliveryQuery.new(project_id: @project_id, qp: query_parameters)
     end
 
-    def item(code_name, *params)
-      query = DeliveryQuery.new(@project_id)
-      query.code_name = code_name
-      query.params = *params
-      DeliveryItemResponse.new(JSON.parse(query.execute)['item'])
+    def item(code_name, query_parameters = [])
+      DeliveryQuery.new(project_id: @project_id, code_name: code_name, qp: query_parameters)
     end
   end
 end

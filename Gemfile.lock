@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    delivery (0.0.1)
+    delivery-sdk-ruby (0.0.1)
 
 GEM
   remote: https://rubygems.org/
@@ -44,7 +44,7 @@ PLATFORMS
 
 DEPENDENCIES
   bundler (~> 2.0)
-  delivery!
+  delivery-sdk-ruby!
   rake (~> 10.0)
   rest-client (~> 2.0.2)
   rspec (~> 3.0)
