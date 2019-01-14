@@ -39,6 +39,9 @@ client.items.execute do |response|
   end
 end
 ```
+
+### Filtering
+
 You can use [filtering](https://developer.kenticocloud.com/v1/reference#content-filtering "filtering") to retrieve particular items. The filtering methods are applied directly to a string and the available methods are:
 
 - all
@@ -63,6 +66,28 @@ client.items [
   ('elements.price'.gt 20),
   ('system.type'.eq 'grinder')
 ]
+```
+
+## Parameters
+
+The `.item` and `.items` methods return a `Delivery::DeliveryQuery` object which you can futher configure before executing. The methods you can call are:
+
+- [order_by](https://developer.kenticocloud.com/v1/reference#content-ordering "order_by")
+- [skip](https://developer.kenticocloud.com/v1/reference#listing-response-paging "skip")
+- [limit](https://developer.kenticocloud.com/v1/reference#listing-response-paging "limit")
+- [elements](https://developer.kenticocloud.com/v1/reference#projection "elements")
+- [depth](https://developer.kenticocloud.com/v1/reference#linked-content "depth")
+
+For example:
+
+```ruby
+client.items('system.type'.eq 'coffee')
+  .depth(0)
+  .limit(5)
+  .elements(%W[price product_name])
+  .execute do |response|
+    # Do something
+  end
 ```
 
 ## Feedback & Contributing
