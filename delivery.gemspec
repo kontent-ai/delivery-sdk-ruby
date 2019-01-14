@@ -9,9 +9,9 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Eric Dugre"]
   spec.email         = ["EricD@kentico.com"]
 
-  spec.summary       = "Description"
-  spec.description   = "Description"
-  spec.homepage      = "http://myrepo.com"
+  spec.summary       = "Kentico Cloud Delivery SDK for Ruby"
+  spec.description   = "Kentico Cloud Delivery SDK for Ruby"
+  spec.homepage      = "https://github.com/Kentico/delivery-sdk-ruby"
   spec.license       = "MIT"
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
@@ -20,8 +20,8 @@ Gem::Specification.new do |spec|
     spec.metadata["allowed_push_host"] = "TODO: Set to 'http://mygemserver.com'"
 
     spec.metadata["homepage_uri"] = spec.homepage
-    spec.metadata["source_code_uri"] = "http://myrepo.com"
-    spec.metadata["changelog_uri"] = "http://mychangelog.com"
+    spec.metadata["source_code_uri"] = "https://github.com/Kentico/delivery-sdk-ruby"
+    spec.metadata["changelog_uri"] = "https://github.com/Kentico/delivery-sdk-ruby"
   else
     raise "RubyGems 2.0 or newer is required to protect against " \
       "public gem pushes."
