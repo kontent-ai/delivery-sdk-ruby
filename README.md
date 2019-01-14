@@ -68,7 +68,7 @@ client.items [
 ]
 ```
 
-## Parameters
+### Parameters
 
 The `.item` and `.items` methods return a `Delivery::DeliveryQuery` object which you can futher configure before executing. The methods you can call are:
 
@@ -90,7 +90,7 @@ client.items('system.type'.eq 'coffee')
   end
 ```
 
-## Responses
+### Responses
 
 When you execute the DeliveryQuery, you will get a `DeliveryItemResponse` for single item queries, or a `DeliveryItemListingResponse` for multiple item queries. You can access the return ContentItem(s) at `.item` or `.items` respectively.
 
