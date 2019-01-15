@@ -19,6 +19,8 @@ Then run `bundle install`. To use the SDK within a `.rb` file, you need to `requ
 require 'delivery-sdk-ruby'
 ```
 
+You can also build the Gem locally by cloning this repo and running `rake build`.
+
 ## Usage
 
 You will use `Delivery::DeliveryClient` to obtain content from Kentico Cloud. First, create an instance of the client:
