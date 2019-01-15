@@ -26,13 +26,13 @@ You can also build the Gem locally by cloning this repo and running `rake build`
 You will use `Delivery::DeliveryClient` to obtain content from Kentico Cloud. First, create an instance of the client:
 
 ```ruby
-client = Delivery::DeliveryClient.new 'your-project-id'
+client = Delivery::DeliveryClient.new '<your-project-id>'
 ```
 
 Use `.item` or `.items` to create a Delivery::DeliveryQuery, then call `.execute` to perform the request.
 
 ```ruby
-client = Delivery::DeliveryClient.new('<your-project-id>')
+client = Delivery::DeliveryClient.new '<your-project-id>'
 client.items.execute do |response|
   response.items.each do |item|
     # Do something
