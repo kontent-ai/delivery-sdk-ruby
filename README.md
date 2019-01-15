@@ -36,7 +36,7 @@ client = Delivery::DeliveryClient.new project_id: '<your-project-id>',
   preview_key: '<your-preview-key>'
 ```
 
-This enables preview, but you can toggle preview at any time by setting the `use_preview` variable of DeliveryClient:
+This enables preview, but you can toggle preview at any time by setting the `use_preview` attribute of DeliveryClient:
 
 ```ruby
 client.use_preview = false
