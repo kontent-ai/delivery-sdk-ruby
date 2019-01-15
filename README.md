@@ -106,7 +106,7 @@ client.items('system.type'.eq 'coffee')
 
 ### Responses
 
-When you execute the DeliveryQuery, you will get a `DeliveryItemResponse` for single item queries, or a `DeliveryItemListingResponse` for multiple item queries. You can access the returned content item(s) at `.item` or `.items` respectively.
+When you execute the query, you will get a `DeliveryItemResponse` for single item queries, or a `DeliveryItemListingResponse` for multiple item queries. You can access the returned content item(s) at `.item` or `.items` respectively.
 
 The `ContentItem` object gives you access to all system elements and content type elements at the `.system` and `.elements` properies. These are dynamic objects, so you can simply type the name of the element you need:
 
@@ -114,7 +114,14 @@ The `ContentItem` object gives you access to all system elements and content typ
 response.item.elements.price.value
 ```
 
-The `DeliveryItemListingResponse` also contains a `pagination` attribute to access the [paging](https://developer.kenticocloud.com/v1/reference#listing-response-paging "paging") data for the Delivery query. For example, to access the next page URL you can use:
+The `DeliveryItemListingResponse` also contains a `pagination` attribute to access the [paging](https://developer.kenticocloud.com/v1/reference#listing-response-paging "paging") data for the Delivery query. This object contains the following attributes:
+
+- skip
+- limit
+- count
+- next_page
+
+For example, to access the next page URL you can use:
 
 ```ruby
 client.items
