@@ -1,4 +1,4 @@
-[![Forums](https://img.shields.io/badge/chat-on%20forums-orange.svg)](https://forums.kenticocloud.com) [![Join the chat at https://kentico-community.slack.com](https://img.shields.io/badge/join-slack-E6186D.svg)](https://kentico-community.slack.com) [![Version](https://img.shields.io/badge/version-0.1.0-green.svg)](https://github.com/Kentico/delivery-sdk-ruby/blob/master/lib/delivery/version.rb)
+[![Forums](https://img.shields.io/badge/chat-on%20forums-orange.svg)](https://forums.kenticocloud.com) [![Join the chat at https://kentico-community.slack.com](https://img.shields.io/badge/join-slack-E6186D.svg)](https://kentico-community.slack.com) [![Version](https://img.shields.io/badge/version-0.2.0-green.svg)](https://github.com/Kentico/delivery-sdk-ruby/blob/master/lib/delivery/version.rb)
 
 # Delivery Ruby SDK
 
@@ -21,18 +21,31 @@ require 'delivery-sdk-ruby'
 
 You can also build the Gem locally by cloning this repo and running `rake build`.
 
-## Usage
+## Listing items
 
 You will use `Delivery::DeliveryClient` to obtain content from Kentico Cloud. First, create an instance of the client:
 
 ```ruby
-client = Delivery::DeliveryClient.new '<your-project-id>'
+client = Delivery::DeliveryClient.new project_id: '<your-project-id>'
 ```
 
-Use `.item` or `.items` to create a Delivery::DeliveryQuery, then call `.execute` to perform the request.
+To enable [preview](https://developer.kenticocloud.com/docs/previewing-content-in-a-separate-environment "preview"), pass the Preview API Key to the constructor:
 
 ```ruby
-client = Delivery::DeliveryClient.new '<your-project-id>'
+client = Delivery::DeliveryClient.new project_id: '<your-project-id>',
+  preview_key: '<your-preview-key>'
+```
+
+This enables preview, but you can toggle preview at any time by setting the `use_preview` variable of DeliveryClient:
+
+```ruby
+client.use_preview = false
+```
+
+Use `.item` or `.items` to create a `Delivery::DeliveryQuery`, then call `.execute` to perform the request.
+
+```ruby
+client = Delivery::DeliveryClient.new project_id: '<your-project-id>'
 client.items.execute do |response|
   response.items.each do |item|
     # Do something
@@ -77,6 +90,7 @@ The `.item` and `.items` methods return a `Delivery::DeliveryQuery` object which
 - [limit](https://developer.kenticocloud.com/v1/reference#listing-response-paging "limit")
 - [elements](https://developer.kenticocloud.com/v1/reference#projection "elements")
 - [depth](https://developer.kenticocloud.com/v1/reference#linked-content "depth")
+- language
 
 For example:
 

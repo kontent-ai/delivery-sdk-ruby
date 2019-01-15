@@ -4,8 +4,11 @@ module Delivery
   # Responsible for translating query parameters into the
   # corresponding REST request to Kentico Cloud.
   class DeliveryQuery
+    attr_accessor :use_preview, :preview_key
+
     URL_MAX_LENGTH = 65_519
     URL_TEMPLATE_BASE = 'https://deliver.kenticocloud.com/%s'.freeze
+    URL_PREVIEW_BASE = 'https://preview-deliver.kenticocloud.com/%s'.freeze
     URL_TEMPLATE_ITEM = '/items/%s'.freeze
     URL_TEMPLATE_ITEMS = '/items'.freeze
     URL_TEMPLATE_TYPE = '/types/%s'.freeze
@@ -23,7 +26,7 @@ module Delivery
                 else
                   [config.fetch(:qp)]
                 end
-      raise ArgumentError, 'Only filters may be passed in the .item or .items methods.' unless @params.all? { |p| p.is_a? Delivery::QueryParameters::Filter}
+      raise ArgumentError, 'Only filters may be passed in the .item or .items methods.' unless @params.all? { |p| p.is_a? Delivery::QueryParameters::Filter }
     end
 
     def execute
@@ -31,20 +34,40 @@ module Delivery
       raise UriFormatException, MSG_LONG_QUERY if url.length > URL_MAX_LENGTH
 
       begin
-        resp = RestClient.get(url)
+        resp = execute_rest url
       rescue RestClient::Unauthorized, RestClient::Forbidden => err
         yield err.response
       else
-        if @code_name.nil?
-          yield DeliveryItemListingResponse.new(JSON.parse(resp))
-        else
-          yield DeliveryItemResponse.new(JSON.parse(resp)['item'])
-        end
+        yield make_response resp
+      end
+    end
+
+    def execute_rest(url)
+      if use_preview
+        RestClient.get url, Authorization: 'Bearer ' + preview_key
+      else
+        RestClient.get url
+      end
+    end
+
+    def make_response(response)
+      if @code_name.nil?
+        DeliveryItemListingResponse.new(JSON.parse(response))
+      else
+        DeliveryItemResponse.new(JSON.parse(response)['item'])
+      end
+    end
+
+    def provide_base_url
+      if use_preview
+        format(URL_PREVIEW_BASE, @project_id)
+      else
+        format(URL_TEMPLATE_BASE, @project_id)
       end
     end
 
     def provide_url
-      query = format(URL_TEMPLATE_BASE, @project_id)
+      query = provide_base_url
       query += (@code_name.nil? ? URL_TEMPLATE_ITEMS : format(URL_TEMPLATE_ITEM, @code_name))
       return query if @params.length.zero?
 
@@ -68,6 +91,11 @@ module Delivery
       remove_existing_param 'skip'
       @params << Delivery::QueryParameters::ParameterBase.new('skip', '', value)
       self
+    end
+
+    def language(value)
+      remove_existing_param 'language'
+      @params << Delivery::QueryParameters::ParameterBase.new('language', '', value)
     end
 
     def limit(value)
