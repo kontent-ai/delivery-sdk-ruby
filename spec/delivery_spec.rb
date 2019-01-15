@@ -17,6 +17,24 @@ RSpec.describe Delivery::DeliveryQuery do
   end
 end
 
+# ContentItem
+RSpec.describe Delivery::DeliveryClient do
+  before(:all) do
+    @dc = Delivery::DeliveryClient.new project_id: '2695019d-6404-00c1-fea5-e0f187569329'
+  end
+
+  describe '.pagination' do
+    it 'contains data' do
+      @dc.items
+          .skip(0)
+          .limit(5)
+          .execute do |response|
+            expect(response.pagination.next_page).to be_a String
+          end
+    end
+  end
+end
+
 # DeliveryClient
 RSpec.describe Delivery::DeliveryClient do
   before(:all) do
