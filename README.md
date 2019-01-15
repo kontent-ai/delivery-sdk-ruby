@@ -4,21 +4,17 @@ The Kentico Cloud Ruby SDK can be used in Ruby/Rails projects to retrieve conten
 
 ## Installation
 
-You can build the Gem from source or point to this repository to use this Gem in your Ruby project. To use Bundler and download the source for this SDK without building it, add the following to your Gemfile:
+You can connect your Ruby/Rails application directly to this repo. Add the following to your Gemfile:
 
 ```ruby
-gem "delivery-sdk-ruby", :git => "git://github.com/Kentico/delivery-sdk-ruby.git"
+gem 'delivery-sdk-ruby', :git => 'https://github.com/Kentico/delivery-sdk-ruby.git'
+gem 'rest-client'
 ```
 
-Then run `bundle install`. To build the Gem yourself for local installation, clone this repository and run `rake build`. You can then install the Gem:
+Then run `bundle install`. To use the SDK within a `.rb` file, you need to `require` it:
 
 ```ruby
-gem install delivery-sdk-ruby-<version>.gem
-```
-Then, add the Gem to your Gemfile:
-
-```ruby
-gem "delivery-sdk-ruby"
+require 'delivery-sdk-ruby'
 ```
 
 ## Usage
