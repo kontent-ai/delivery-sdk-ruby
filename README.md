@@ -1,4 +1,4 @@
-[![Forums](https://img.shields.io/badge/chat-on%20forums-orange.svg)](https://forums.kenticocloud.com) [![Join the chat at https://kentico-community.slack.com](https://img.shields.io/badge/join-slack-E6186D.svg)](https://kentico-community.slack.com) [![Version](https://img.shields.io/badge/version-0.3.0-green.svg)](https://github.com/Kentico/delivery-sdk-ruby/blob/master/lib/delivery/version.rb)
+[![Forums](https://img.shields.io/badge/chat-on%20forums-orange.svg)](https://forums.kenticocloud.com) [![Join the chat at https://kentico-community.slack.com](https://img.shields.io/badge/join-slack-E6186D.svg)](https://kentico-community.slack.com) [![Version](https://img.shields.io/badge/version-0.4.0-green.svg)](https://github.com/Kentico/delivery-sdk-ruby/blob/master/lib/delivery/version.rb)
 
 # Delivery Ruby SDK
 
@@ -26,27 +26,27 @@ You can also build the Gem locally by cloning this repo and running `rake build`
 You will use `Delivery::DeliveryClient` to obtain content from Kentico Cloud. First, create an instance of the client:
 
 ```ruby
-client = Delivery::DeliveryClient.new project_id: '<your-project-id>'
+delivery_client = Delivery::DeliveryClient.new project_id: '<your-project-id>'
 ```
 
 To enable [preview](https://developer.kenticocloud.com/docs/previewing-content-in-a-separate-environment "preview"), pass the Preview API Key to the constructor:
 
 ```ruby
-client = Delivery::DeliveryClient.new project_id: '<your-project-id>',
+delivery_client = Delivery::DeliveryClient.new project_id: '<your-project-id>',
   preview_key: '<your-preview-key>'
 ```
 
 This enables preview, but you can toggle preview at any time by setting the `use_preview` attribute of DeliveryClient:
 
 ```ruby
-client.use_preview = false
+delivery_client.use_preview = false
 ```
 
 Use `.item` or `.items` to create a `Delivery::DeliveryQuery`, then call `.execute` to perform the request.
 
 ```ruby
-client = Delivery::DeliveryClient.new project_id: '<your-project-id>'
-client.items.execute do |response|
+delivery_client = Delivery::DeliveryClient.new project_id: '<your-project-id>'
+delivery_client.items.execute do |response|
   response.items.each do |item|
     # Do something
   end
@@ -72,10 +72,10 @@ For example:
 
 ```ruby
 # Single filter
-client.items('elements.price'.gt 20)
+delivery_client.items('elements.price'.gt 20)
 
 # Multiple filters
-client.items [
+delivery_client.items [
   ('elements.price'.gt 20),
   ('system.type'.eq 'grinder')
 ]
@@ -95,7 +95,7 @@ The `.item` and `.items` methods return a `Delivery::DeliveryQuery` object which
 For example:
 
 ```ruby
-client.items('system.type'.eq 'coffee')
+delivery_client.items('system.type'.eq 'coffee')
   .depth(0)
   .limit(5)
   .elements(%W[price product_name])
@@ -124,12 +124,64 @@ The `DeliveryItemListingResponse` also contains a `pagination` attribute to acce
 For example, to access the next page URL you can use:
 
 ```ruby
-client.items
+delivery_client.items
     .skip(0)
     .limit(5)
     .execute do |response|
       next_page_url = response.pagination.next_page
     end
+```
+
+## Resolving links
+
+If a rich text element contains links to other content items, you will need to generate the URLs to those items. You can do this by registering a `Delivery::Resolvers::ContentLinkResolver` when you instantiate the DeliveryClient. When you create a ContentLinkResolver, you must pass a method that will return the URL:
+
+```ruby
+link_resolver = Delivery::Resolvers::ContentLinkResolver.new(lambda do |link|
+  return "/coffees/#{link.url_slug}" if link.type == 'coffee'
+  return "/brewers/#{link.url_slug}" if link.type == 'brewer'
+end)
+delivery_client = Delivery::DeliveryClient.new project_id: '<your-project-id>',
+                                content_link_url_resolver: link_resolver
+```
+
+You can also build the logic for your resolver in a separate class and register an instance of that class in the DeliveryClient. The class must extend `Delivery::Resolvers::ContentLinkResolver` and contain a `resolve_link(link)` For example, you can create `MyLinkResolver.rb`:
+
+```ruby
+class MyLinkResolver < Delivery::Resolvers::ContentLinkResolver
+  def resolve_link(link)
+    return "/coffees/#{link.url_slug}" if link.type == 'coffee'
+    return "/brewers/#{link.url_slug}" if link.type == 'brewer'
+  end
+end
+```
+
+Then create an object of this class when instantiating the DeliveryClient:
+
+```ruby
+delivery_client = Delivery::DeliveryClient.new project_id: '<your-project-id>',
+                                content_link_url_resolver: MyLinkResolver.new
+```
+
+The `ContentLink` object that is passed to your resolver contains the following attributes:
+
+- id: the system.id of the linked content item
+- code_name: the system.codename of the linked content item
+- type: the content type of the linked content item
+- url_slug: the URL slug of the linked content item, or nil if there is none
+
+To resolve links in rich text elements, you must retrieve the text using `get_string`:
+
+```ruby
+lambda_resolver = Delivery::Resolvers::ContentLinkResolver.new(lambda do |link|
+  return "/coffees/#{link.url_slug}" if link.type == 'coffee'
+  return "/brewers/#{link.url_slug}" if link.type == 'brewer'
+end)
+delivery_client = Delivery::DeliveryClient.new project_id: '<your-project-id>',
+                                content_link_url_resolver: lambda_resolver
+delivery_client.item('coffee_processing_techniques').execute do |response|
+  text = response.item.get_string 'body_copy'
+end
 ```
 
 ## Feedback & Contributing

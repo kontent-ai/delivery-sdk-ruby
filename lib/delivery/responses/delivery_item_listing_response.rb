@@ -12,12 +12,13 @@ module Delivery
     def items
       @items unless @items.nil?
       items = []
-      @response['items'].each { |n| items << Delivery::ContentItem.new(n) }
+      @response['items'].each { |n| items << Delivery::ContentItem.new(n, @content_link_url_resolver) }
       @items = items
     end
 
-    def initialize(response)
+    def initialize(response, content_link_url_resolver)
       @response = response
+      @content_link_url_resolver = content_link_url_resolver
     end
   end
 end
