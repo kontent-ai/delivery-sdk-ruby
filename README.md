@@ -145,7 +145,7 @@ delivery_client = Delivery::DeliveryClient.new project_id: '<your-project-id>',
                                 content_link_url_resolver: link_resolver
 ```
 
-You can also build the logic for your resolver in a separate class and register an instance of that class in the DeliveryClient. The class must extend `Delivery::Resolvers::ContentLinkResolver` and contain a `resolve_link(link)` For example, you can create `MyLinkResolver.rb`:
+You can also build the logic for your resolver in a separate class and register an instance of that class in the DeliveryClient. The class must extend `Delivery::Resolvers::ContentLinkResolver` and contain a `resolve_link(link)` method. For example, you can create `MyLinkResolver.rb`:
 
 ```ruby
 class MyLinkResolver < Delivery::Resolvers::ContentLinkResolver
