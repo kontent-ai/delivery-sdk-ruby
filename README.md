@@ -90,7 +90,7 @@ The `.item` and `.items` methods return a `Delivery::DeliveryQuery` object which
 - [limit](https://developer.kenticocloud.com/v1/reference#listing-response-paging "limit")
 - [elements](https://developer.kenticocloud.com/v1/reference#projection "elements")
 - [depth](https://developer.kenticocloud.com/v1/reference#linked-content "depth")
-- language
+- [language](https://developer.kenticocloud.com/docs/understanding-language-fallbacks "language")
 
 For example:
 
@@ -116,10 +116,10 @@ response.item.elements.price.value
 
 The `DeliveryItemListingResponse` also contains a `pagination` attribute to access the [paging](https://developer.kenticocloud.com/v1/reference#listing-response-paging "paging") data for the Delivery query. This object contains the following attributes:
 
-- skip
-- limit
-- count
-- next_page
+- **skip**
+- **limit**
+- **count**
+- **next_page**
 
 For example, to access the next page URL you can use:
 
@@ -165,10 +165,10 @@ delivery_client = Delivery::DeliveryClient.new project_id: '<your-project-id>',
 
 The `ContentLink` object that is passed to your resolver contains the following attributes:
 
-- id: the system.id of the linked content item
-- code_name: the system.codename of the linked content item
-- type: the content type of the linked content item
-- url_slug: the URL slug of the linked content item, or nil if there is none
+- **id**: the system.id of the linked content item
+- **code_name**: the system.codename of the linked content item
+- **type**: the content type of the linked content item
+- **url_slug**: the URL slug of the linked content item, or nil if there is none
 
 To resolve links in rich text elements, you must retrieve the text using `get_string`:
 
