@@ -57,16 +57,16 @@ end
 
 You can use [filtering](https://developer.kenticocloud.com/v1/reference#content-filtering "filtering") to retrieve particular items. The filtering methods are applied directly to a string and the available methods are:
 
-- all
-- any
-- contains
-- eq
-- gt
-- gt_or_eq
-- in
-- lt
-- lt_or_eq
-- range
+- **all**
+- **any**
+- **contains**
+- **eq**
+- **gt**
+- **gt_or_eq**
+- **in**
+- **lt**
+- **lt_or_eq**
+- **range**
 
 For example:
 
