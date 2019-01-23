@@ -1,3 +1,4 @@
+
 [![Forums](https://img.shields.io/badge/chat-on%20forums-orange.svg)](https://forums.kenticocloud.com) [![Join the chat at https://kentico-community.slack.com](https://img.shields.io/badge/join-slack-E6186D.svg)](https://kentico-community.slack.com) [![Version](https://img.shields.io/badge/version-0.4.0-green.svg)](https://github.com/Kentico/delivery-sdk-ruby/blob/master/lib/delivery/version.rb)
 
 # Delivery Ruby SDK
@@ -57,18 +58,20 @@ end
 
 You can use [filtering](https://developer.kenticocloud.com/v1/reference#content-filtering "filtering") to retrieve particular items. The filtering methods are applied directly to a string and the available methods are:
 
-- **all**
-- **any**
-- **contains**
-- **eq**
-- **gt**
-- **gt_or_eq**
-- **in**
-- **lt**
-- **lt_or_eq**
-- **range**
+|Method|Example|REST equivalent|
+|--|--|--|
+|all|`'elements.product_status'.all %w[bestseller on_sale]`|?elements.product_status[all]=bestseller,on_sale|
+|any|`'elements.processing'.any %w[dry__natural_ semi_dry]`|?elements.processing[any]=dry__natural_,semi_dry|
+|contains|`'elements.related_articles'.contains 'on_roasts'`|?elements.related_articles[contains]=on_roasts|
+|eq|`'system.type'.eq 'grinder'`|?system.type=grinder|
+|gt|`'elements.price'.gt 20`|?elements.price[gt]=20|
+|gt_or_eq|`'elements.price'.gt_or_eq 20`|?elements.price[gte]=20|
+|in|`'system.type'.in %w[coffee brewer]`|?system.type[in]=coffee,brewer|
+|lt|`'elements.price'.lt 20`|?elements.price[lt]=20|
+|lt_or_eq|`'elements.price'.lt_or_eq 20`|?elements.price[lte]=20|
+|range|`'system.last_modified'.range %w[2018-02-01 2018-03-31]`|?system.last_modified[range]=2018-02-01,2018-03-31|
 
-For example:
+You can pass a single filter or multiple filters in the DeliveryClient methods. For example:
 
 ```ruby
 # Single filter
@@ -83,14 +86,16 @@ delivery_client.items [
 
 ### Parameters
 
-The `.item` and `.items` methods return a `Delivery::DeliveryQuery` object which you can futher configure before executing. The methods you can call are:
+The `.item` and `.items` methods return a `Delivery::DeliveryQuery` object which you can further configure before executing. The methods you can call are:
 
-- [order_by](https://developer.kenticocloud.com/v1/reference#content-ordering "order_by")
-- [skip](https://developer.kenticocloud.com/v1/reference#listing-response-paging "skip")
-- [limit](https://developer.kenticocloud.com/v1/reference#listing-response-paging "limit")
-- [elements](https://developer.kenticocloud.com/v1/reference#projection "elements")
-- [depth](https://developer.kenticocloud.com/v1/reference#linked-content "depth")
-- [language](https://developer.kenticocloud.com/docs/understanding-language-fallbacks "language")
+|Method|Example|REST equivalent
+|--|--|--|
+|[order_by](https://developer.kenticocloud.com/v1/reference#content-ordering "order_by")|`order_by 'system.last_modified' '[desc]'`|?order=system.last_modified[desc]
+|[skip](https://developer.kenticocloud.com/v1/reference#listing-response-paging "skip")|`skip 5`|?skip=5
+|[limit](https://developer.kenticocloud.com/v1/reference#listing-response-paging "limit")|`limit 5`|?limit=5
+|[elements](https://developer.kenticocloud.com/v1/reference#projection "elements")|`elements %w[price product_name image]`|?elements=price,product_name,image
+|[depth](https://developer.kenticocloud.com/v1/reference#linked-content "depth")|`depth 0`|?depth=0
+|[language](https://developer.kenticocloud.com/docs/understanding-language-fallbacks "language")|`language 'en'`|?language=en
 
 For example:
 
