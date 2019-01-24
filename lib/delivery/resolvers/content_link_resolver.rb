@@ -10,6 +10,7 @@ module Delivery
         @callback = callback
       end
 
+      # Resolves all links in the content
       def resolve(content, links)
         links.map { |link| ContentLink.new link }.each do |content_link|
           url =
@@ -23,6 +24,8 @@ module Delivery
         end
         content
       end
+
+      private
 
       # Inserts the url into the <a> tag
       def replace(content, content_link, url)

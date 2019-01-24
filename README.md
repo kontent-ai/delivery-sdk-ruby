@@ -1,5 +1,5 @@
 
-[![Forums](https://img.shields.io/badge/chat-on%20forums-orange.svg)](https://forums.kenticocloud.com) [![Join the chat at https://kentico-community.slack.com](https://img.shields.io/badge/join-slack-E6186D.svg)](https://kentico-community.slack.com) [![Version](https://img.shields.io/badge/version-0.4.0-green.svg)](https://github.com/Kentico/delivery-sdk-ruby/blob/master/lib/delivery/version.rb)
+[![Forums](https://img.shields.io/badge/chat-on%20forums-orange.svg)](https://forums.kenticocloud.com) [![Join the chat at https://kentico-community.slack.com](https://img.shields.io/badge/join-slack-E6186D.svg)](https://kentico-community.slack.com) [![Version](https://img.shields.io/badge/version-0.5.0-green.svg)](https://github.com/Kentico/delivery-sdk-ruby/blob/master/lib/delivery/version.rb)
 
 # Delivery Ruby SDK
 
@@ -30,6 +30,18 @@ You will use `Delivery::DeliveryClient` to obtain content from Kentico Cloud. Fi
 delivery_client = Delivery::DeliveryClient.new project_id: '<your-project-id>'
 ```
 
+Use `.item` or `.items` to create a `Delivery::DeliveryQuery`, then call `.execute` to perform the request.
+
+```ruby
+delivery_client.items.execute do |response|
+  response.items.each do |item|
+    # Do something
+  end
+end
+```
+
+### Previewing unpublished content
+
 To enable [preview](https://developer.kenticocloud.com/docs/previewing-content-in-a-separate-environment "preview"), pass the Preview API Key to the constructor:
 
 ```ruby
@@ -43,15 +55,32 @@ This enables preview, but you can toggle preview at any time by setting the `use
 delivery_client.use_preview = false
 ```
 
-Use `.item` or `.items` to create a `Delivery::DeliveryQuery`, then call `.execute` to perform the request.
+### Responses
+
+When you execute the query, you will get a `DeliveryItemResponse` for single item queries, or a `DeliveryItemListingResponse` for multiple item queries. You can access the returned content item(s) at `.item` or `.items` respectively.
+
+The `ContentItem` object gives you access to all system elements and content type elements at the `.system` and `.elements` properies. These are dynamic objects, so you can simply type the name of the element you need:
 
 ```ruby
-delivery_client = Delivery::DeliveryClient.new project_id: '<your-project-id>'
-delivery_client.items.execute do |response|
-  response.items.each do |item|
-    # Do something
-  end
-end
+response.item.elements.price.value
+```
+
+The `DeliveryItemListingResponse` also contains a `pagination` attribute to access the [paging](https://developer.kenticocloud.com/v1/reference#listing-response-paging "paging") data for the Delivery query. This object contains the following attributes:
+
+- **skip**
+- **limit**
+- **count**
+- **next_page**
+
+For example, to access the next page URL you can use:
+
+```ruby
+delivery_client.items
+    .skip(0)
+    .limit(5)
+    .execute do |response|
+      next_page_url = response.pagination.next_page
+    end
 ```
 
 ### Filtering
@@ -109,32 +138,16 @@ delivery_client.items('system.type'.eq 'coffee')
   end
 ```
 
-### Responses
+### Custom URLs
 
-When you execute the query, you will get a `DeliveryItemResponse` for single item queries, or a `DeliveryItemListingResponse` for multiple item queries. You can access the returned content item(s) at `.item` or `.items` respectively.
-
-The `ContentItem` object gives you access to all system elements and content type elements at the `.system` and `.elements` properies. These are dynamic objects, so you can simply type the name of the element you need:
-
-```ruby
-response.item.elements.price.value
-```
-
-The `DeliveryItemListingResponse` also contains a `pagination` attribute to access the [paging](https://developer.kenticocloud.com/v1/reference#listing-response-paging "paging") data for the Delivery query. This object contains the following attributes:
-
-- **skip**
-- **limit**
-- **count**
-- **next_page**
-
-For example, to access the next page URL you can use:
+When you have a URL (i.e. `next_page` for paging, for testing purposes, or if you prefer to build it on your own) and still want to leverage SDK functionality such as rich text resolving, use the .url method:
 
 ```ruby
 delivery_client.items
-    .skip(0)
-    .limit(5)
-    .execute do |response|
-      next_page_url = response.pagination.next_page
-    end
+  .url('https://deliver.kenticocloud.com/<your-project-id>/items?system.type=grinder')
+  .execute do |response|
+    # Do something
+  end
 ```
 
 ## Resolving links

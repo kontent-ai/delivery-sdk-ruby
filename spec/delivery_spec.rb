@@ -12,6 +12,20 @@ RSpec.describe Delivery::DeliveryQuery do
       expect(@dc.items).to be_a Delivery::DeliveryQuery
     end
   end
+
+  describe '.url' do
+    it 'replaces the url' do
+      q = @dc.items
+      q.execute do |response|
+        @original = response.items.length
+      end
+      q.url('https://deliver.kenticocloud.com/c9ccf90d-fd24-00ed-98a1-f8f93c26b1ac/items?system.type=grinder')
+       .execute do |response|
+         changed = response.items.length
+          expect(@original).not_to eq(changed)
+       end
+    end
+  end
 end
 
 # UrlProvider
@@ -28,7 +42,7 @@ RSpec.describe Delivery::UrlProvider do
 end
 
 # ContentItem
-RSpec.describe Delivery::DeliveryClient do
+RSpec.describe Delivery::ContentItem do
   before(:all) do
     @dc = Delivery::DeliveryClient.new project_id: PROJECT_ID
   end
@@ -67,6 +81,7 @@ RSpec.describe Delivery::DeliveryClient do
   end
 end
 
+# Filters
 RSpec.describe Delivery::QueryParameters::Filter do
   before(:all) do
     @dc = Delivery::DeliveryClient.new project_id: PROJECT_ID

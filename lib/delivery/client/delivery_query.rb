@@ -11,6 +11,14 @@ module Delivery
                   :params,
                   :content_link_url_resolver
 
+    # Setter for url, returns self for chaining
+    # .url represents *manually* configured urls, otherwise final url is
+    # generated in .execute and this will return nil
+    def url(url = nil)
+      @url = url unless url.nil?
+      self
+    end
+
     def initialize(config)
       self.project_id = config.fetch(:project_id)
       self.code_name = config.fetch(:code_name, nil)
@@ -24,7 +32,7 @@ module Delivery
     end
 
     def execute
-      @url = Delivery::UrlProvider.provide_url self
+      @url = Delivery::UrlProvider.provide_url self if @url.nil?
       Delivery::UrlProvider.validate_url @url
 
       begin
@@ -34,27 +42,6 @@ module Delivery
       else
         yield make_response resp
       end
-    end
-
-    def execute_rest
-      if use_preview
-        RestClient.get @url, Authorization: 'Bearer ' + preview_key
-      else
-        RestClient.get @url
-      end
-    end
-
-    def make_response(response)
-      if code_name.nil?
-        DeliveryItemListingResponse.new(JSON.parse(response), content_link_url_resolver)
-      else
-        DeliveryItemResponse.new(JSON.parse(response)['item'], content_link_url_resolver)
-      end
-    end
-
-    # Remove existing parameter from @params if key exists
-    def remove_existing_param(key)
-      params.delete_if { |i| i.key.eql? key }
     end
 
     def order_by(value, sort = '[asc]')
@@ -90,6 +77,29 @@ module Delivery
       remove_existing_param 'depth'
       params << Delivery::QueryParameters::ParameterBase.new('depth', '', value)
       self
+    end
+
+    private
+
+    def execute_rest
+      if use_preview
+        RestClient.get @url, Authorization: 'Bearer ' + preview_key
+      else
+        RestClient.get @url
+      end
+    end
+
+    def make_response(response)
+      if code_name.nil?
+        DeliveryItemListingResponse.new(JSON.parse(response), content_link_url_resolver)
+      else
+        DeliveryItemResponse.new(JSON.parse(response)['item'], content_link_url_resolver)
+      end
+    end
+
+    # Remove existing parameter from @params if key exists
+    def remove_existing_param(key)
+      params.delete_if { |i| i.key.eql? key }
     end
   end
 end

@@ -35,6 +35,8 @@ module Delivery
       element['value'].to_s
     end
 
+    private
+
     def should_resolve(element)
       element['type'] == 'rich_text' && !element['links'].nil? && !content_link_url_resolver.nil?
     end
