@@ -27,6 +27,8 @@ You can also build the Gem locally by cloning this repo and running `rake build`
 You will use `Delivery::DeliveryClient` to obtain content from Kentico Cloud. Create an instance of the client and pass your project ID:
 
 ```ruby
+require 'delivery/client/delivery_client'
+
 delivery_client = Delivery::DeliveryClient.new project_id: '<your-project-id>'
 ```
 
@@ -192,6 +194,8 @@ You can then request the secure published content in your project. Be sure to no
 If a rich text element contains links to other content items, you will need to generate the URLs to those items. You can do this by registering a `Delivery::Resolvers::ContentLinkResolver` when you instantiate the DeliveryClient. When you create a ContentLinkResolver, you must pass a method that will return the URL:
 
 ```ruby
+require 'delivery/resolvers/content_link_resolver'
+
 link_resolver = Delivery::Resolvers::ContentLinkResolver.new(lambda do |link|
   return "/coffees/#{link.url_slug}" if link.type == 'coffee'
   return "/brewers/#{link.url_slug}" if link.type == 'brewer'
@@ -203,6 +207,8 @@ delivery_client = Delivery::DeliveryClient.new project_id: '<your-project-id>',
 You can also build the logic for your resolver in a separate class and register an instance of that class in the DeliveryClient. The class must extend `Delivery::Resolvers::ContentLinkResolver` and contain a `resolve_link(link)` method. For example, you can create `MyLinkResolver.rb`:
 
 ```ruby
+require 'delivery/resolvers/content_link_resolver'
+
 class MyLinkResolver < Delivery::Resolvers::ContentLinkResolver
   def resolve_link(link)
     return "/coffees/#{link.url_slug}" if link.type == 'coffee'
@@ -228,6 +234,8 @@ The `ContentLink` object that is passed to your resolver contains the following 
 To resolve links in rich text elements, you must retrieve the text using `get_string`:
 
 ```ruby
+require 'delivery/resolvers/content_link_resolver'
+
 lambda_resolver = Delivery::Resolvers::ContentLinkResolver.new(lambda do |link|
   return "/coffees/#{link.url_slug}" if link.type == 'coffee'
   return "/brewers/#{link.url_slug}" if link.type == 'brewer'
