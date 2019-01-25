@@ -1,5 +1,5 @@
 
-[![Forums](https://img.shields.io/badge/chat-on%20forums-orange.svg)](https://forums.kenticocloud.com) [![Join the chat at https://kentico-community.slack.com](https://img.shields.io/badge/join-slack-E6186D.svg)](https://kentico-community.slack.com) [![Version](https://img.shields.io/badge/version-0.6.0-green.svg)](https://github.com/Kentico/delivery-sdk-ruby/blob/master/lib/delivery/version.rb)
+[![Forums](https://img.shields.io/badge/chat-on%20forums-orange.svg)](https://forums.kenticocloud.com) [![Join the chat at https://kentico-community.slack.com](https://img.shields.io/badge/join-slack-E6186D.svg)](https://kentico-community.slack.com) [![Version](https://img.shields.io/badge/version-0.6.1-green.svg)](https://github.com/Kentico/delivery-sdk-ruby/blob/master/lib/delivery/version.rb)
 
 # Delivery Ruby SDK
 
@@ -14,13 +14,7 @@ gem 'delivery-sdk-ruby', :git => 'https://github.com/Kentico/delivery-sdk-ruby.g
 gem 'rest-client'
 ```
 
-Then run `bundle install`. To use the SDK within a `.rb` file, you need to `require` it:
-
-```ruby
-require 'delivery-sdk-ruby'
-```
-
-You can also build the Gem locally by cloning this repo and running `rake build`.
+Then run `bundle install`. You can also build the Gem locally by cloning this repo and running `rake build`.
 
 ## Creating a client
 

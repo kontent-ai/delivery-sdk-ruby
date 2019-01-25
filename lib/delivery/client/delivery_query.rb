@@ -1,4 +1,5 @@
 require 'rest-client'
+require 'delivery/client/url_provider'
 
 module Delivery
   # Responsible for translating query parameters into the

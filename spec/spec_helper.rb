@@ -1,7 +1,6 @@
 require 'bundler/setup'
 require 'delivery/client/delivery_client'
 require 'delivery/query_parameters/filters'
-require 'delivery/client/url_provider'
 require 'delivery/resolvers/content_link_resolver'
 
 RSpec.configure do |config|
