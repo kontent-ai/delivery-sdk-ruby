@@ -10,7 +10,7 @@ The Delivery Ruby SDK can be used in Ruby/Rails projects to retrieve content fro
 To create the gem, clone this repo and run `rake build`, or download the gem from the /pkg directory. Then install the gem and its dependencies as usual:
 
 ```ruby
-gem install delivery-sdk-ruby.gem
+gem install delivery-sdk-ruby-0.6.1.gem
 gem install rest-client
 ```
 
