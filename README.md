@@ -7,21 +7,18 @@ The Delivery Ruby SDK can be used in Ruby/Rails projects to retrieve content fro
 
 ## Installation
 
-You can connect your Ruby/Rails application directly to this repo. Add the following to your Gemfile:
+To create the gem, clone this repo and run `rake build`, or download the gem from the /pkg directory. Then install the gem as usual:
 
 ```ruby
-gem 'delivery-sdk-ruby', :git => 'https://github.com/Kentico/delivery-sdk-ruby.git'
-gem 'rest-client'
+gem install delivery-sdk-ruby.gem
 ```
-
-Then run `bundle install`. You can also build the Gem locally by cloning this repo and running `rake build`.
 
 ## Creating a client
 
 You will use `Delivery::DeliveryClient` to obtain content from Kentico Cloud. Create an instance of the client and pass your project ID:
 
 ```ruby
-require 'delivery/client/delivery_client'
+require 'delivery-sdk-ruby'
 
 delivery_client = Delivery::DeliveryClient.new project_id: '<your-project-id>'
 ```
