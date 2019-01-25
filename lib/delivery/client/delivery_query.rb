@@ -9,6 +9,7 @@ module Delivery
                   :project_id,
                   :code_name,
                   :params,
+                  :secure_key,
                   :content_link_url_resolver
 
     # Setter for url, returns self for chaining
@@ -21,6 +22,7 @@ module Delivery
 
     def initialize(config)
       self.project_id = config.fetch(:project_id)
+      self.secure_key = config.fetch(:secure_key)
       self.code_name = config.fetch(:code_name, nil)
       self.content_link_url_resolver = config.fetch(:content_link_url_resolver, nil)
       self.params = if config.fetch(:qp).is_a? Array
@@ -37,8 +39,12 @@ module Delivery
 
       begin
         resp = execute_rest
-      rescue RestClient::Unauthorized, RestClient::Forbidden => err
-        yield err.response
+      rescue RestClient::ExceptionWithResponse => err
+        yield Delivery::Responses::ResponseBase.new err.http_code, err.response
+      rescue RestClient::SSLCertificateNotVerified => err
+        yield Delivery::Responses::ResponseBase.new 500, err
+      rescue SocketError => err
+        yield Delivery::Responses::ResponseBase.new 500, err.message
       else
         yield make_response resp
       end
@@ -85,15 +91,25 @@ module Delivery
       if use_preview
         RestClient.get @url, Authorization: 'Bearer ' + preview_key
       else
-        RestClient.get @url
+        if secure_key.nil?
+          RestClient.get @url
+        else
+          RestClient.get @url, Authorization: 'Bearer ' + secure_key
+        end
       end
     end
 
     def make_response(response)
       if code_name.nil?
-        DeliveryItemListingResponse.new(JSON.parse(response), content_link_url_resolver)
+        Delivery::Responses::DeliveryItemListingResponse.new(
+          JSON.parse(response),
+          content_link_url_resolver
+        )
       else
-        DeliveryItemResponse.new(JSON.parse(response)['item'], content_link_url_resolver)
+        Delivery::Responses::DeliveryItemResponse.new(
+          JSON.parse(response)['item'],
+          content_link_url_resolver
+        )
       end
     end
 

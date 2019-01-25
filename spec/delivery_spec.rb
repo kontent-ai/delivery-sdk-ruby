@@ -1,5 +1,6 @@
-PROJECT_ID = 'c9ccf90d-fd24-00ed-98a1-f8f93c26b1ac'.freeze
-PREVIEW_KEY = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI0MDU5ODk0NjNkYzY0NWYzYTE5NWM0NjNlZGZlOGQ1YiIsImlhdCI6IjE1NDgxODI4MDYiLCJleHAiOiIxODkzNzgyODA2IiwicHJvamVjdF9pZCI6ImM5Y2NmOTBkZmQyNDAwZWQ5OGExZjhmOTNjMjZiMWFjIiwidmVyIjoiMS4wLjAiLCJhdWQiOiJwcmV2aWV3LmRlbGl2ZXIua2VudGljb2Nsb3VkLmNvbSJ9.gi2ZiBJoFmFqVfFgABlPBI8JvY3AGPI99IAT8p_Hooo'.freeze
+PROJECT_ID = '<redacted>'.freeze
+PREVIEW_KEY = '<redacted>'.freeze
+SECURE_KEY = '<redacted>'.freeze
 
 # DeliveryQuery
 RSpec.describe Delivery::DeliveryQuery do
@@ -10,20 +11,6 @@ RSpec.describe Delivery::DeliveryQuery do
   describe '.items' do
     it 'returns DeliveryQuery' do
       expect(@dc.items).to be_a Delivery::DeliveryQuery
-    end
-  end
-
-  describe '.url' do
-    it 'replaces the url' do
-      q = @dc.items
-      q.execute do |response|
-        @original = response.items.length
-      end
-      q.url('https://deliver.kenticocloud.com/c9ccf90d-fd24-00ed-98a1-f8f93c26b1ac/items?system.type=grinder')
-       .execute do |response|
-         changed = response.items.length
-          expect(@original).not_to eq(changed)
-       end
     end
   end
 end
@@ -44,7 +31,8 @@ end
 # ContentItem
 RSpec.describe Delivery::ContentItem do
   before(:all) do
-    @dc = Delivery::DeliveryClient.new project_id: PROJECT_ID
+    @dc = Delivery::DeliveryClient.new project_id: PROJECT_ID,
+                                       secure_key: SECURE_KEY
   end
 
   describe '.pagination' do
@@ -61,20 +49,34 @@ end
 
 # DeliveryClient
 RSpec.describe Delivery::DeliveryClient do
-  before(:all) do
-    @dc = Delivery::DeliveryClient.new project_id: PROJECT_ID,
-                                       preview_key: PREVIEW_KEY
+  describe 'secure_key' do
+    it 'results in 200 status' do
+      insecure = Delivery::DeliveryClient.new project_id: PROJECT_ID
+      insecure.items.execute do |response|
+        @status1 = response.http_code
+      end
+      secure = Delivery::DeliveryClient.new project_id: PROJECT_ID,
+                                            secure_key: SECURE_KEY
+      secure.items.execute do |response|
+        expect(@status1).to eql(401)
+        expect(response.http_code).to eql(200)
+      end
+    end
   end
 
   describe 'ctor' do
     it 'enables preview' do
-      expect(@dc.use_preview).to be true
+      dc = Delivery::DeliveryClient.new project_id: PROJECT_ID,
+                                        preview_key: PREVIEW_KEY
+      expect(dc.use_preview).to be true
     end
   end
 
   describe '.items' do
     it 'return 46 items' do
-      @dc.items.execute do |response|
+      dc = Delivery::DeliveryClient.new project_id: PROJECT_ID,
+                                        preview_key: PREVIEW_KEY
+      dc.items.execute do |response|
         expect(response.items.length).to eq(46)
       end
     end
@@ -84,7 +86,8 @@ end
 # Filters
 RSpec.describe Delivery::QueryParameters::Filter do
   before(:all) do
-    @dc = Delivery::DeliveryClient.new project_id: PROJECT_ID
+    @dc = Delivery::DeliveryClient.new project_id: PROJECT_ID,
+                                       secure_key: SECURE_KEY
   end
 
   describe '.items with .gt filter' do
@@ -112,7 +115,8 @@ end
 # QueryParameters
 RSpec.describe Delivery::QueryParameters::ParameterBase do
   before(:all) do
-    @dc = Delivery::DeliveryClient.new project_id: PROJECT_ID
+    @dc = Delivery::DeliveryClient.new project_id: PROJECT_ID,
+                                       secure_key: SECURE_KEY
   end
 
   describe '<string>.gt' do
@@ -130,7 +134,8 @@ RSpec.describe Delivery::Resolvers::ContentLinkResolver do
       return "/brewers/#{link.url_slug}" if link.type == 'brewer'
     end)
     @dc = Delivery::DeliveryClient.new project_id: PROJECT_ID,
-                                       content_link_url_resolver: lambda_resolver
+                                       content_link_url_resolver: lambda_resolver,
+                                       secure_key: SECURE_KEY
   end
 
   describe 'linkresolver' do

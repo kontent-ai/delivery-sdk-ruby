@@ -11,12 +11,14 @@ module Delivery
     def initialize(config)
       @project_id = config.fetch(:project_id)
       @preview_key = config.fetch(:preview_key, nil)
+      @secure_key = config.fetch(:secure_key, nil)
       @content_link_url_resolver = config.fetch(:content_link_url_resolver, nil)
       self.use_preview = !@preview_key.nil?
     end
 
     def items(query_parameters = [])
       q = DeliveryQuery.new project_id: @project_id,
+                            secure_key: @secure_key,
                             qp: query_parameters,
                             content_link_url_resolver: @content_link_url_resolver
       q.use_preview = use_preview
@@ -26,6 +28,7 @@ module Delivery
 
     def item(code_name, query_parameters = [])
       q = DeliveryQuery.new project_id: @project_id,
+                            secure_key: @secure_key,
                             code_name: code_name,
                             qp: query_parameters,
                             content_link_url_resolver: @content_link_url_resolver

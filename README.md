@@ -1,5 +1,5 @@
 
-[![Forums](https://img.shields.io/badge/chat-on%20forums-orange.svg)](https://forums.kenticocloud.com) [![Join the chat at https://kentico-community.slack.com](https://img.shields.io/badge/join-slack-E6186D.svg)](https://kentico-community.slack.com) [![Version](https://img.shields.io/badge/version-0.5.0-green.svg)](https://github.com/Kentico/delivery-sdk-ruby/blob/master/lib/delivery/version.rb)
+[![Forums](https://img.shields.io/badge/chat-on%20forums-orange.svg)](https://forums.kenticocloud.com) [![Join the chat at https://kentico-community.slack.com](https://img.shields.io/badge/join-slack-E6186D.svg)](https://kentico-community.slack.com) [![Version](https://img.shields.io/badge/version-0.6.0-green.svg)](https://github.com/Kentico/delivery-sdk-ruby/blob/master/lib/delivery/version.rb)
 
 # Delivery Ruby SDK
 
@@ -22,22 +22,12 @@ require 'delivery-sdk-ruby'
 
 You can also build the Gem locally by cloning this repo and running `rake build`.
 
-## Listing items
+## Creating a client
 
-You will use `Delivery::DeliveryClient` to obtain content from Kentico Cloud. First, create an instance of the client:
+You will use `Delivery::DeliveryClient` to obtain content from Kentico Cloud. Create an instance of the client and pass your project ID:
 
 ```ruby
 delivery_client = Delivery::DeliveryClient.new project_id: '<your-project-id>'
-```
-
-Use `.item` or `.items` to create a `Delivery::DeliveryQuery`, then call `.execute` to perform the request.
-
-```ruby
-delivery_client.items.execute do |response|
-  response.items.each do |item|
-    # Do something
-  end
-end
 ```
 
 ### Previewing unpublished content
@@ -49,38 +39,40 @@ delivery_client = Delivery::DeliveryClient.new project_id: '<your-project-id>',
   preview_key: '<your-preview-key>'
 ```
 
-This enables preview, but you can toggle preview at any time by setting the `use_preview` attribute of DeliveryClient:
+This enables preview, but you can toggle preview at any time by setting the `use_preview` attribute of DeliveryClient which is propogated to all queries created by the client, _or_ per-query by setting it's `use_preview` attribute:
 
 ```ruby
+# For all queries created by client
 delivery_client.use_preview = false
+
+# Per-query
+query = delivery_client.items
+query.use_preview = false
+query.execute do |response|
+  # Do something
+end
 ```
 
-### Responses
+### Making secure requests
 
-When you execute the query, you will get a `DeliveryItemResponse` for single item queries, or a `DeliveryItemListingResponse` for multiple item queries. You can access the returned content item(s) at `.item` or `.items` respectively.
-
-The `ContentItem` object gives you access to all system elements and content type elements at the `.system` and `.elements` properies. These are dynamic objects, so you can simply type the name of the element you need:
+If you've [secured access](https://developer.kenticocloud.com/docs/securing-public-access "Securing public access") to your project, you need to provide the DeliveryClient with the primary or secondary key:
 
 ```ruby
-response.item.elements.price.value
+Delivery::DeliveryClient.new project_id: '<your-project-id>',
+                             secure_key: '<your-secure-key>'
 ```
 
-The `DeliveryItemListingResponse` also contains a `pagination` attribute to access the [paging](https://developer.kenticocloud.com/v1/reference#listing-response-paging "paging") data for the Delivery query. This object contains the following attributes:
+## Listing items
 
-- **skip**
-- **limit**
-- **count**
-- **next_page**
 
-For example, to access the next page URL you can use:
+Use `.item` or `.items` to create a `Delivery::DeliveryQuery`, then call `.execute` to perform the request.
 
 ```ruby
-delivery_client.items
-    .skip(0)
-    .limit(5)
-    .execute do |response|
-      next_page_url = response.pagination.next_page
-    end
+delivery_client.items.execute do |response|
+  response.items.each do |item|
+    # Do something
+  end
+end
 ```
 
 ### Filtering
@@ -149,6 +141,51 @@ delivery_client.items
     # Do something
   end
 ```
+
+## Responses
+
+All responses from the `.execute` method will be/extend the `Delivery::Responses::ResponseBase` class which contains an `http_code` attribute and a friendly message that can be displayed by calling `.to_s`. You can check the code to determine if the request was successful:
+
+```ruby
+delivery_client.items.execute do |response|
+  case response.http_code
+  when 200
+    # Success!
+  when 401
+    # Did you forget the secure key?
+  else
+    puts response.to_s
+  end
+end
+```
+
+For successful queries, you will get either `DeliveryItemResponse` for single item queries, or `DeliveryItemListingResponse` for multiple item queries. You can access the returned content item(s) at `.item` or `.items` respectively.
+
+The `ContentItem` object gives you access to all system elements and content type elements at the `.system` and `.elements` properies. These are dynamic objects, so you can simply type the name of the element you need:
+
+```ruby
+response.item.elements.price.value
+```
+
+The `DeliveryItemListingResponse` also contains a `pagination` attribute to access the [paging](https://developer.kenticocloud.com/v1/reference#listing-response-paging "paging") data for the Delivery query. This object contains the following attributes:
+
+- **skip**
+- **limit**
+- **count**
+- **next_page**
+
+For example, to access the next page URL you can use:
+
+```ruby
+delivery_client.items
+    .skip(0)
+    .limit(5)
+    .execute do |response|
+      next_page_url = response.pagination.next_page
+    end
+```
+
+You can then request the secure published content in your project. Be sure to not expose the key if the file(s) it appears in are publicly-available.
 
 ## Resolving links
 

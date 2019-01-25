@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    delivery-sdk-ruby (0.5.0)
+    delivery-sdk-ruby (0.6.0)
 
 GEM
   remote: https://rubygems.org/
