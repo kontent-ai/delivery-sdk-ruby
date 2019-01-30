@@ -1,5 +1,5 @@
 
-[![Forums](https://img.shields.io/badge/chat-on%20forums-orange.svg)](https://forums.kenticocloud.com) [![Join the chat at https://kentico-community.slack.com](https://img.shields.io/badge/join-slack-E6186D.svg)](https://kentico-community.slack.com) [![Version](https://img.shields.io/badge/version-0.6.1-green.svg)](https://github.com/Kentico/delivery-sdk-ruby/blob/master/lib/delivery/version.rb)
+[![Forums](https://img.shields.io/badge/chat-on%20forums-orange.svg)](https://forums.kenticocloud.com) [![Join the chat at https://kentico-community.slack.com](https://img.shields.io/badge/join-slack-E6186D.svg)](https://kentico-community.slack.com) [![Version](https://img.shields.io/badge/version-0.7.0-green.svg)](https://github.com/Kentico/delivery-sdk-ruby/blob/master/lib/delivery/version.rb)
 
 # Delivery Ruby SDK
 
@@ -147,7 +147,7 @@ delivery_client.items
   end
 ```
 
-## Responses
+### Responses
 
 All responses from the `.execute` method will be/extend the `Delivery::Responses::ResponseBase` class which contains an `http_code` attribute and a friendly message that can be displayed by calling `.to_s`. You can check the code to determine if the request was successful:
 
@@ -164,7 +164,7 @@ delivery_client.items.execute do |response|
 end
 ```
 
-For successful queries, you will get either `DeliveryItemResponse` for single item queries, or `DeliveryItemListingResponse` for multiple item queries. You can access the returned content item(s) at `.item` or `.items` respectively.
+For successful content item queries, you will get either `DeliveryItemResponse` for single item queries, or `DeliveryItemListingResponse` for multiple item queries. You can access the returned content item(s) at `.item` or `.items` respectively.
 
 The `ContentItem` object gives you access to all system elements and content type elements at the `.system` and `.elements` properies. These are dynamic objects, so you can simply type the name of the element you need:
 
@@ -191,6 +191,33 @@ delivery_client.items
 ```
 
 You can then request the secure published content in your project. Be sure to not expose the key if the file(s) it appears in are publicly-available.
+
+## Retrieving content types
+
+You can use the `.type` and `.types` methods to request your content types from Kentico Cloud:
+
+```ruby
+delivery_client.types.execute do |response|
+  # Do something
+end
+delivery_client.type('coffee').execute do |response|
+  # Do something
+end
+```
+
+### Responses
+
+As with content item queries, all content type queries will return a `Delivery::Responses::ResponseBase` of the class `DeliveryTypeResponse` or `DeliveryTypeListingResponse` for single and multiple type queries, respectively.
+
+For multiple type queries, you can access the array of `ContentType` objects at `.types`, and at `.type` for singe type queries. You can access information about the type(s) dynamically:
+
+```ruby
+delivery_client.type('coffee').execute do |response|
+  field_type = response.type.elements.product_status.type # taxonomy
+end
+```
+
+ The DeliveryTypeListingResponse also contains pagination data, similar to DeliveryItemListingResponse.
 
 ## Resolving links
 
@@ -221,6 +248,15 @@ Then create an object of this class when instantiating the DeliveryClient:
 ```ruby
 delivery_client = Delivery::DeliveryClient.new project_id: '<your-project-id>',
                                 content_link_url_resolver: MyLinkResolver.new
+```
+
+You can pass a `ContentLinkResolver` to the DeliveryQuery instead of the client if you only want to resolve links for that query, or they should be resolved differently:
+
+```ruby
+delivery_client = Delivery::DeliveryClient.new project_id: '<your-project-id>'
+# Client doesn't use ContentLinkResolver, but query below will
+delivery_client.items
+               .with_link_resolver MyLinkResolver.new
 ```
 
 The `ContentLink` object that is passed to your resolver contains the following attributes:

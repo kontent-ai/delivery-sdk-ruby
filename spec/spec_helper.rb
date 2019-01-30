@@ -1,7 +1,5 @@
 require 'bundler/setup'
-require 'delivery/client/delivery_client'
-require 'delivery/query_parameters/filters'
-require 'delivery/resolvers/content_link_resolver'
+require 'delivery-sdk-ruby'
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure

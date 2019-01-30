@@ -49,15 +49,20 @@ end
 
 # DeliveryClient
 RSpec.describe Delivery::DeliveryClient do
+  before(:all) do
+    @dc = Delivery::DeliveryClient.new project_id: PROJECT_ID,
+                                       secure_key: SECURE_KEY,
+                                       preview_key: PREVIEW_KEY
+  end
+
   describe 'secure_key' do
     it 'results in 200 status' do
       insecure = Delivery::DeliveryClient.new project_id: PROJECT_ID
       insecure.items.execute do |response|
         @status1 = response.http_code
       end
-      secure = Delivery::DeliveryClient.new project_id: PROJECT_ID,
-                                            secure_key: SECURE_KEY
-      secure.items.execute do |response|
+
+      @dc.items.execute do |response|
         expect(@status1).to eql(401)
         expect(response.http_code).to eql(200)
       end
@@ -66,18 +71,22 @@ RSpec.describe Delivery::DeliveryClient do
 
   describe 'ctor' do
     it 'enables preview' do
-      dc = Delivery::DeliveryClient.new project_id: PROJECT_ID,
-                                        preview_key: PREVIEW_KEY
-      expect(dc.use_preview).to be true
+      expect(@dc.use_preview).to be true
     end
   end
 
   describe '.items' do
     it 'return 46 items' do
-      dc = Delivery::DeliveryClient.new project_id: PROJECT_ID,
-                                        preview_key: PREVIEW_KEY
-      dc.items.execute do |response|
+      @dc.items.execute do |response|
         expect(response.items.length).to eq(46)
+      end
+    end
+  end
+
+  describe '.types' do
+    it 'returns 13 types' do
+      @dc.types.execute do |response|
+        expect(response.types.length).to eq(13)
       end
     end
   end
@@ -129,19 +138,21 @@ end
 # LinkResolver
 RSpec.describe Delivery::Resolvers::ContentLinkResolver do
   before(:all) do
-    lambda_resolver = Delivery::Resolvers::ContentLinkResolver.new(lambda do |link|
-      return "/coffees/#{link.url_slug}" if link.type == 'coffee'
-      return "/brewers/#{link.url_slug}" if link.type == 'brewer'
-    end)
     @dc = Delivery::DeliveryClient.new project_id: PROJECT_ID,
-                                       content_link_url_resolver: lambda_resolver,
                                        secure_key: SECURE_KEY
   end
 
   describe 'linkresolver' do
     it 'resolves links' do
-      @dc.item('coffee_processing_techniques').depth(0).execute do |response|
-        expect(response.item.get_string 'body_copy').not_to eql(response.item.elements.body_copy.value)
+      lambda_resolver = Delivery::Resolvers::ContentLinkResolver.new(lambda do |link|
+        return "/coffees/#{link.url_slug}" if link.type == 'coffee'
+        return "/brewers/#{link.url_slug}" if link.type == 'brewer'
+      end)
+
+      @dc.item('coffee_processing_techniques')
+         .with_link_resolver(lambda_resolver)
+         .depth(0).execute do |response|
+        expect(response.item.get_string('body_copy')).not_to eql(response.item.elements.body_copy.value)
       end
     end
   end

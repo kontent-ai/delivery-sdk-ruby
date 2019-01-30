@@ -4,6 +4,9 @@ require 'delivery/responses/delivery_item_response'
 require 'json'
 
 module Delivery
+  QUERY_TYPE_TYPES = 'QUERY_TYPE_TYPES'.freeze
+  QUERY_TYPE_ITEMS = 'QUERY_TYPE_ITEMS'.freeze
+  
   # Executes requests against the Kentico Cloud Delivery API.
   class DeliveryClient
     attr_accessor :use_preview
@@ -16,11 +19,25 @@ module Delivery
       self.use_preview = !@preview_key.nil?
     end
 
+    def types
+      DeliveryQuery.new project_id: @project_id,
+                        secure_key: @secure_key,
+                        query_type: QUERY_TYPE_TYPES
+    end
+
+    def type(code_name)
+      DeliveryQuery.new project_id: @project_id,
+                        secure_key: @secure_key,
+                        code_name: code_name,
+                        query_type: QUERY_TYPE_TYPES
+    end
+
     def items(query_parameters = [])
       q = DeliveryQuery.new project_id: @project_id,
                             secure_key: @secure_key,
                             qp: query_parameters,
-                            content_link_url_resolver: @content_link_url_resolver
+                            content_link_url_resolver: @content_link_url_resolver,
+                            query_type: QUERY_TYPE_ITEMS
       q.use_preview = use_preview
       q.preview_key = @preview_key
       q
@@ -31,7 +48,8 @@ module Delivery
                             secure_key: @secure_key,
                             code_name: code_name,
                             qp: query_parameters,
-                            content_link_url_resolver: @content_link_url_resolver
+                            content_link_url_resolver: @content_link_url_resolver,
+                            query_type: QUERY_TYPE_ITEMS
       q.use_preview = use_preview
       q.preview_key = @preview_key
       q

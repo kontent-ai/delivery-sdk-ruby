@@ -16,27 +16,47 @@ module Delivery
 
     class << self
       def provide_url(query)
-        url = provide_base_url(query.project_id, query.use_preview)
-        url +=
-          if query.code_name.nil?
-            URL_TEMPLATE_ITEMS
-          else
-            format(URL_TEMPLATE_ITEM, query.code_name)
-          end
+        url = provide_base_url(query)
+        url += provide_path_part(query)
 
-        # Map each parameter to the result of a method and separate with &
-        url + '?' + query.params.map(&:provide_query_string_parameter).join('&')
+        if query.params.nil?
+          url
+        else
+          # Map each parameter to the result of a method and separate with &
+          url + '?' + query.params.map(&:provide_query_string_parameter).join('&')
+        end
       end
 
       def validate_url(url)
         raise UriFormatException, MSG_LONG_QUERY if url.length > URL_MAX_LENGTH
       end
 
-      def provide_base_url(project_id, use_preview)
-        if use_preview
-          format(URL_TEMPLATE_PREVIEW, project_id)
+      private
+
+      # Returns relative path part of URL depending on query type
+      def provide_path_part(query)
+        case query.query_type
+        when Delivery::QUERY_TYPE_ITEMS
+          if query.code_name.nil?
+            URL_TEMPLATE_ITEMS
+          else
+            format(URL_TEMPLATE_ITEM, query.code_name)
+          end
+        when Delivery::QUERY_TYPE_TYPES
+          if query.code_name.nil?
+            URL_TEMPLATE_TYPES
+          else
+            format(URL_TEMPLATE_TYPE, query.code_name)
+          end
+        end
+      end
+
+      # Returns the protocol and domain with project ID
+      def provide_base_url(query)
+        if query.use_preview
+          format(URL_TEMPLATE_PREVIEW, query.project_id)
         else
-          format(URL_TEMPLATE_BASE, project_id)
+          format(URL_TEMPLATE_BASE, query.project_id)
         end
       end
     end
