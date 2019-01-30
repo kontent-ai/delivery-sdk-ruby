@@ -45,6 +45,19 @@ RSpec.describe Delivery::ContentItem do
          end
     end
   end
+
+  describe '.get_links' do
+    it '.gets 3 ContentItems' do
+      @dc.item('about_us').execute do |response|
+        links = response.item.get_links 'facts'
+        expect(links.length).to eq(3)
+        links.each do |l|
+          expect(l).to be_a Delivery::ContentItem
+          expect(l.system.codename).not_to be_nil
+        end
+      end
+    end
+  end
 end
 
 # DeliveryClient

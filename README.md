@@ -1,5 +1,5 @@
 
-[![Forums](https://img.shields.io/badge/chat-on%20forums-orange.svg)](https://forums.kenticocloud.com) [![Join the chat at https://kentico-community.slack.com](https://img.shields.io/badge/join-slack-E6186D.svg)](https://kentico-community.slack.com) [![Version](https://img.shields.io/badge/version-0.7.0-green.svg)](https://github.com/Kentico/delivery-sdk-ruby/blob/master/lib/delivery/version.rb)
+[![Forums](https://img.shields.io/badge/chat-on%20forums-orange.svg)](https://forums.kenticocloud.com) [![Join the chat at https://kentico-community.slack.com](https://img.shields.io/badge/join-slack-E6186D.svg)](https://kentico-community.slack.com) [![Version](https://img.shields.io/badge/version-0.8.0-green.svg)](https://github.com/Kentico/delivery-sdk-ruby/blob/master/lib/delivery/version.rb)
 
 # Delivery Ruby SDK
 
@@ -169,8 +169,32 @@ For successful content item queries, you will get either `DeliveryItemResponse` 
 The `ContentItem` object gives you access to all system elements and content type elements at the `.system` and `.elements` properies. These are dynamic objects, so you can simply type the name of the element you need:
 
 ```ruby
-response.item.elements.price.value
+price = response.item.elements.price.value
 ```
+
+### Assets
+
+```ruby
+url = response.item.elements.teaser_image.value[0].url
+```
+
+### Linked items
+
+You can get a simple array of code names by accessing the element's value:
+
+```ruby
+links = response.item.elements.facts.value
+```
+
+The `.get_links(element)` method will return an array of ContentItems instead:
+
+```ruby
+response.item.get_links('facts').each do |link|
+  title = link.elements.title.value
+end
+```
+
+### Pagination
 
 The `DeliveryItemListingResponse` also contains a `pagination` attribute to access the [paging](https://developer.kenticocloud.com/v1/reference#listing-response-paging "paging") data for the Delivery query. This object contains the following attributes:
 

@@ -131,7 +131,7 @@ module Delivery
           )
         else
           Delivery::Responses::DeliveryItemResponse.new(
-            JSON.parse(response)['item'],
+            JSON.parse(response),
             content_link_url_resolver
           )
         end

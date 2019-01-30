@@ -22,7 +22,13 @@ module Delivery
     end
 
     def initialize(source, content_link_url_resolver)
-      @source = source
+      @source =
+        if source['item'].nil?
+          source
+        else
+          source['item']
+        end
+      @link_source = source['modular_content']
       self.content_link_url_resolver = content_link_url_resolver
     end
 
@@ -33,6 +39,12 @@ module Delivery
       return content_link_url_resolver.resolve element['value'], element['links'] if should_resolve element
 
       element['value'].to_s
+    end
+
+    def get_links(code_name)
+      element = get_element code_name
+      filtered = @link_source.values.select { |item| element['value'].include?(item['system']['codename']) }
+      filtered.map { |n| ContentItem.new JSON.parse(JSON.generate(n)), content_link_url_resolver }
     end
 
     private
