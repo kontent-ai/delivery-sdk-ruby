@@ -1,5 +1,5 @@
 
-[![Forums](https://img.shields.io/badge/chat-on%20forums-orange.svg)](https://forums.kenticocloud.com) [![Join the chat at https://kentico-community.slack.com](https://img.shields.io/badge/join-slack-E6186D.svg)](https://kentico-community.slack.com) [![Version](https://img.shields.io/badge/version-0.10.0-green.svg)](https://github.com/Kentico/delivery-sdk-ruby/blob/master/lib/delivery/version.rb)
+[![Forums](https://img.shields.io/badge/chat-on%20forums-orange.svg)](https://forums.kenticocloud.com) [![Join the chat at https://kentico-community.slack.com](https://img.shields.io/badge/join-slack-E6186D.svg)](https://kentico-community.slack.com) [![Version](https://img.shields.io/badge/version-0.10.3-green.svg)](https://rubygems.org/gems/delivery-sdk-ruby)
 
 # Delivery Ruby SDK
 
@@ -7,20 +7,10 @@ The Delivery Ruby SDK can be used in Ruby/Rails projects to retrieve content fro
 
 ## Installation
 
-To create the gem, clone this repo and run `rake build`, or download the gem from the /pkg directory. Then install the gem and its dependencies as usual:
+To create the gem locally, you can clone this repo and run `rake build`. Otherwise, you can add the gem to your Gemfile:
 
 ```ruby
-gem install delivery-sdk-ruby-0.6.1.gem
-gem install rest-client
-gem install nokogiri
-```
-
-Or, if you have a Gemfile, you can link the application directly to this repository:
-
-```ruby
-gem 'delivery-sdk-ruby', :git => 'https://github.com/Kentico/delivery-sdk-ruby.git'
-gem 'rest-client'
-gem 'nokogiri'
+gem 'delivery-sdk-ruby'
 ```
 
 Then run `bundle install`. To use the SDK in an `.rb` file, you need to require it:
