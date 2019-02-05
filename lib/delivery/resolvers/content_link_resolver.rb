@@ -3,7 +3,7 @@ require 'nokogiri'
 module Delivery
   module Resolvers
     # Locates <a data-item-id=""> tags in content and calls a user-defined method
-    # to supply the href for content item links 
+    # to supply the href for content item links
     class ContentLinkResolver
       def initialize(callback = nil)
         @callback = callback

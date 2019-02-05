@@ -12,6 +12,7 @@ To create the gem, clone this repo and run `rake build`, or download the gem fro
 ```ruby
 gem install delivery-sdk-ruby-0.6.1.gem
 gem install rest-client
+gem install nokogiri
 ```
 
 Or, if you have a Gemfile, you can link the application directly to this repository:
@@ -19,6 +20,7 @@ Or, if you have a Gemfile, you can link the application directly to this reposit
 ```ruby
 gem 'delivery-sdk-ruby', :git => 'https://github.com/Kentico/delivery-sdk-ruby.git'
 gem 'rest-client'
+gem 'nokogiri'
 ```
 
 Then run `bundle install`. To use the SDK in an `.rb` file, you need to require it:
