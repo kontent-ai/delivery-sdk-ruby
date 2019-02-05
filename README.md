@@ -1,5 +1,5 @@
 
-[![Forums](https://img.shields.io/badge/chat-on%20forums-orange.svg)](https://forums.kenticocloud.com) [![Join the chat at https://kentico-community.slack.com](https://img.shields.io/badge/join-slack-E6186D.svg)](https://kentico-community.slack.com) [![Version](https://img.shields.io/badge/version-0.8.0-green.svg)](https://github.com/Kentico/delivery-sdk-ruby/blob/master/lib/delivery/version.rb)
+[![Forums](https://img.shields.io/badge/chat-on%20forums-orange.svg)](https://forums.kenticocloud.com) [![Join the chat at https://kentico-community.slack.com](https://img.shields.io/badge/join-slack-E6186D.svg)](https://kentico-community.slack.com) [![Version](https://img.shields.io/badge/version-0.9.0-green.svg)](https://github.com/Kentico/delivery-sdk-ruby/blob/master/lib/delivery/version.rb)
 
 # Delivery Ruby SDK
 
@@ -41,7 +41,7 @@ To enable [preview](https://developer.kenticocloud.com/docs/previewing-content-i
 
 ```ruby
 delivery_client = Delivery::DeliveryClient.new project_id: '<your-project-id>',
-  preview_key: '<your-preview-key>'
+                                               preview_key: '<your-preview-key>'
 ```
 
 This enables preview, but you can toggle preview at any time by setting the `use_preview` attribute of DeliveryClient which is propogated to all queries created by the client, _or_ per-query by setting it's `use_preview` attribute:
@@ -174,8 +174,10 @@ price = response.item.elements.price.value
 
 ### Assets
 
+You can use `.get_assets(code_name)` to get one or more assets from the specified element. This method will always return an array, so use `.first` to get the first asset:
+
 ```ruby
-url = response.item.elements.teaser_image.value[0].url
+url = response.item.get_assets('teaser_image').first.url
 ```
 
 ### Linked items
@@ -253,7 +255,7 @@ link_resolver = Delivery::Resolvers::ContentLinkResolver.new(lambda do |link|
   return "/brewers/#{link.url_slug}" if link.type == 'brewer'
 end)
 delivery_client = Delivery::DeliveryClient.new project_id: '<your-project-id>',
-                                content_link_url_resolver: link_resolver
+                                               content_link_url_resolver: link_resolver
 ```
 
 You can also build the logic for your resolver in a separate class and register an instance of that class in the DeliveryClient. The class must extend `Delivery::Resolvers::ContentLinkResolver` and contain a `resolve_link(link)` method. For example, you can create `MyLinkResolver.rb`:
@@ -271,7 +273,7 @@ Then create an object of this class when instantiating the DeliveryClient:
 
 ```ruby
 delivery_client = Delivery::DeliveryClient.new project_id: '<your-project-id>',
-                                content_link_url_resolver: MyLinkResolver.new
+                                               content_link_url_resolver: MyLinkResolver.new
 ```
 
 You can pass a `ContentLinkResolver` to the DeliveryQuery instead of the client if you only want to resolve links for that query, or they should be resolved differently:
@@ -298,7 +300,7 @@ lambda_resolver = Delivery::Resolvers::ContentLinkResolver.new(lambda do |link|
   return "/brewers/#{link.url_slug}" if link.type == 'brewer'
 end)
 delivery_client = Delivery::DeliveryClient.new project_id: '<your-project-id>',
-                                content_link_url_resolver: lambda_resolver
+                                               content_link_url_resolver: lambda_resolver
 delivery_client.item('coffee_processing_techniques').execute do |response|
   text = response.item.get_string 'body_copy'
 end

@@ -41,6 +41,14 @@ module Delivery
       element['value'].to_s
     end
 
+    # Returns an array of assets inserted into the specified element
+    def get_assets(code_name)
+      element = get_element code_name
+      element['value'].map { |n| OpenStruct.new(n) }
+    end
+
+    # Returns an array of ContentItems by comparing code names stored in the
+    # element with items from request's link_source
     def get_links(code_name)
       element = get_element code_name
       filtered = @link_source.values.select { |item| element['value'].include?(item['system']['codename']) }

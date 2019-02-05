@@ -46,6 +46,14 @@ RSpec.describe Delivery::ContentItem do
     end
   end
 
+  describe '.get_asset' do
+    it 'returns a URL' do
+      @dc.item('aeropress_filters').execute do |response|
+        expect(response.item.get_assets('image').first.url).to be_a String
+      end
+    end
+  end
+
   describe '.get_links' do
     it '.gets 3 ContentItems' do
       @dc.item('about_us').execute do |response|

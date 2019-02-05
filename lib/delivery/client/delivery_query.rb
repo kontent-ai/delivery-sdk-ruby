@@ -5,6 +5,12 @@ module Delivery
   # Responsible for translating query parameters into the
   # corresponding REST request to Kentico Cloud.
   class DeliveryQuery
+    ERROR_PREVIEW = 'Preview is enabled for the query, but the key is null. '\
+                    'You can set the preview_key attribute of the query, or '\
+                    'when you initialize the client. See '\
+                    'https://github.com/Kentico/delivery-sdk-ruby#previewing-unpublished-content'.freeze
+    ERROR_PARAMS = 'Only filters may be passed in the .item or .items methods'\
+                    '. See https://github.com/Kentico/delivery-sdk-ruby#filtering'.freeze
     attr_accessor :use_preview,
                   :preview_key,
                   :project_id,
@@ -98,7 +104,7 @@ module Delivery
                     end
       params.each do |p|
         unless p.is_a? Delivery::QueryParameters::Filter
-          raise ArgumentError, 'Only filters may be passed in the .item or .items methods.'
+          raise ArgumentError, ERROR_PARAMS
         end
       end
     end
@@ -109,8 +115,16 @@ module Delivery
       params << Delivery::QueryParameters::ParameterBase.new(key, '', value)
     end
 
+    # Returns true if this query should use preview mode. Raises an error if
+    # preview is enabled, but the key is nil
+    def should_preview
+      raise ERROR_PREVIEW if use_preview && preview_key.nil?
+
+      use_preview && !preview_key.nil?
+    end
+
     def execute_rest
-      if use_preview
+      if should_preview
         RestClient.get @url, Authorization: 'Bearer ' + preview_key
       else
         if secure_key.nil?
