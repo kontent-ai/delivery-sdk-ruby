@@ -173,8 +173,8 @@ RSpec.describe Delivery::Resolvers::ContentLinkResolver do
       @dc.item('coffee_processing_techniques')
          .with_link_resolver(lambda_resolver)
          .depth(0).execute do |response|
-        expect(response.item.get_string('body_copy')).not_to eql(response.item.elements.body_copy.value)
-      end
+           expect(response.item.get_string('body_copy')).not_to eql(response.item.elements.body_copy.value)
+         end
     end
   end
 

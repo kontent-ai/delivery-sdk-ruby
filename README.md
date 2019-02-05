@@ -1,5 +1,5 @@
 
-[![Forums](https://img.shields.io/badge/chat-on%20forums-orange.svg)](https://forums.kenticocloud.com) [![Join the chat at https://kentico-community.slack.com](https://img.shields.io/badge/join-slack-E6186D.svg)](https://kentico-community.slack.com) [![Version](https://img.shields.io/badge/version-0.9.0-green.svg)](https://github.com/Kentico/delivery-sdk-ruby/blob/master/lib/delivery/version.rb)
+[![Forums](https://img.shields.io/badge/chat-on%20forums-orange.svg)](https://forums.kenticocloud.com) [![Join the chat at https://kentico-community.slack.com](https://img.shields.io/badge/join-slack-E6186D.svg)](https://kentico-community.slack.com) [![Version](https://img.shields.io/badge/version-0.10.0-green.svg)](https://github.com/Kentico/delivery-sdk-ruby/blob/master/lib/delivery/version.rb)
 
 # Delivery Ruby SDK
 

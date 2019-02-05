@@ -1,4 +1,5 @@
 require 'ostruct'
+require 'nokogiri'
 
 module Delivery
   # JSON data of a content item parsed as OpenStruct objects for dynamic use
@@ -34,7 +35,7 @@ module Delivery
 
     def get_string(code_name)
       element = get_element code_name
-
+      
       # Resolve content links if there are any and we have a resolver
       return content_link_url_resolver.resolve element['value'], element['links'] if should_resolve element
 

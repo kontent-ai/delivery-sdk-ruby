@@ -1,47 +1,49 @@
+require 'nokogiri'
+
 module Delivery
   module Resolvers
     # Locates <a data-item-id=""> tags in content and calls a user-defined method
     # to supply the href for content item links 
     class ContentLinkResolver
-      LINK_REGEX = /<a[^>]+?data-item-id=\"(?<id>[^\"]+)\"[^>]*>/.freeze
-      NEEDLE = 'href=""'.freeze
-
       def initialize(callback = nil)
         @callback = callback
       end
 
       # Resolves all links in the content
+      # @param [String] content The string value stored in the element
+      # @param [Array] links The collection of source links from the JSON response
       def resolve(content, links)
-        links.map { |link| ContentLink.new link }.each do |content_link|
-          url =
-            if @callback.nil?
-              resolve_link content_link
-            else
-              @callback.call content_link
-            end
-          url = '' if url.nil?
-          content = replace(content, content_link, url)
-        end
-        content
+        doc = Nokogiri::HTML.parse(content).xpath('//body')
+        links = links.map { |link| ContentLink.new link }
+        tags = doc.xpath('//a[@data-item-id]')
+        # This line performs the link resolving and replaces the tags in doc
+        tags.map { |tag| resolve_tag tag, links }
+        doc.inner_html
       end
 
       private
 
-      # Inserts the url into the <a> tag
-      def replace(content, content_link, url)
-        # Find all <a data-item-id> tags in content
-        matchdatas = content.to_enum(:scan, LINK_REGEX).map { Regexp.last_match }
-        # Find the <a> tag that contains a matching id
-        converted = matchdatas.select { |data| data['id'] == content_link.id }.map do |match|
-          # Find and insert url into the href of the <a> tag
-          haystack = match.to_s
-          index = haystack.index NEEDLE
-          return haystack if index.nil?
+      # Accepts a tag found in the content and tries to locate matching
+      # source link from JSON response. If found, resolves URL and returns
+      # the tag with generated HREF
+      def resolve_tag(tag, links)
+        matches = links.select { |link| link.id == tag['data-item-id'].to_s }
+        url = provide_url matches
+        tag['href'] = url
+        tag
+      end
 
-          haystack.insert(index + 6, url)
+      # Returns a url if a link was found in source links, otherwise returns 404
+      def provide_url(matches)
+        if !matches.empty?
+          if @callback.nil?
+            resolve_link matches[0]
+          else
+            @callback.call matches[0]
+          end
+        else
+          '/404'
         end
-        # Replace original text with converted text
-        content.gsub(/<a[^>]+?data-item-id=\"#{content_link.id}\"[^>]*>/, converted[0])
       end
     end
 
