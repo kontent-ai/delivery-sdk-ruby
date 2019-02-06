@@ -1,9 +1,9 @@
 PATH
   remote: .
   specs:
-    delivery-sdk-ruby (0.10.3)
-      nokogiri (~> 1.10.0)
-      rest-client (~> 2.0.2)
+    delivery-sdk-ruby (0.10.4)
+      nokogiri (~> 1.10.0, >= 1.8.4)
+      rest-client (~> 2.0.2, >= 2.0.2)
 
 GEM
   remote: https://rubygems.org/
