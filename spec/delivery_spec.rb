@@ -1,6 +1,10 @@
-PROJECT_ID = '<redacted>'.freeze
-PREVIEW_KEY = '<redacted>'.freeze
-SECURE_KEY = '<redacted>'.freeze
+# PROJECT_ID = '<redacted>'.freeze
+# PREVIEW_KEY = '<redacted>'.freeze
+# SECURE_KEY = '<redacted>'.freeze
+PROJECT_ID = 'c9ccf90d-fd24-00ed-98a1-f8f93c26b1ac'.freeze
+SECURE_KEY = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJmMDliM2U0NTAyZmQ0MDg4OTcwYzQxZmE1ZGFiY2JmOCIsImlhdCI6IjE1NDgzNTIxMDMiLCJleHAiOiIxODkzOTUyMTAzIiwicHJvamVjdF9pZCI6ImM5Y2NmOTBkZmQyNDAwZWQ5OGExZjhmOTNjMjZiMWFjIiwidmVyIjoiMS4wLjAiLCJhdWQiOiJkZWxpdmVyLmtlbnRpY29jbG91ZC5jb20ifQ.eiujVvQEOl0uqzcqi9lpuQGxZIoDXQ99Iql5y4kTOmk'.freeze 
+PREVIEW_KEY = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI0MDU5ODk0NjNkYzY0NWYzYTE5NWM0NjNlZGZlOGQ1YiIsImlhdCI6IjE1NDgxODI4MDYiLCJleHAiOiIxODkzNzgyODA2IiwicHJvamVjdF9pZCI6ImM5Y2NmOTBkZmQyNDAwZWQ5OGExZjhmOTNjMjZiMWFjIiwidmVyIjoiMS4wLjAiLCJhdWQiOiJwcmV2aWV3LmRlbGl2ZXIua2VudGljb2Nsb3VkLmNvbSJ9.gi2ZiBJoFmFqVfFgABlPBI8JvY3AGPI99IAT8p_Hooo'.freeze
+
 
 # DeliveryQuery
 RSpec.describe Delivery::DeliveryQuery do
