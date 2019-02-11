@@ -243,8 +243,8 @@ If a rich text element contains links to other content items, you will need to g
 
 ```ruby
 link_resolver = Delivery::Resolvers::ContentLinkResolver.new(lambda do |link|
-  return "/coffees/#{link.url_slug}" if link.type == 'coffee'
-  return "/brewers/#{link.url_slug}" if link.type == 'brewer'
+  return "/coffees/#{link.url_slug}" if link.type.eql? 'coffee'
+  return "/brewers/#{link.url_slug}" if link.type.eql? 'brewer'
 end)
 delivery_client = Delivery::DeliveryClient.new project_id: '<your-project-id>',
                                                content_link_url_resolver: link_resolver
@@ -255,8 +255,8 @@ You can also build the logic for your resolver in a separate class and register 
 ```ruby
 class MyLinkResolver < Delivery::Resolvers::ContentLinkResolver
   def resolve_link(link)
-    return "/coffees/#{link.url_slug}" if link.type == 'coffee'
-    return "/brewers/#{link.url_slug}" if link.type == 'brewer'
+    return "/coffees/#{link.url_slug}" if link.type.eql? 'coffee'
+    return "/brewers/#{link.url_slug}" if link.type.eql? 'brewer'
   end
 end
 ```
@@ -287,15 +287,48 @@ The `ContentLink` object that is passed to your resolver contains the following 
 To resolve links in rich text elements, you must retrieve the text using `get_string`:
 
 ```ruby
-lambda_resolver = Delivery::Resolvers::ContentLinkResolver.new(lambda do |link|
-  return "/coffees/#{link.url_slug}" if link.type == 'coffee'
-  return "/brewers/#{link.url_slug}" if link.type == 'brewer'
+item_resolver = Delivery::Resolvers::ContentLinkResolver.new(lambda do |link|
+  return "/coffees/#{link.url_slug}" if link.type.eql? 'coffee'
+  return "/brewers/#{link.url_slug}" if link.type.eql? 'brewer'
 end)
 delivery_client = Delivery::DeliveryClient.new project_id: '<your-project-id>',
-                                               content_link_url_resolver: lambda_resolver
+                                               content_link_url_resolver: item_resolver
 delivery_client.item('coffee_processing_techniques').execute do |response|
   text = response.item.get_string 'body_copy'
 end
+```
+
+## Resolving inline content
+
+Existing content items can be inserted into a rich text element, or you can create new content items as components. You need to resolve these in your application just as with content links. You can register a resolver when you instantiate the client by passing it with the hash key `inline_content_item_resolver`:
+
+```ruby
+item_resolver = Delivery::Resolvers::InlineContentItemResolver.new(lambda do |item|
+      return "<h1>#{item.elements.zip_code.value}</h1>" if item.system.type.eql? 'cafe'
+      return "<div>$#{item.elements.price.value}</div>" if item.system.type.eql? 'brewer'
+    end)
+delivery_client = Delivery::DeliveryClient.new project_id: '<your-project-id>',
+                                               inline_content_item_resolver: item_resolver
+```
+
+The object passed to the resolving method is a complete ContentItem. Similar to content link resolvers, you can create your own class which extends `Delivery::Resolvers::InlineContentItemResolver` and implements the `resolve_item` method:
+
+```ruby
+class MyItemResolver < Delivery::Resolvers::InlineContentItemResolver
+  def resolve_item(item)
+    return "<h1>#{item.elements.zip_code.value}</h1>" if item.system.type.eql? 'cafe'
+    return "<div>$#{item.elements.price.value}</div>" if item.system.type.eql? 'brewer'
+  end
+end
+```
+
+You can also set the inline content resolver per-query:
+
+```ruby
+delivery_client = Delivery::DeliveryClient.new project_id: '<your-project-id>'
+# Client doesn't use InlineContentItemResolver, but query below will
+delivery_client.items
+               .with_inline_content_item_resolver MyItemResolver.new
 ```
 
 ## Feedback & Contributing

@@ -18,6 +18,7 @@ module Delivery
                   :params,
                   :secure_key,
                   :content_link_url_resolver,
+                  :inline_content_item_resolver,
                   :query_type
 
     # Setter for url, returns self for chaining
@@ -57,6 +58,11 @@ module Delivery
 
     def with_link_resolver(resolver)
       self.content_link_url_resolver = resolver
+      self
+    end
+
+    def with_inline_content_item_resolver(resolver)
+      self.inline_content_item_resolver = resolver
       self
     end
 
@@ -141,12 +147,14 @@ module Delivery
         if code_name.nil?
           Delivery::Responses::DeliveryItemListingResponse.new(
             JSON.parse(response),
-            content_link_url_resolver
+            content_link_url_resolver,
+            inline_content_item_resolver
           )
         else
           Delivery::Responses::DeliveryItemResponse.new(
             JSON.parse(response),
-            content_link_url_resolver
+            content_link_url_resolver,
+            inline_content_item_resolver
           )
         end
       when Delivery::QUERY_TYPE_TYPES

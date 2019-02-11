@@ -17,15 +17,17 @@ module Delivery
         @response['items'].each do |n|
           items << Delivery::ContentItem.new(
             n,
-            @content_link_url_resolver
+            @content_link_url_resolver,
+            @inline_content_item_resolver
           )
         end
         @items = items
       end
 
-      def initialize(response, content_link_url_resolver)
+      def initialize(response, content_link_url_resolver, inline_content_item_resolver)
         @response = response
         @content_link_url_resolver = content_link_url_resolver
+        @inline_content_item_resolver = inline_content_item_resolver
         super 200, "Success, #{items.length} items returned"
       end
     end

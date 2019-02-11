@@ -1,10 +1,6 @@
-# PROJECT_ID = '<redacted>'.freeze
-# PREVIEW_KEY = '<redacted>'.freeze
-# SECURE_KEY = '<redacted>'.freeze
-PROJECT_ID = 'c9ccf90d-fd24-00ed-98a1-f8f93c26b1ac'.freeze
-SECURE_KEY = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJmMDliM2U0NTAyZmQ0MDg4OTcwYzQxZmE1ZGFiY2JmOCIsImlhdCI6IjE1NDgzNTIxMDMiLCJleHAiOiIxODkzOTUyMTAzIiwicHJvamVjdF9pZCI6ImM5Y2NmOTBkZmQyNDAwZWQ5OGExZjhmOTNjMjZiMWFjIiwidmVyIjoiMS4wLjAiLCJhdWQiOiJkZWxpdmVyLmtlbnRpY29jbG91ZC5jb20ifQ.eiujVvQEOl0uqzcqi9lpuQGxZIoDXQ99Iql5y4kTOmk'.freeze 
-PREVIEW_KEY = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI0MDU5ODk0NjNkYzY0NWYzYTE5NWM0NjNlZGZlOGQ1YiIsImlhdCI6IjE1NDgxODI4MDYiLCJleHAiOiIxODkzNzgyODA2IiwicHJvamVjdF9pZCI6ImM5Y2NmOTBkZmQyNDAwZWQ5OGExZjhmOTNjMjZiMWFjIiwidmVyIjoiMS4wLjAiLCJhdWQiOiJwcmV2aWV3LmRlbGl2ZXIua2VudGljb2Nsb3VkLmNvbSJ9.gi2ZiBJoFmFqVfFgABlPBI8JvY3AGPI99IAT8p_Hooo'.freeze
-
+PROJECT_ID = '<redacted>'.freeze
+PREVIEW_KEY = '<redacted>'.freeze
+SECURE_KEY = '<redacted>'.freeze
 
 # DeliveryQuery
 RSpec.describe Delivery::DeliveryQuery do
@@ -160,18 +156,18 @@ RSpec.describe Delivery::QueryParameters::ParameterBase do
   end
 end
 
-# LinkResolver
+# ContentLinkResolver
 RSpec.describe Delivery::Resolvers::ContentLinkResolver do
   before(:all) do
     @dc = Delivery::DeliveryClient.new project_id: PROJECT_ID,
                                        secure_key: SECURE_KEY
   end
 
-  describe 'linkresolver' do
+  describe 'get_string' do
     it 'resolves links' do
       lambda_resolver = Delivery::Resolvers::ContentLinkResolver.new(lambda do |link|
-        return "/coffees/#{link.url_slug}" if link.type == 'coffee'
-        return "/brewers/#{link.url_slug}" if link.type == 'brewer'
+        return "/coffees/#{link.url_slug}" if link.type.eql? 'coffee'
+        return "/brewers/#{link.url_slug}" if link.type.eql? 'brewer'
       end)
 
       @dc.item('coffee_processing_techniques')
@@ -185,8 +181,38 @@ RSpec.describe Delivery::Resolvers::ContentLinkResolver do
   # Example of creating a link resolver in a class instead of lambda expression
   class MyResolver < Delivery::Resolvers::ContentLinkResolver
     def resolve_link(link)
-      return "/coffees/#{link.url_slug}" if link.type == 'coffee'
-      return "/brewers/#{link.url_slug}" if link.type == 'brewer'
+      return "/coffees/#{link.url_slug}" if link.type.eql? 'coffee'
+      return "/brewers/#{link.url_slug}" if link.type.eql? 'brewer'
+    end
+  end
+end
+
+# InlineContentItemResolver
+RSpec.describe Delivery::Resolvers::InlineContentItemResolver do
+  before(:all) do
+    lambda_resolver = Delivery::Resolvers::InlineContentItemResolver.new(lambda do |item|
+      return "<h1>#{item.elements.zip_code.value}</h1>" if item.system.type.eql? 'cafe'
+      return "<div>$#{item.elements.price.value}</div>" if item.system.type.eql? 'brewer'
+    end)
+    @dc = Delivery::DeliveryClient.new project_id: PROJECT_ID,
+                                       preview_key: PREVIEW_KEY,
+                                       inline_content_item_resolver: lambda_resolver
+  end
+
+  describe 'get_string' do
+    it 'resolves inline items' do
+      # A content link was manually added to this item
+      @dc.item('where_does_coffee_come_from__a9bfc04').execute do |response|
+        expect(response.item.get_string('body_copy')).not_to eql(response.item.elements.body_copy.value)
+      end
+    end
+  end
+
+  # Example of creating an item resolver in a class instead of lambda expression
+  class MyResolver2 < Delivery::Resolvers::InlineContentItemResolver
+    def resolve_item(item)
+      return "<h1>#{item.elements.zip_code.value}</h1>" if item.system.type.eql? 'cafe'
+      return "<div>$#{item.elements.price.value}</div>" if item.system.type.eql? 'brewer'
     end
   end
 end

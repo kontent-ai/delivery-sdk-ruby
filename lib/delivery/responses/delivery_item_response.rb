@@ -7,12 +7,13 @@ module Delivery
     class DeliveryItemResponse < ResponseBase
       def item
         @item unless @item.nil?
-        @item = Delivery::ContentItem.new(@response, @content_link_url_resolver)
+        @item = Delivery::ContentItem.new(@response, @content_link_url_resolver, @inline_content_item_resolver)
       end
 
-      def initialize(response, content_link_url_resolver)
+      def initialize(response, content_link_url_resolver, inline_content_item_resolver)
         @response = response
         @content_link_url_resolver = content_link_url_resolver
+        @inline_content_item_resolver = inline_content_item_resolver
         super 200, "Success, '#{item.system.code_name}' returned"
       end
     end

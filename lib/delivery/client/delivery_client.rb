@@ -16,6 +16,7 @@ module Delivery
       @preview_key = config.fetch(:preview_key, nil)
       @secure_key = config.fetch(:secure_key, nil)
       @content_link_url_resolver = config.fetch(:content_link_url_resolver, nil)
+      @inline_content_item_resolver = config.fetch(:inline_content_item_resolver, nil)
       self.use_preview = !@preview_key.nil?
     end
 
@@ -37,6 +38,7 @@ module Delivery
                             secure_key: @secure_key,
                             qp: query_parameters,
                             content_link_url_resolver: @content_link_url_resolver,
+                            inline_content_item_resolver: @inline_content_item_resolver,
                             query_type: QUERY_TYPE_ITEMS
       q.use_preview = use_preview
       q.preview_key = @preview_key
@@ -49,6 +51,7 @@ module Delivery
                             code_name: code_name,
                             qp: query_parameters,
                             content_link_url_resolver: @content_link_url_resolver,
+                            inline_content_item_resolver: @inline_content_item_resolver,
                             query_type: QUERY_TYPE_ITEMS
       q.use_preview = use_preview
       q.preview_key = @preview_key

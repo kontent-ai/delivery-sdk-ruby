@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    delivery-sdk-ruby (0.10.4)
+    delivery-sdk-ruby (0.11.0)
       nokogiri (~> 1.10.0, >= 1.8.4)
       rest-client (~> 2.0.2, >= 2.0.2)
 
@@ -50,9 +50,7 @@ PLATFORMS
 DEPENDENCIES
   bundler (~> 2.0)
   delivery-sdk-ruby!
-  nokogiri (~> 1.10.0)
   rake (~> 10.0)
-  rest-client (~> 2.0.2)
   rspec (~> 3.0)
 
 BUNDLED WITH
