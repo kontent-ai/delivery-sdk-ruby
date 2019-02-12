@@ -5,12 +5,19 @@ SECURE_KEY = '<redacted>'.freeze
 # DeliveryQuery
 RSpec.describe Delivery::DeliveryQuery do
   before(:all) do
-    @dc = Delivery::DeliveryClient.new project_id: PROJECT_ID
+    @dc = Delivery::DeliveryClient.new project_id: PROJECT_ID,
+                                       secure_key: SECURE_KEY
   end
 
   describe '.items' do
     it 'returns DeliveryQuery' do
       expect(@dc.items).to be_a Delivery::DeliveryQuery
+    end
+  end
+
+  describe '.execute' do
+    it 'returns a ResponseBase' do
+      expect(@dc.items.execute).to be_a Delivery::Responses::ResponseBase
     end
   end
 end

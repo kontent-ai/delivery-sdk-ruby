@@ -72,6 +72,12 @@ delivery_client.items.execute do |response|
 end
 ```
 
+You can also execute the query without a block and just get the response:
+
+```ruby
+response = delivery_client.items.execute
+```
+
 ### Filtering
 
 You can use [filtering](https://developer.kenticocloud.com/v1/reference#content-filtering "filtering") to retrieve particular items. The filtering methods are applied directly to a string and the available methods are:

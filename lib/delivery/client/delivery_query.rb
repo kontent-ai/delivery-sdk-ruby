@@ -46,13 +46,16 @@ module Delivery
       begin
         resp = execute_rest
       rescue RestClient::ExceptionWithResponse => err
-        yield Delivery::Responses::ResponseBase.new err.http_code, err.response
+        resp = Delivery::Responses::ResponseBase.new err.http_code, err.response
       rescue RestClient::SSLCertificateNotVerified => err
-        yield Delivery::Responses::ResponseBase.new 500, err
+        resp = Delivery::Responses::ResponseBase.new 500, err
       rescue SocketError => err
-        yield Delivery::Responses::ResponseBase.new 500, err.message
+        resp = Delivery::Responses::ResponseBase.new 500, err.message
       else
-        yield make_response resp
+        resp = make_response resp
+      ensure
+        yield resp if block_given?
+        resp
       end
     end
 
