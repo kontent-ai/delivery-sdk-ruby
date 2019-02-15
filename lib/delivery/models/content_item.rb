@@ -23,14 +23,21 @@ module Delivery
       )
     end
 
-    def initialize(source, content_link_url_resolver, inline_content_item_resolver)
+    def initialize(source, content_link_url_resolver, inline_content_item_resolver, modular_content = nil)
       @source =
         if source['item'].nil?
           source
         else
           source['item']
         end
-      @modular_content = source['modular_content']
+      # Multiple item responses have modular_content on the root, single item
+      # responses have modular content in the item
+      @modular_content =
+        if modular_content.nil?
+          source['modular_content']
+        else
+          modular_content
+        end
       self.content_link_url_resolver = content_link_url_resolver
       self.inline_content_item_resolver = inline_content_item_resolver
     end

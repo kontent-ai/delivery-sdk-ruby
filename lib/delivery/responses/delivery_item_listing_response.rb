@@ -18,7 +18,8 @@ module Delivery
           items << Delivery::ContentItem.new(
             n,
             @content_link_url_resolver,
-            @inline_content_item_resolver
+            @inline_content_item_resolver,
+            @response['modular_content']
           )
         end
         @items = items
@@ -28,7 +29,10 @@ module Delivery
         @response = response
         @content_link_url_resolver = content_link_url_resolver
         @inline_content_item_resolver = inline_content_item_resolver
-        super 200, "Success, #{items.length} items returned"
+        super 200,
+          "Success,
+          #{items.length} items returned",
+          JSON.generate(@response)
       end
     end
   end

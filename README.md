@@ -162,6 +162,8 @@ delivery_client.items.execute do |response|
 end
 ```
 
+You can also view the raw JSON response of the the query using the `.json` attribute.
+
 For successful content item queries, you will get either `DeliveryItemResponse` for single item queries, or `DeliveryItemListingResponse` for multiple item queries. You can access the returned content item(s) at `.item` or `.items` respectively.
 
 The `ContentItem` object gives you access to all system elements and content type elements at the `.system` and `.elements` properies. These are dynamic objects, so you can simply type the name of the element you need:
