@@ -64,7 +64,7 @@ module Delivery
     # element with items from request's modular_content
     def get_links(code_name)
       element = get_element code_name
-      filtered = @modular_content.values.select { |item| element['value'].include?(item['system']['codename']) }
+      filtered = filter_modular_content element['value']
       filtered.map { |n| ContentItem.new JSON.parse(JSON.generate(n)), content_link_url_resolver, inline_content_item_resolver }
     end
 
@@ -72,7 +72,7 @@ module Delivery
     # modular_content object with items from request's modular_content
     def get_inline_items(code_name)
       element = get_element code_name
-      filtered = @modular_content.values.select { |item| element['modular_content'].include?(item['system']['codename']) }
+      filtered = filter_modular_content element['modular_content']
       filtered.map { |n| ContentItem.new JSON.parse(JSON.generate(n)), content_link_url_resolver, inline_content_item_resolver }
     end
 
@@ -91,6 +91,15 @@ module Delivery
       raise ArgumentError, "Argument 'code_name' is not a string" unless code_name.is_a? String
 
       @source['elements'][code_name]
+    end
+
+    def filter_modular_content(codenames)
+      return [] unless codenames.class == Array
+
+      codenames.each_with_object([]) do |codename, items|
+        item = @modular_content.values.find { |i| i['system']['codename'] == codename }
+        items << item if item
+      end
     end
   end
 end
