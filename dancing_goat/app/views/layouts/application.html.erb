@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Dancing Goat</title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+  </head>
+
+  <body>
+    <%= yield %>
+    <%= content_for :render_async %>
+  </body>
+</html>

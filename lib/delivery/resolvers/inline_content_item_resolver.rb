@@ -17,11 +17,12 @@ module Delivery
         tags = doc.xpath('//object[@type="application/kenticocloud"][@data-type="item"]')
         tags.each do |tag|
           output = resolve_tag tag, inline_items
-          doc.at_xpath('//object[@type="application/kenticocloud"][@data-type="item"][@data-codename=$value]',
-                        nil,
-                        :value => tag['data-codename']
-                      )
-             .swap(output)
+          el = doc.at_xpath(
+            '//object[@type="application/kenticocloud"][@data-type="item"][@data-codename=$value]',
+            nil,
+            value: tag['data-codename']
+          )
+          el.swap(output) unless output.nil?
         end
         doc.inner_html
       end
@@ -42,8 +43,6 @@ module Delivery
           else
             @callback.call matches[0]
           end
-        else
-          '/404'
         end
       end
     end

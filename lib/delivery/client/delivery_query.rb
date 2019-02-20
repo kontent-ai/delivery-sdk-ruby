@@ -1,5 +1,6 @@
 require 'rest-client'
-require 'delivery/client/url_provider'
+require 'delivery/builders/url_builder'
+require 'delivery/query_parameters/query_string'
 
 module Delivery
   # Responsible for translating query parameters into the
@@ -15,11 +16,11 @@ module Delivery
                   :preview_key,
                   :project_id,
                   :code_name,
-                  :params,
                   :secure_key,
                   :content_link_url_resolver,
                   :inline_content_item_resolver,
-                  :query_type
+                  :query_type,
+                  :query_string
 
     # Setter for url, returns self for chaining
     # .url represents *manually* configured urls, otherwise final url is
@@ -35,6 +36,7 @@ module Delivery
       config.each do |k, v|
         instance_variable_set("@#{k}", v) unless v.nil?
       end
+      self.query_string = Delivery::QueryParameters::QueryString.new
       return if config.fetch(:qp, nil).nil?
 
       # Query parameters were passed, parse and validate
@@ -70,58 +72,53 @@ module Delivery
     end
 
     def order_by(value, sort = '[asc]')
-      set_param('order', value + sort)
+      query_string.set_param('order', value + sort)
       self
     end
 
     def skip(value)
-      set_param('skip', value)
+      query_string.set_param('skip', value)
       self
     end
 
     def language(value)
-      set_param('language', value)
+      query_string.set_param('language', value)
     end
 
     def limit(value)
-      set_param('limit', value)
+      query_string.set_param('limit', value)
       self
     end
 
     def elements(value)
-      set_param('elements', value)
+      query_string.set_param('elements', value)
       self
     end
 
     def depth(value)
-      set_param('depth', value)
+      query_string.set_param('depth', value)
       self
     end
 
     private
 
     def provide_url
-      @url = Delivery::UrlProvider.provide_url self if @url.nil?
-      Delivery::UrlProvider.validate_url @url
+      @url = Delivery::Builders::UrlBuilder.provide_url self if @url.nil?
+      Delivery::Builders::UrlBuilder.validate_url @url
     end
 
     def validate_params(query_parameters)
-      self.params = if query_parameters.is_a? Array
-                      query_parameters
-                    else
-                      [query_parameters]
-                    end
+      params = if query_parameters.is_a? Array
+                 query_parameters
+               else
+                 [query_parameters]
+               end
       params.each do |p|
+        query_string.set_param p
         unless p.is_a? Delivery::QueryParameters::Filter
           raise ArgumentError, ERROR_PARAMS
         end
       end
-    end
-
-    def set_param(key, value)
-      self.params = [] if params.nil?
-      remove_existing_param key
-      params << Delivery::QueryParameters::ParameterBase.new(key, '', value)
     end
 
     # Returns true if this query should use preview mode. Raises an error if
@@ -167,11 +164,6 @@ module Delivery
           Delivery::Responses::DeliveryTypeResponse.new JSON.parse(response)
         end
       end
-    end
-
-    # Remove existing parameter from @params if key exists
-    def remove_existing_param(key)
-      params.delete_if { |i| i.key.eql? key } unless params.nil?
     end
   end
 end

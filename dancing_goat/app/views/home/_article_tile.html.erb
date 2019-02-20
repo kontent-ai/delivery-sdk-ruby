@@ -1,0 +1,8 @@
+<a style="color:black" href="/article/<%= article.system.codename %>">
+    <div style="background-color:#eee;float:left;padding:10px;width:300px;height:400px;margin-bottom:20px;margin-right:20px;display:inline-block">
+        <span style="font-weight:bold;font-size:1.3em"><%= article.elements.title.value %></span>
+        <br><span style="color:#888"><%= DateTime.parse(article.elements.post_date.value).strftime("%A, %B %e, %Y") %></span>
+        <br/><br/><img src=<%= article.get_assets('teaser_image').first.url %> style="width:100%" />
+        <br/><span><%= article.elements.summary.value %></span>
+    </div>
+</a>
