@@ -357,6 +357,33 @@ delivery_client.items
                .with_inline_content_item_resolver MyItemResolver.new
 ```
 
+## Image transformation
+
+When you've obtained the URL for an asset, you can use our [Image Transformation API](https://developer.kenticocloud.com/v1/reference#image-transformation) to make on-the-fly modifications to the image. To do this, use the static `.transform` method of `Delivery::Builders::ImageTransformationBuilder`, then call the transformation methods. When you're done, call the `.url` method to get the new URL:
+
+```ruby
+url = response.item.get_assets('teaser_image').first.url
+url = Delivery::Builders::ImageTransformationBuilder.transform(url)
+                                                    # methods...
+                                                    .url
+```
+
+The available methods are:
+
+|Method|Possible values|REST example
+|--|--|--|
+|`.with_width`| positive integer, or float between 0 and 1| ?w=200
+|`.with_height`| positive integer, or float between 0 and 1| ?h=200
+|`.with_pixel_ratio`| float greater than 0 but less than 5| ?dpr=1.5
+|`.with_fit_mode`| contstants available at Delivery::Builders::ImageTransformationBuilder <ul><li>FITMODE_CROP</li><li>FITMODE_CLIP</li><li>FITMODE_SCALE</li></ul>| ?fit=crop
+|`.with_rect`| 4 integer values representing pixels or floats representing percentages|rect=100,100,0.7,0.7
+|`.with_focal_point`| 2 floats between 0 and 1 and one integer between 1 and 100| ?fp-x=0.2&fp-y=0.7&fp-z=5
+|`.with_background_color`| string containing 3, 4, 6, or 8 characters | ?bg=7A0099EE
+|`.with_output_format`| contstants available at Delivery::Builders::ImageTransformationBuilder <ul><li>FORMAT_GIF</li><li>FORMAT_PNG</li><li>FORMAT_PNG8</li><li>FORMAT_JPG</li><li>FORMAT_PJPG</li><li>FORMAT_WEBP</li></ul> | ?fm=webp
+|`.with_quality`| integer between 1 to 100 | ?quality=50
+|`.with_lossless`| 'true', 'false', 0, or 1| ?lossless=1
+|`.with_auto_format_selection`| 'true', 'false', 0, or 1 | ?auto=format
+
 ## Feedback & Contributing
 
 Check out the [contributing](https://github.com/Kentico/delivery-sdk-ruby/blob/master/CONTRIBUTING.md) page to see the best places to file issues, start discussions, and begin contributing.

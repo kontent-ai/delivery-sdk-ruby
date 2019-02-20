@@ -22,15 +22,15 @@ RSpec.describe Delivery::DeliveryQuery do
   end
 end
 
-# UrlProvider
-RSpec.describe Delivery::UrlProvider do
+# UrlBuilder
+RSpec.describe Delivery::Builders::UrlBuilder do
   before(:all) do
     @dc = Delivery::DeliveryClient.new project_id: PROJECT_ID
   end
 
   describe '.provide_url' do
     it 'returns String' do
-      expect(Delivery::UrlProvider.provide_url(@dc.items)).to be_a String
+      expect(Delivery::Builders::UrlBuilder.provide_url(@dc.items)).to be_a String
     end
   end
 end
@@ -104,9 +104,9 @@ RSpec.describe Delivery::DeliveryClient do
   end
 
   describe '.items' do
-    it 'return 46 items' do
+    it 'return 43 items' do
       @dc.items.execute do |response|
-        expect(response.items.length).to eq(46)
+        expect(response.items.length).to eq(43)
       end
     end
   end
@@ -208,11 +208,9 @@ RSpec.describe Delivery::Resolvers::InlineContentItemResolver do
 
   describe 'get_string' do
     it 'resolves inline items' do
-      # A content link was manually added to some items
-      @dc.items(
-        'system.codename'.in %w[where_does_coffee_come_from__a9bfc04 where_does_coffee_come_from__d8c68d0]
-      ).execute do |response|
-        expect(response.items[0].get_string('body_copy')).not_to eql(response.items[0].elements.body_copy.value)
+      # A content link was manually added to this item
+      @dc.item('where_does_coffee_come_from_').execute do |response|
+        expect(response.item.get_string('body_copy')).not_to eql(response.item.elements.body_copy.value)
       end
     end
   end
