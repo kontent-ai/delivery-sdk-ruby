@@ -6,7 +6,8 @@ require 'json'
 module Delivery
   QUERY_TYPE_TYPES = 'QUERY_TYPE_TYPES'.freeze
   QUERY_TYPE_ITEMS = 'QUERY_TYPE_ITEMS'.freeze
-  
+  QUERY_TYPE_TAXONOMIES = 'QUERY_TYPE_TAXONOMIES'.freeze
+
   # Executes requests against the Kentico Cloud Delivery API.
   class DeliveryClient
     attr_accessor :use_preview
@@ -56,6 +57,20 @@ module Delivery
       q.use_preview = use_preview
       q.preview_key = @preview_key
       q
+    end
+
+    def taxonomies(query_parameters = [])
+      DeliveryQuery.new project_id: @project_id,
+                        secure_key: @secure_key,
+                        qp: query_parameters,
+                        query_type: QUERY_TYPE_TAXONOMIES
+    end
+
+    def taxonomy(code_name)
+      DeliveryQuery.new project_id: @project_id,
+                        secure_key: @secure_key,
+                        code_name: code_name,
+                        query_type: QUERY_TYPE_TAXONOMIES
     end
   end
 end
