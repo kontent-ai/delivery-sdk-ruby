@@ -12,7 +12,9 @@ module Delivery
 
       def initialize(response)
         @response = response
-        super 200, "Success, type '#{type.system.codename}' returned"
+        super 200,
+              "Success, type '#{type.system.codename}' returned",
+              JSON.generate(@response)
       end
     end
   end

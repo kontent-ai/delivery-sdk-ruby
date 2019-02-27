@@ -48,6 +48,12 @@ module Delivery
             else
               format(URL_TEMPLATE_TYPE, query.code_name)
             end
+          when Delivery::QUERY_TYPE_TAXONOMIES
+            if query.code_name.nil?
+              URL_TEMPLATE_TAXONOMIES
+            else
+              format(URL_TEMPLATE_TAXONOMY, query.code_name)
+            end
           end
         end
 

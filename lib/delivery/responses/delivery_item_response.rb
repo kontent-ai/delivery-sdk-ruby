@@ -19,8 +19,7 @@ module Delivery
         @content_link_url_resolver = content_link_url_resolver
         @inline_content_item_resolver = inline_content_item_resolver
         super 200,
-          "Success,
-          '#{item.system.code_name}' returned",
+          "Success, '#{item.system.code_name}' returned",
           JSON.generate(@response)
       end
     end
