@@ -20,7 +20,8 @@ module Delivery
                   :content_link_url_resolver,
                   :inline_content_item_resolver,
                   :query_type,
-                  :query_string
+                  :query_string,
+                  :content_type
 
     # Setter for url, returns self for chaining
     # .url represents *manually* configured urls, otherwise final url is
@@ -169,6 +170,8 @@ module Delivery
         else
           Delivery::Responses::DeliveryTaxonomyResponse.new JSON.parse(response)
         end
+      when Delivery::QUERY_TYPE_ELEMENT
+        Delivery::Responses::DeliveryElementResponse.new JSON.parse(response)
       end
     end
   end

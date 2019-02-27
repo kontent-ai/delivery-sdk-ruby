@@ -304,6 +304,20 @@ delivery_client.taxonomy('personas').execute do |response|
 end
 ```
 
+## Retreiveing content type elements
+
+Kentico Cloud provides an [endpoint](https://developer.kenticocloud.com/v1/reference#view-a-content-type-element) for obtaining details about a specific element of a content type. In the Ruby SDK, you can use the `.element` method:
+
+```ruby
+delivery_client.element('brewer', 'product_status').execute do |response|
+  puts response.element.type # taxonomy
+end
+```
+
+This returns a `Delivery::Responses::DeliveryElementResponse` where the `element` attribute is a dynamic OStruct representation of the JSON response. This means that you can access any property of the element by simply typing the name as in the above example.
+
+The element will always contain __codename__, __type__, and __name__, but multiple choice elements will also contain __options__ and taxonomy elements will contain __taxonomy_group__.
+
 ## Resolving links
 
 If a rich text element contains links to other content items, you will need to generate the URLs to those items. You can do this by registering a `Delivery::Resolvers::ContentLinkResolver` when you instantiate the DeliveryClient. When you create a ContentLinkResolver, you must pass a method that will return the URL:

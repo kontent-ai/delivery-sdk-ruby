@@ -7,6 +7,7 @@ module Delivery
   QUERY_TYPE_TYPES = 'QUERY_TYPE_TYPES'.freeze
   QUERY_TYPE_ITEMS = 'QUERY_TYPE_ITEMS'.freeze
   QUERY_TYPE_TAXONOMIES = 'QUERY_TYPE_TAXONOMIES'.freeze
+  QUERY_TYPE_ELEMENT = 'QUERY_TYPE_ELEMENT'.freeze
 
   # Executes requests against the Kentico Cloud Delivery API.
   class DeliveryClient
@@ -71,6 +72,14 @@ module Delivery
                         secure_key: @secure_key,
                         code_name: code_name,
                         query_type: QUERY_TYPE_TAXONOMIES
+    end
+
+    def element(content_type, element)
+      DeliveryQuery.new project_id: @project_id,
+                        secure_key: @secure_key,
+                        code_name: element,
+                        content_type: content_type,
+                        query_type: QUERY_TYPE_ELEMENT
     end
   end
 end

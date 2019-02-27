@@ -92,6 +92,14 @@ RSpec.describe Delivery::DeliveryClient do
     end
   end
 
+  describe '.element' do
+    it 'returns a content type element' do
+      @dc.element('brewer', 'product_status').execute do |response|
+        expect(response.element.type).to eq('taxonomy')
+      end
+    end
+  end
+
   describe 'secure_key' do
     it 'results in 200 status' do
       insecure = Delivery::DeliveryClient.new project_id: PROJECT_ID

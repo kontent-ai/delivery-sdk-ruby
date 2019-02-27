@@ -54,6 +54,8 @@ module Delivery
             else
               format(URL_TEMPLATE_TAXONOMY, query.code_name)
             end
+          when Delivery::QUERY_TYPE_ELEMENT
+            format(URL_TEMPLATE_ELEMENTS, query.content_type, query.code_name)
           end
         end
 
