@@ -163,6 +163,12 @@ module Delivery
         else
           Delivery::Responses::DeliveryTypeResponse.new JSON.parse(response)
         end
+      when Delivery::QUERY_TYPE_TAXONOMIES
+        if code_name.nil?
+          Delivery::Responses::DeliveryTaxonomyListingResponse.new JSON.parse(response)
+        else
+          Delivery::Responses::DeliveryTaxonomyResponse.new JSON.parse(response)
+        end
       end
     end
   end

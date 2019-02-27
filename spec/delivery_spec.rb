@@ -83,6 +83,15 @@ RSpec.describe Delivery::DeliveryClient do
                                        preview_key: PREVIEW_KEY
   end
 
+  describe '.taxonomies' do
+    it 'returns 4 groups' do
+      @dc.taxonomies.execute do |response|
+        expect(response.taxonomies.length).to eql(4)
+        expect(response.taxonomies[0]).to be_a Delivery::TaxonomyGroup
+      end
+    end
+  end
+
   describe 'secure_key' do
     it 'results in 200 status' do
       insecure = Delivery::DeliveryClient.new project_id: PROJECT_ID

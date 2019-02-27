@@ -259,8 +259,50 @@ delivery_client.type('coffee').execute do |response|
   field_type = response.type.elements.product_status.type # taxonomy
 end
 ```
+The DeliveryTypeListingResponse also contains pagination data, similar to DeliveryItemListingResponse.
 
- The DeliveryTypeListingResponse also contains pagination data, similar to DeliveryItemListingResponse.
+## Taxonomy
+
+Use the `.taxonomies` and `.taxonomy(code_name)` endpoints to get information about the taxonomy in your project:
+
+```ruby
+# Get all taxonomies
+delivery_client.taxonomies.execute do |response|
+  response.taxonomies.each do |tax|
+    puts "#{tax.system.name} (#{tax.terms.length})"
+  end
+end
+
+# Get terms of specific taxonomy
+delivery_client.taxonomy('personas').execute do |response|
+  puts response.taxonomy.terms.length
+end
+```
+
+Each response will return either a single `Delivery::TaxonomyGroup` or an array of groups. The taxonomy group(s) are accessible at `.taxonomy` and `.taxonomies` for single and multiple queries, respectively.
+
+The `TaxonomyGroup` object contains two attributes `.system` and `.terms` which are dynamic OStruct objects containing the same elements as a standard JSON reponse. For example, given a successful query you could access information about the first term of a group using:
+
+```ruby
+taxonomy_group.terms[0].codename
+```
+
+Note that the terms of a taxonomy group may also contain terms, for example in Dancing Goat's __Personas__ taxonomy group, which looks like this:
+
+- Coffee expert
+  - Barista
+  - Cafe owner
+- Coffee enthusiast
+  - Coffee lover
+  - Coffee blogger
+
+To get the code name of the first term under the "Coffee expert" term, you could do this:
+
+```ruby
+delivery_client.taxonomy('personas').execute do |response|
+  puts response.taxonomy.terms[0].terms[0].codename
+end
+```
 
 ## Resolving links
 
