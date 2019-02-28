@@ -1,6 +1,7 @@
 require 'rest-client'
 require 'delivery/builders/url_builder'
 require 'delivery/query_parameters/query_string'
+require 'delivery/version'
 
 module Delivery
   # Responsible for translating query parameters into the
@@ -132,14 +133,18 @@ module Delivery
 
     def execute_rest
       if should_preview
-        RestClient.get @url, Authorization: 'Bearer ' + preview_key
+        RestClient.get @url, 'X-KC-SDKID' => provide_sdk_header, Authorization: 'Bearer ' + preview_key
       else
         if secure_key.nil?
-          RestClient.get @url
+          RestClient.get @url, 'X-KC-SDKID' => provide_sdk_header
         else
-          RestClient.get @url, Authorization: 'Bearer ' + secure_key
+          RestClient.get @url, 'X-KC-SDKID' => provide_sdk_header, Authorization: 'Bearer ' + secure_key
         end
       end
+    end
+
+    def provide_sdk_header
+      "rubygems.org;delivery-sdk-ruby;#{Delivery::VERSION}"
     end
 
     def make_response(response)
