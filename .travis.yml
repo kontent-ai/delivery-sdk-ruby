@@ -3,6 +3,9 @@ dist: trusty
 sudo: false
 rvm:
   - 2.5.3
+env:
+  global:
+    - NOKOGIRI_USE_SYSTEM_LIBRARIES=true
 before_install: 
   - gem install bundler -v 2.0.1
   - apt-get install build-essential patch ruby-dev zlib1g-dev liblzma-dev
