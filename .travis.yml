@@ -5,5 +5,5 @@ rvm:
   - 2.5.3
 before_install: 
   - gem install bundler -v 2.0.1
-  - bundle config build.nokogiri "--use-system-libraries"
+  - bundle config --local build.nokogiri "--use-system-libraries"
 script: bundle exec rake
