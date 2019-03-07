@@ -8,6 +8,5 @@ env:
     - NOKOGIRI_USE_SYSTEM_LIBRARIES=true
 before_install: 
   - gem install bundler -v 2.0.1
-  - apt-get install build-essential patch ruby-dev zlib1g-dev liblzma-dev
   - bundle config --local build.nokogiri "--use-system-libraries"
 script: bundle exec rake
