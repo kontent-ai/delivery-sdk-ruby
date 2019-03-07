@@ -5,5 +5,4 @@ rvm:
   - 2.5.3
 before_install: 
   - gem install bundler -v 2.0.1
-  - gem list
 script: bundle exec rake
