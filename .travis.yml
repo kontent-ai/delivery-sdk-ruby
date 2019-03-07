@@ -3,10 +3,7 @@ dist: trusty
 sudo: false
 rvm:
   - 2.5.3
-env:
-  global:
-    - NOKOGIRI_USE_SYSTEM_LIBRARIES=true
 before_install: 
   - gem install bundler -v 2.0.1
-  - bundle config --local build.nokogiri "--use-system-libraries"
+  - gem list
 script: bundle exec rake
