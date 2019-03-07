@@ -13,13 +13,14 @@ module Delivery
 
       def items
         @items unless @items.nil?
+        linked_items_resolver = LinkedItemResolver.new @response['modular_content'], @content_link_url_resolver, @inline_content_item_resolver
         items = []
         @response['items'].each do |n|
           items << Delivery::ContentItem.new(
             n,
             @content_link_url_resolver,
             @inline_content_item_resolver,
-            @response['modular_content']
+            linked_items_resolver
           )
         end
         @items = items
