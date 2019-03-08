@@ -8,6 +8,9 @@
 
 The Delivery Ruby SDK can be used in Ruby/Rails projects to retrieve content from Kentico Cloud. This is a community project and not an official Kentico SDK. If you find a bug in the SDK or have a feature request, please submit a GitHub issue.
 
+See [environment setup fo Windows](https://github.com/Kentico/delivery-sdk-ruby/wiki/How-to-setup-development-environment-on-Windows) for local development.
+
+
 ## Demo Rails application
 
 This repository contains a very basic Rails application that you can run locally to see how the SDK can be used. To run the Dancing Goat demo application, clone this repository and open `/dancing_goat/app/controllers/application_controller.rb`. Add your project ID to the file here:
