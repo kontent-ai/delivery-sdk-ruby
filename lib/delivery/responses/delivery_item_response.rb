@@ -7,10 +7,12 @@ module Delivery
     class DeliveryItemResponse < ResponseBase
       def item
         @item unless @item.nil?
+        linked_items_resolver = LinkedItemResolver.new @response['modular_content'], @content_link_url_resolver, @inline_content_item_resolver
         @item = Delivery::ContentItem.new(
           @response,
           @content_link_url_resolver,
-          @inline_content_item_resolver
+          @inline_content_item_resolver,
+          linked_items_resolver
         )
       end
 

@@ -23,21 +23,14 @@ module Delivery
       )
     end
 
-    def initialize(source, content_link_url_resolver, inline_content_item_resolver, modular_content = nil)
+    def initialize(source, content_link_url_resolver, inline_content_item_resolver, linked_items_resolver)
       @source =
         if source['item'].nil?
           source
         else
           source['item']
         end
-      # Multiple item responses have modular_content on the root, single item
-      # responses have modular content in the item
-      @modular_content =
-        if modular_content.nil?
-          source['modular_content']
-        else
-          modular_content
-        end
+      @linked_items_resolver = linked_items_resolver
       self.content_link_url_resolver = content_link_url_resolver
       self.inline_content_item_resolver = inline_content_item_resolver
     end
@@ -64,16 +57,14 @@ module Delivery
     # element with items from request's modular_content
     def get_links(code_name)
       element = get_element code_name
-      filtered = filter_modular_content element['value']
-      filtered.map { |n| ContentItem.new JSON.parse(JSON.generate(n)), content_link_url_resolver, inline_content_item_resolver }
+      get_linked_items element['value']
     end
 
     # Returns an array of ContentItems by comparing code names stored in the
     # modular_content object with items from request's modular_content
     def get_inline_items(code_name)
       element = get_element code_name
-      filtered = filter_modular_content element['modular_content']
-      filtered.map { |n| ContentItem.new JSON.parse(JSON.generate(n)), content_link_url_resolver, inline_content_item_resolver }
+      get_linked_items element['modular_content']
     end
 
     private
@@ -93,11 +84,11 @@ module Delivery
       @source['elements'][code_name]
     end
 
-    def filter_modular_content(codenames)
+    def get_linked_items(codenames)
       return [] unless codenames.class == Array
 
       codenames.each_with_object([]) do |codename, items|
-        item = @modular_content.values.find { |i| i['system']['codename'] == codename }
+        item = @linked_items_resolver.resolve codename
         items << item if item
       end
     end

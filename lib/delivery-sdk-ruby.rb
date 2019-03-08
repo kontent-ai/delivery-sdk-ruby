@@ -13,4 +13,5 @@ require File.dirname(__FILE__) + '/delivery/responses/delivery_taxonomy_response
 require File.dirname(__FILE__) + '/delivery/responses/delivery_element_response'
 require File.dirname(__FILE__) + '/delivery/resolvers/content_link_resolver'
 require File.dirname(__FILE__) + '/delivery/resolvers/inline_content_item_resolver'
+require File.dirname(__FILE__) + '/delivery/resolvers/linked_item_resolver'
 require File.dirname(__FILE__) + '/delivery/builders/image_transformation_builder'
