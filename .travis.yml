@@ -2,7 +2,15 @@ language: ruby
 dist: trusty
 sudo: false
 rvm:
-  - 2.5.3
-before_install: 
-  - gem install bundler -v 2.0.1
+- 2.5.3
+before_install:
+- gem install bundler -v 2.0.1
 script: bundle exec rake
+deploy:
+  provider: rubygems
+  api_key:
+    secure: h8V9ZouSN4RKLwQw0E0z8LL9QBSc/3DiL9/6g/s7V8ZEgQE/gGVEEbTgpVRIvYw+cIfTY20DqzhnRf3MjUBGLNQQxp+fSxHaQCYHQTrx4JXT6xt2q3CkQiIIHq9YGF1zQsuKauv8zS4A5VMIjIYEzy3MiFSjVuvYm7NueBiXEUh8Qw43mRPLkF3D+R8OMeZ4rVFyFmpdK9seIKWbsrqFJsRwTchLi64JvW5ZGNDVCKTf+1uxHSJP+b+oUWUlhgOEUKn0MHXwNzPEdNpW1PutqnHooe83FsoLrDP0PLFGxhoof2erhfg2hAZZe41rtMrR6/E4pwIOWJ9hnEaV3I62aRAZI4BD7WCdaz/OEyctrz2N5L3acc67wKpkPeOCg4gUQBs/C9CIpy00CM9PiWCztT8TzzEqquWGSfQLG7M/kYXh2IuFGLKvlRVCg3UjCWu/VYprdUGLWpqcTSx++dsnhoBaGX3ahCXmRXZJbEQFbhHUuhfkmDTqdUyR07EbmQCCpVOp6X18PaR6kYMu6LhVRE01i79Qw+UCc0gdM2MNnByqdN/KlxGPtjLxu418K6YZqrUw1ZEYJHw5RCTyifByM8gJZnDQz38Br7BpLWjRUnWV2Tui/O3nOHPvTVasZ/d842VwepjCdfEk0tcK2mmPsNoaVXT2Ye52Y96QZZViTU8=
+  gem: delivery-sdk-ruby
+  on:
+    tags: true
+    repo: Kentico/delivery-sdk-ruby
