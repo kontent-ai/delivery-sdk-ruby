@@ -1,6 +1,8 @@
-PROJECT_ID = '<redacted>'.freeze
-PREVIEW_KEY = '<redacted>'.freeze
-SECURE_KEY = '<redacted>'.freeze
+require 'dotenv/load'
+
+PROJECT_ID = ENV['PROJECT_ID']
+PREVIEW_KEY = ENV['PREVIEW_KEY']
+SECURE_KEY = ENV['SECURE_KEY']
 
 # DeliveryQuery
 RSpec.describe Delivery::DeliveryQuery do

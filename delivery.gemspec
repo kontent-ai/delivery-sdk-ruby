@@ -33,6 +33,7 @@ Gem::Specification.new do |spec|
 
   spec.add_runtime_dependency("nokogiri", "~> 1.10.0", ">= 1.8.4")
   spec.add_runtime_dependency("rest-client", "~> 2.1.0.rc1", ">= 2.1.0.rc1")
+  spec.add_development_dependency("dotenv", "~> 2.7.0")
   spec.add_development_dependency("bundler", "~> 2.0")
   spec.add_development_dependency("rake", "~> 10.0")
   spec.add_development_dependency("rspec", "~> 3.0")
