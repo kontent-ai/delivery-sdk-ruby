@@ -16,3 +16,9 @@
 
 # vscode configurations
 .vscode
+
+# ignore lock file for gem
+Gemfile.lock
+
+# ignore built package 
+delivery-sdk-ruby-*.gem
