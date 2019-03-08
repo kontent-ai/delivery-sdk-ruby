@@ -10,3 +10,9 @@
 
 # rspec failure tracking
 .rspec_status
+
+# environment variables
+.env
+
+# vscode configurations
+.vscode
