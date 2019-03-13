@@ -8,7 +8,7 @@
 
 The Delivery Ruby SDK can be used in Ruby/Rails projects to retrieve content from Kentico Cloud. This is a community project and not an official Kentico SDK. If you find a bug in the SDK or have a feature request, please submit a GitHub issue.
 
-See [environment setup fo Windows](https://github.com/Kentico/delivery-sdk-ruby/wiki/How-to-setup-development-environment-on-Windows) for local development.
+See [How to setup a development environment on Windows](https://github.com/Kentico/delivery-sdk-ruby/wiki/How-to-setup-development-environment-on-Windows) for local development.
 
 
 ## Demo Rails application
