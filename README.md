@@ -27,7 +27,7 @@ bundle install
 rails server
 ```
 
-The site should be accessible at localhost:3000.
+The site should be accessible at localhost:3000. You can also follow a step-by-step guide to creating a basic Rails application on the [Kentico Cloud Blog](https://kenticocloud.com/blog/creating-a-kentico-cloud-ruby-on-rails-application).
 
 ## Installation
 
