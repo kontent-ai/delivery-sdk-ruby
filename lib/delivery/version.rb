@@ -1,3 +1,3 @@
 module Delivery
-  VERSION = '0.14.12'.freeze
+  VERSION = '0.15.0'.freeze
 end
