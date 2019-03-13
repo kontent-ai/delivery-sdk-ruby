@@ -33,6 +33,8 @@ module Delivery
     end
 
     def initialize(config)
+      @headers = {}
+
       # Map each hash value to attr with corresponding key
       # from https://stackoverflow.com/a/2681014/5656214
       config.each do |k, v|
@@ -102,6 +104,11 @@ module Delivery
       self
     end
 
+    def request_latest_content
+      @headers['X-KC-Wait-For-Loading-New-Content'] = true
+      self
+    end
+
     private
 
     def provide_url
@@ -132,15 +139,13 @@ module Delivery
     end
 
     def execute_rest
-      if should_preview
-        RestClient.get @url, 'X-KC-SDKID' => provide_sdk_header, Authorization: 'Bearer ' + preview_key
-      else
-        if secure_key.nil?
-          RestClient.get @url, 'X-KC-SDKID' => provide_sdk_header
-        else
-          RestClient.get @url, 'X-KC-SDKID' => provide_sdk_header, Authorization: 'Bearer ' + secure_key
-        end
-      end
+      headers = @headers.clone
+
+      headers['X-KC-SDKID'] = provide_sdk_header
+      headers['Authorization'] = "Bearer #{preview_key}" if should_preview
+      headers['Authorization'] = "Bearer #{secure_key}" if !should_preview && secure_key
+
+      RestClient.get @url, headers
     end
 
     def provide_sdk_header
