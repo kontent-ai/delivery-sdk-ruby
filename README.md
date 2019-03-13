@@ -157,6 +157,18 @@ delivery_client.items('system.type'.eq 'coffee')
   end
 ```
 
+### Requesting the latest content
+
+Kentico caches content using Fastly, so requests made to Kentico Cloud may not be up-to-date. In some cases, such as when reacting to [webhook](https://developer.kenticocloud.com/docs/webhooks) notifications, you might want to request the latest content from your Kentico Cloud project.
+
+You can bypass the cache and get the latest content using `request_latest_content`
+
+```ruby
+delivery_client.items('system.type'.eq 'coffee')
+  .request_latest_content
+  .execute
+```
+
 ### Custom URLs
 
 When you have a URL (i.e. `next_page` for paging, for testing purposes, or if you prefer to build it on your own) and still want to leverage SDK functionality such as rich text resolving, use the .url method:
