@@ -64,7 +64,7 @@ To enable [preview](https://developer.kenticocloud.com/docs/previewing-content-i
 
 ```ruby
 delivery_client = KenticoCloud::Delivery::DeliveryClient.new project_id: '<your-project-id>',
-                                               preview_key: '<your-preview-key>'
+                                                             preview_key: '<your-preview-key>'
 ```
 
 This enables preview, but you can toggle preview at any time by setting the `use_preview` attribute of DeliveryClient which is propogated to all queries created by the client, _or_ per-query by setting it's `use_preview` attribute:
@@ -87,7 +87,7 @@ If you've [secured access](https://developer.kenticocloud.com/docs/securing-publ
 
 ```ruby
 KenticoCloud::Delivery::DeliveryClient.new project_id: '<your-project-id>',
-                             secure_key: '<your-secure-key>'
+                                           secure_key: '<your-secure-key>'
 ```
 
 ## Listing items
@@ -354,7 +354,7 @@ link_resolver = KenticoCloud::Delivery::Resolvers::ContentLinkResolver.new(lambd
   return "/brewers/#{link.url_slug}" if link.type.eql? 'brewer'
 end)
 delivery_client = KenticoCloud::Delivery::DeliveryClient.new project_id: '<your-project-id>',
-                                               content_link_url_resolver: link_resolver
+                                                             content_link_url_resolver: link_resolver
 ```
 
 You can also build the logic for your resolver in a separate class and register an instance of that class in the DeliveryClient. The class must extend `KenticoCloud::Delivery::Resolvers::ContentLinkResolver` and contain a `resolve_link(link)` method. For example, you can create `MyLinkResolver.rb`:
@@ -372,7 +372,7 @@ Then create an object of this class when instantiating the DeliveryClient:
 
 ```ruby
 delivery_client = KenticoCloud::Delivery::DeliveryClient.new project_id: '<your-project-id>',
-                                               content_link_url_resolver: MyLinkResolver.new
+                                                             content_link_url_resolver: MyLinkResolver.new
 ```
 
 You can pass a `ContentLinkResolver` to the DeliveryQuery instead of the client if you only want to resolve links for that query, or they should be resolved differently:
@@ -399,7 +399,7 @@ item_resolver = KenticoCloud::Delivery::Resolvers::ContentLinkResolver.new(lambd
   return "/brewers/#{link.url_slug}" if link.type.eql? 'brewer'
 end)
 delivery_client = KenticoCloud::Delivery::DeliveryClient.new project_id: '<your-project-id>',
-                                               content_link_url_resolver: item_resolver
+                                                             content_link_url_resolver: item_resolver
 delivery_client.item('coffee_processing_techniques').execute do |response|
   text = response.item.get_string 'body_copy'
 end
@@ -415,7 +415,7 @@ item_resolver = KenticoCloud::Delivery::Resolvers::InlineContentItemResolver.new
       return "<div>$#{item.elements.price.value}</div>" if item.system.type.eql? 'brewer'
     end)
 delivery_client = KenticoCloud::Delivery::DeliveryClient.new project_id: '<your-project-id>',
-                                               inline_content_item_resolver: item_resolver
+                                                             inline_content_item_resolver: item_resolver
 ```
 
 The object passed to the resolving method is a complete ContentItem. Similar to content link resolvers, you can create your own class which extends `KenticoCloud::Delivery::Resolvers::InlineContentItemResolver` and implements the `resolve_item` method:
@@ -445,8 +445,8 @@ When you've obtained the URL for an asset, you can use our [Image Transformation
 ```ruby
 url = response.item.get_assets('teaser_image').first.url
 url = KenticoCloud::Delivery::Builders::ImageTransformationBuilder.transform(url)
-                                                    # methods...
-                                                    .url
+                                                                  # methods...
+                                                                  .url
 ```
 
 The available methods are:
