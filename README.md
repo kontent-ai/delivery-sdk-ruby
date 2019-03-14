@@ -45,10 +45,17 @@ require 'delivery-sdk-ruby'
 
 ## Creating a client
 
-You will use `Delivery::DeliveryClient` to obtain content from Kentico Cloud. Create an instance of the client and pass your project ID:
+You will use `KenticoCloud::Delivery::DeliveryClient` to obtain content from Kentico Cloud. Create an instance of the client and pass your project ID:
 
 ```ruby
-delivery_client = Delivery::DeliveryClient.new project_id: '<your-project-id>'
+delivery_client = KenticoCloud::Delivery::DeliveryClient.new project_id: '<your-project-id>'
+```
+
+**Pro tip:** You can alias namespaces to make them shorter, e.g.
+
+```ruby
+KC = KenticoCloud::Delivery
+delivery_client = KC::DeliveryClient.new project_id: '<your-project-id>'
 ```
 
 ### Previewing unpublished content
@@ -56,7 +63,7 @@ delivery_client = Delivery::DeliveryClient.new project_id: '<your-project-id>'
 To enable [preview](https://developer.kenticocloud.com/docs/previewing-content-in-a-separate-environment "preview"), pass the Preview API Key to the constructor:
 
 ```ruby
-delivery_client = Delivery::DeliveryClient.new project_id: '<your-project-id>',
+delivery_client = KenticoCloud::Delivery::DeliveryClient.new project_id: '<your-project-id>',
                                                preview_key: '<your-preview-key>'
 ```
 
@@ -79,14 +86,14 @@ end
 If you've [secured access](https://developer.kenticocloud.com/docs/securing-public-access "Securing public access") to your project, you need to provide the DeliveryClient with the primary or secondary key:
 
 ```ruby
-Delivery::DeliveryClient.new project_id: '<your-project-id>',
+KenticoCloud::Delivery::DeliveryClient.new project_id: '<your-project-id>',
                              secure_key: '<your-secure-key>'
 ```
 
 ## Listing items
 
 
-Use `.item` or `.items` to create a `Delivery::DeliveryQuery`, then call `.execute` to perform the request.
+Use `.item` or `.items` to create a `KenticoCloud::Delivery::DeliveryQuery`, then call `.execute` to perform the request.
 
 ```ruby
 delivery_client.items.execute do |response|
@@ -134,7 +141,7 @@ delivery_client.items [
 
 ### Parameters
 
-The `.item` and `.items` methods return a `Delivery::DeliveryQuery` object which you can further configure before executing. The methods you can call are:
+The `.item` and `.items` methods return a `KenticoCloud::Delivery::DeliveryQuery` object which you can further configure before executing. The methods you can call are:
 
 |Method|Example|REST equivalent
 |--|--|--|
@@ -183,7 +190,7 @@ delivery_client.items
 
 ### Responses
 
-All responses from the `.execute` method will be/extend the `Delivery::Responses::ResponseBase` class which contains an `http_code` attribute and a friendly message that can be displayed by calling `.to_s`. You can check the code to determine if the request was successful:
+All responses from the `.execute` method will be/extend the `KenticoCloud::Delivery::Responses::ResponseBase` class which contains an `http_code` attribute and a friendly message that can be displayed by calling `.to_s`. You can check the code to determine if the request was successful:
 
 ```ruby
 delivery_client.items.execute do |response|
@@ -269,7 +276,7 @@ end
 
 ### Responses
 
-As with content item queries, all content type queries will return a `Delivery::Responses::ResponseBase` of the class `DeliveryTypeResponse` or `DeliveryTypeListingResponse` for single and multiple type queries, respectively.
+As with content item queries, all content type queries will return a `KenticoCloud::Delivery::Responses::ResponseBase` of the class `DeliveryTypeResponse` or `DeliveryTypeListingResponse` for single and multiple type queries, respectively.
 
 For multiple type queries, you can access the array of `ContentType` objects at `.types`, and at `.type` for singe type queries. You can access information about the type(s) dynamically:
 
@@ -298,7 +305,7 @@ delivery_client.taxonomy('personas').execute do |response|
 end
 ```
 
-Each response will return either a single `Delivery::TaxonomyGroup` or an array of groups. The taxonomy group(s) are accessible at `.taxonomy` and `.taxonomies` for single and multiple queries, respectively.
+Each response will return either a single `KenticoCloud::Delivery::TaxonomyGroup` or an array of groups. The taxonomy group(s) are accessible at `.taxonomy` and `.taxonomies` for single and multiple queries, respectively.
 
 The `TaxonomyGroup` object contains two attributes `.system` and `.terms` which are dynamic OStruct objects containing the same elements as a standard JSON reponse. For example, given a successful query you could access information about the first term of a group using:
 
@@ -333,27 +340,27 @@ delivery_client.element('brewer', 'product_status').execute do |response|
 end
 ```
 
-This returns a `Delivery::Responses::DeliveryElementResponse` where the `element` attribute is a dynamic OStruct representation of the JSON response. This means that you can access any property of the element by simply typing the name as in the above example.
+This returns a `KenticoCloud::Delivery::Responses::DeliveryElementResponse` where the `element` attribute is a dynamic OStruct representation of the JSON response. This means that you can access any property of the element by simply typing the name as in the above example.
 
 The element will always contain __codename__, __type__, and __name__, but multiple choice elements will also contain __options__ and taxonomy elements will contain __taxonomy_group__.
 
 ## Resolving links
 
-If a rich text element contains links to other content items, you will need to generate the URLs to those items. You can do this by registering a `Delivery::Resolvers::ContentLinkResolver` when you instantiate the DeliveryClient. When you create a ContentLinkResolver, you must pass a method that will return the URL:
+If a rich text element contains links to other content items, you will need to generate the URLs to those items. You can do this by registering a `KenticoCloud::Delivery::Resolvers::ContentLinkResolver` when you instantiate the DeliveryClient. When you create a ContentLinkResolver, you must pass a method that will return the URL:
 
 ```ruby
-link_resolver = Delivery::Resolvers::ContentLinkResolver.new(lambda do |link|
+link_resolver = KenticoCloud::Delivery::Resolvers::ContentLinkResolver.new(lambda do |link|
   return "/coffees/#{link.url_slug}" if link.type.eql? 'coffee'
   return "/brewers/#{link.url_slug}" if link.type.eql? 'brewer'
 end)
-delivery_client = Delivery::DeliveryClient.new project_id: '<your-project-id>',
+delivery_client = KenticoCloud::Delivery::DeliveryClient.new project_id: '<your-project-id>',
                                                content_link_url_resolver: link_resolver
 ```
 
-You can also build the logic for your resolver in a separate class and register an instance of that class in the DeliveryClient. The class must extend `Delivery::Resolvers::ContentLinkResolver` and contain a `resolve_link(link)` method. For example, you can create `MyLinkResolver.rb`:
+You can also build the logic for your resolver in a separate class and register an instance of that class in the DeliveryClient. The class must extend `KenticoCloud::Delivery::Resolvers::ContentLinkResolver` and contain a `resolve_link(link)` method. For example, you can create `MyLinkResolver.rb`:
 
 ```ruby
-class MyLinkResolver < Delivery::Resolvers::ContentLinkResolver
+class MyLinkResolver < KenticoCloud::Delivery::Resolvers::ContentLinkResolver
   def resolve_link(link)
     return "/coffees/#{link.url_slug}" if link.type.eql? 'coffee'
     return "/brewers/#{link.url_slug}" if link.type.eql? 'brewer'
@@ -364,14 +371,14 @@ end
 Then create an object of this class when instantiating the DeliveryClient:
 
 ```ruby
-delivery_client = Delivery::DeliveryClient.new project_id: '<your-project-id>',
+delivery_client = KenticoCloud::Delivery::DeliveryClient.new project_id: '<your-project-id>',
                                                content_link_url_resolver: MyLinkResolver.new
 ```
 
 You can pass a `ContentLinkResolver` to the DeliveryQuery instead of the client if you only want to resolve links for that query, or they should be resolved differently:
 
 ```ruby
-delivery_client = Delivery::DeliveryClient.new project_id: '<your-project-id>'
+delivery_client = KenticoCloud::Delivery::DeliveryClient.new project_id: '<your-project-id>'
 # Client doesn't use ContentLinkResolver, but query below will
 delivery_client.items
                .with_link_resolver MyLinkResolver.new
@@ -387,11 +394,11 @@ The `ContentLink` object that is passed to your resolver contains the following 
 To resolve links in rich text elements, you must retrieve the text using `get_string`:
 
 ```ruby
-item_resolver = Delivery::Resolvers::ContentLinkResolver.new(lambda do |link|
+item_resolver = KenticoCloud::Delivery::Resolvers::ContentLinkResolver.new(lambda do |link|
   return "/coffees/#{link.url_slug}" if link.type.eql? 'coffee'
   return "/brewers/#{link.url_slug}" if link.type.eql? 'brewer'
 end)
-delivery_client = Delivery::DeliveryClient.new project_id: '<your-project-id>',
+delivery_client = KenticoCloud::Delivery::DeliveryClient.new project_id: '<your-project-id>',
                                                content_link_url_resolver: item_resolver
 delivery_client.item('coffee_processing_techniques').execute do |response|
   text = response.item.get_string 'body_copy'
@@ -403,18 +410,18 @@ end
 Existing content items can be inserted into a rich text element, or you can create new content items as components. You need to resolve these in your application just as with content links. You can register a resolver when you instantiate the client by passing it with the hash key `inline_content_item_resolver`:
 
 ```ruby
-item_resolver = Delivery::Resolvers::InlineContentItemResolver.new(lambda do |item|
+item_resolver = KenticoCloud::Delivery::Resolvers::InlineContentItemResolver.new(lambda do |item|
       return "<h1>#{item.elements.zip_code.value}</h1>" if item.system.type.eql? 'cafe'
       return "<div>$#{item.elements.price.value}</div>" if item.system.type.eql? 'brewer'
     end)
-delivery_client = Delivery::DeliveryClient.new project_id: '<your-project-id>',
+delivery_client = KenticoCloud::Delivery::DeliveryClient.new project_id: '<your-project-id>',
                                                inline_content_item_resolver: item_resolver
 ```
 
-The object passed to the resolving method is a complete ContentItem. Similar to content link resolvers, you can create your own class which extends `Delivery::Resolvers::InlineContentItemResolver` and implements the `resolve_item` method:
+The object passed to the resolving method is a complete ContentItem. Similar to content link resolvers, you can create your own class which extends `KenticoCloud::Delivery::Resolvers::InlineContentItemResolver` and implements the `resolve_item` method:
 
 ```ruby
-class MyItemResolver < Delivery::Resolvers::InlineContentItemResolver
+class MyItemResolver < KenticoCloud::Delivery::Resolvers::InlineContentItemResolver
   def resolve_item(item)
     return "<h1>#{item.elements.zip_code.value}</h1>" if item.system.type.eql? 'cafe'
     return "<div>$#{item.elements.price.value}</div>" if item.system.type.eql? 'brewer'
@@ -425,7 +432,7 @@ end
 You can also set the inline content resolver per-query:
 
 ```ruby
-delivery_client = Delivery::DeliveryClient.new project_id: '<your-project-id>'
+delivery_client = KenticoCloud::Delivery::DeliveryClient.new project_id: '<your-project-id>'
 # Client doesn't use InlineContentItemResolver, but query below will
 delivery_client.items
                .with_inline_content_item_resolver MyItemResolver.new
@@ -433,11 +440,11 @@ delivery_client.items
 
 ## Image transformation
 
-When you've obtained the URL for an asset, you can use our [Image Transformation API](https://developer.kenticocloud.com/v1/reference#image-transformation) to make on-the-fly modifications to the image. To do this, use the static `.transform` method of `Delivery::Builders::ImageTransformationBuilder`, then call the transformation methods. When you're done, call the `.url` method to get the new URL:
+When you've obtained the URL for an asset, you can use our [Image Transformation API](https://developer.kenticocloud.com/v1/reference#image-transformation) to make on-the-fly modifications to the image. To do this, use the static `.transform` method of `KenticoCloud::Delivery::Builders::ImageTransformationBuilder`, then call the transformation methods. When you're done, call the `.url` method to get the new URL:
 
 ```ruby
 url = response.item.get_assets('teaser_image').first.url
-url = Delivery::Builders::ImageTransformationBuilder.transform(url)
+url = KenticoCloud::Delivery::Builders::ImageTransformationBuilder.transform(url)
                                                     # methods...
                                                     .url
 ```
@@ -449,11 +456,11 @@ The available methods are:
 |`.with_width`| positive integer, or float between 0 and 1| ?w=200
 |`.with_height`| positive integer, or float between 0 and 1| ?h=200
 |`.with_pixel_ratio`| float greater than 0 but less than 5| ?dpr=1.5
-|`.with_fit_mode`| constants available at `Delivery::Builders::ImageTransformationBuilder` <ul><li>FITMODE_CROP</li><li>FITMODE_CLIP</li><li>FITMODE_SCALE</li></ul>| ?fit=crop
+|`.with_fit_mode`| constants available at `KenticoCloud::Delivery::Builders::ImageTransformationBuilder` <ul><li>FITMODE_CROP</li><li>FITMODE_CLIP</li><li>FITMODE_SCALE</li></ul>| ?fit=crop
 |`.with_rect`| 4 integer values representing pixels or floats representing percentages|rect=100,100,0.7,0.7
 |`.with_focal_point`| 2 floats between 0 and 1 and one integer between 1 and 100| ?fp-x=0.2&fp-y=0.7&fp-z=5
 |`.with_background_color`| string containing 3, 4, 6, or 8 characters | ?bg=7A0099EE
-|`.with_output_format`| constants available at `Delivery::Builders::ImageTransformationBuilder` <ul><li>FORMAT_GIF</li><li>FORMAT_PNG</li><li>FORMAT_PNG8</li><li>FORMAT_JPG</li><li>FORMAT_PJPG</li><li>FORMAT_WEBP</li></ul> | ?fm=webp
+|`.with_output_format`| constants available at `KenticoCloud::Delivery::Builders::ImageTransformationBuilder` <ul><li>FORMAT_GIF</li><li>FORMAT_PNG</li><li>FORMAT_PNG8</li><li>FORMAT_JPG</li><li>FORMAT_PJPG</li><li>FORMAT_WEBP</li></ul> | ?fm=webp
 |`.with_quality`| integer between 1 to 100 | ?quality=50
 |`.with_lossless`| 'true', 'false', 0, or 1| ?lossless=1
 |`.with_auto_format_selection`| 'true', 'false', 0, or 1 | ?auto=format

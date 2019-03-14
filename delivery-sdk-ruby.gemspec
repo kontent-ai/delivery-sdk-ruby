@@ -4,7 +4,7 @@ require "delivery/version"
 
 Gem::Specification.new do |spec|
   spec.name          = "delivery-sdk-ruby"
-  spec.version       = Delivery::VERSION
+  spec.version       = KenticoCloud::Delivery::VERSION
   spec.authors       = ["Eric Dugre"]
   spec.email         = ["EricD@kentico.com"]
 

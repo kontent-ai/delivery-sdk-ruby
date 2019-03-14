@@ -5,43 +5,43 @@ PREVIEW_KEY = ENV['PREVIEW_KEY']
 SECURE_KEY = ENV['SECURE_KEY']
 
 # DeliveryQuery
-RSpec.describe Delivery::DeliveryQuery do
+RSpec.describe KenticoCloud::Delivery::DeliveryQuery do
   before(:all) do
-    @dc = Delivery::DeliveryClient.new project_id: PROJECT_ID,
-                                       secure_key: SECURE_KEY
+    @dc = KenticoCloud::Delivery::DeliveryClient.new project_id: PROJECT_ID,
+                                                     secure_key: SECURE_KEY
   end
 
   describe '.items' do
     it 'returns DeliveryQuery' do
-      expect(@dc.items).to be_a Delivery::DeliveryQuery
+      expect(@dc.items).to be_a KenticoCloud::Delivery::DeliveryQuery
     end
   end
 
   describe '.execute' do
     it 'returns a ResponseBase' do
-      expect(@dc.items.execute).to be_a Delivery::Responses::ResponseBase
+      expect(@dc.items.execute).to be_a KenticoCloud::Delivery::Responses::ResponseBase
     end
   end
 end
 
 # UrlBuilder
-RSpec.describe Delivery::Builders::UrlBuilder do
+RSpec.describe KenticoCloud::Delivery::Builders::UrlBuilder do
   before(:all) do
-    @dc = Delivery::DeliveryClient.new project_id: PROJECT_ID
+    @dc = KenticoCloud::Delivery::DeliveryClient.new project_id: PROJECT_ID
   end
 
   describe '.provide_url' do
     it 'returns String' do
-      expect(Delivery::Builders::UrlBuilder.provide_url(@dc.items)).to be_a String
+      expect(KenticoCloud::Delivery::Builders::UrlBuilder.provide_url(@dc.items)).to be_a String
     end
   end
 end
 
 # ContentItem
-RSpec.describe Delivery::ContentItem do
+RSpec.describe KenticoCloud::Delivery::ContentItem do
   before(:all) do
-    @dc = Delivery::DeliveryClient.new project_id: PROJECT_ID,
-                                       secure_key: SECURE_KEY
+    @dc = KenticoCloud::Delivery::DeliveryClient.new project_id: PROJECT_ID,
+                                                     secure_key: SECURE_KEY
   end
 
   describe '.pagination' do
@@ -69,7 +69,7 @@ RSpec.describe Delivery::ContentItem do
         links = response.item.get_links 'facts'
         expect(links.length).to eq(3)
         links.each do |l|
-          expect(l).to be_a Delivery::ContentItem
+          expect(l).to be_a KenticoCloud::Delivery::ContentItem
           expect(l.system.codename).not_to be_nil
         end
       end
@@ -78,18 +78,18 @@ RSpec.describe Delivery::ContentItem do
 end
 
 # DeliveryClient
-RSpec.describe Delivery::DeliveryClient do
+RSpec.describe KenticoCloud::Delivery::DeliveryClient do
   before(:all) do
-    @dc = Delivery::DeliveryClient.new project_id: PROJECT_ID,
-                                       secure_key: SECURE_KEY,
-                                       preview_key: PREVIEW_KEY
+    @dc = KenticoCloud::Delivery::DeliveryClient.new project_id: PROJECT_ID,
+                                                     secure_key: SECURE_KEY,
+                                                     preview_key: PREVIEW_KEY
   end
 
   describe '.taxonomies' do
     it 'returns 4 groups' do
       @dc.taxonomies.execute do |response|
         expect(response.taxonomies.length).to eql(4)
-        expect(response.taxonomies[0]).to be_a Delivery::TaxonomyGroup
+        expect(response.taxonomies[0]).to be_a KenticoCloud::Delivery::TaxonomyGroup
       end
     end
   end
@@ -104,7 +104,7 @@ RSpec.describe Delivery::DeliveryClient do
 
   describe 'secure_key' do
     it 'results in 200 status' do
-      insecure = Delivery::DeliveryClient.new project_id: PROJECT_ID
+      insecure = KenticoCloud::Delivery::DeliveryClient.new project_id: PROJECT_ID
       insecure.items.execute do |response|
         @status1 = response.http_code
       end
@@ -140,10 +140,10 @@ RSpec.describe Delivery::DeliveryClient do
 end
 
 # Filters
-RSpec.describe Delivery::QueryParameters::Filter do
+RSpec.describe KenticoCloud::Delivery::QueryParameters::Filter do
   before(:all) do
-    @dc = Delivery::DeliveryClient.new project_id: PROJECT_ID,
-                                       secure_key: SECURE_KEY
+    @dc = KenticoCloud::Delivery::DeliveryClient.new project_id: PROJECT_ID,
+                                                     secure_key: SECURE_KEY
   end
 
   describe '.items with .gt filter' do
@@ -169,29 +169,29 @@ RSpec.describe Delivery::QueryParameters::Filter do
 end
 
 # QueryParameters
-RSpec.describe Delivery::QueryParameters::ParameterBase do
+RSpec.describe KenticoCloud::Delivery::QueryParameters::ParameterBase do
   before(:all) do
-    @dc = Delivery::DeliveryClient.new project_id: PROJECT_ID,
-                                       secure_key: SECURE_KEY
+    @dc = KenticoCloud::Delivery::DeliveryClient.new project_id: PROJECT_ID,
+                                                     secure_key: SECURE_KEY
   end
 
   describe '<string>.gt' do
     it 'returns a Filter' do
-      expect('system.codename'.gt(5)).to be_a Delivery::QueryParameters::Filter
+      expect('system.codename'.gt(5)).to be_a KenticoCloud::Delivery::QueryParameters::Filter
     end
   end
 end
 
 # ContentLinkResolver
-RSpec.describe Delivery::Resolvers::ContentLinkResolver do
+RSpec.describe KenticoCloud::Delivery::Resolvers::ContentLinkResolver do
   before(:all) do
-    @dc = Delivery::DeliveryClient.new project_id: PROJECT_ID,
-                                       secure_key: SECURE_KEY
+    @dc = KenticoCloud::Delivery::DeliveryClient.new project_id: PROJECT_ID,
+                                                     secure_key: SECURE_KEY
   end
 
   describe 'get_string' do
     it 'resolves links' do
-      lambda_resolver = Delivery::Resolvers::ContentLinkResolver.new(lambda do |link|
+      lambda_resolver = KenticoCloud::Delivery::Resolvers::ContentLinkResolver.new(lambda do |link|
         return "/coffees/#{link.url_slug}" if link.type.eql? 'coffee'
         return "/brewers/#{link.url_slug}" if link.type.eql? 'brewer'
       end)
@@ -205,7 +205,7 @@ RSpec.describe Delivery::Resolvers::ContentLinkResolver do
   end
 
   # Example of creating a link resolver in a class instead of lambda expression
-  class MyResolver < Delivery::Resolvers::ContentLinkResolver
+  class MyResolver < KenticoCloud::Delivery::Resolvers::ContentLinkResolver
     def resolve_link(link)
       return "/coffees/#{link.url_slug}" if link.type.eql? 'coffee'
       return "/brewers/#{link.url_slug}" if link.type.eql? 'brewer'
@@ -214,15 +214,15 @@ RSpec.describe Delivery::Resolvers::ContentLinkResolver do
 end
 
 # InlineContentItemResolver
-RSpec.describe Delivery::Resolvers::InlineContentItemResolver do
+RSpec.describe KenticoCloud::Delivery::Resolvers::InlineContentItemResolver do
   before(:all) do
-    lambda_resolver = Delivery::Resolvers::InlineContentItemResolver.new(lambda do |item|
+    lambda_resolver = KenticoCloud::Delivery::Resolvers::InlineContentItemResolver.new(lambda do |item|
       return "<h1>#{item.elements.zip_code.value}</h1>" if item.system.type.eql? 'cafe'
       return "<div>$#{item.elements.price.value}</div>" if item.system.type.eql? 'brewer'
     end)
-    @dc = Delivery::DeliveryClient.new project_id: PROJECT_ID,
-                                       preview_key: PREVIEW_KEY,
-                                       inline_content_item_resolver: lambda_resolver
+    @dc = KenticoCloud::Delivery::DeliveryClient.new project_id: PROJECT_ID,
+                                                     preview_key: PREVIEW_KEY,
+                                                     inline_content_item_resolver: lambda_resolver
   end
 
   describe 'get_string' do
@@ -235,7 +235,7 @@ RSpec.describe Delivery::Resolvers::InlineContentItemResolver do
   end
 
   # Example of creating an item resolver in a class instead of lambda expression
-  class MyResolver2 < Delivery::Resolvers::InlineContentItemResolver
+  class MyResolver2 < KenticoCloud::Delivery::Resolvers::InlineContentItemResolver
     def resolve_item(item)
       return "<h1>#{item.elements.zip_code.value}</h1>" if item.system.type.eql? 'cafe'
       return "<div>$#{item.elements.price.value}</div>" if item.system.type.eql? 'brewer'
