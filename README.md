@@ -51,7 +51,7 @@ You will use `KenticoCloud::Delivery::DeliveryClient` to obtain content from Ken
 delivery_client = KenticoCloud::Delivery::DeliveryClient.new project_id: '<your-project-id>'
 ```
 
-**Pro tip:** You can alias namespaces to make them shorter, e.g.
+:gem: **Pro tip:** You can alias namespaces to make them shorter, e.g.
 
 ```ruby
 KC = KenticoCloud::Delivery
