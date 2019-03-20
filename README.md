@@ -330,7 +330,7 @@ delivery_client.taxonomy('personas').execute do |response|
 end
 ```
 
-## Retreiveing content type elements
+## Retrieving content type elements
 
 Kentico Cloud provides an [endpoint](https://developer.kenticocloud.com/v1/reference#view-a-content-type-element) for obtaining details about a specific element of a content type. In the Ruby SDK, you can use the `.element` method:
 
