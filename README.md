@@ -342,7 +342,7 @@ end
 
 This returns a `KenticoCloud::Delivery::Responses::DeliveryElementResponse` where the `element` attribute is a dynamic OStruct representation of the JSON response. This means that you can access any property of the element by simply typing the name as in the above example.
 
-The element will always contain __codename__, __type__, and __name__, but multiple choice elements will also contain __options__ and taxonomy elements will contain __taxonomy_group__.
+The element will always contain __codename__, __type__, and __name__, but multiple choice elements will also contain __options__ and taxonomy elements will contain __taxonomy_group__. The Ruby SDK fully supports obtaining [custom elements](https://developer.kenticocloud.com/v1/reference#custom-elements-api) using this approach and any other methods.
 
 ## Resolving links
 
