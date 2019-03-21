@@ -1,7 +1,7 @@
 module KenticoCloud
   module Delivery
     module Builders
-      # Generates the URL required for Delivery REST API
+      # Internal class which generates the URL required for Delivery REST API
       class UrlBuilder
         URL_TEMPLATE_BASE = 'https://deliver.kenticocloud.com/%s'.freeze
         URL_TEMPLATE_PREVIEW = 'https://preview-deliver.kenticocloud.com/%s'.freeze
@@ -17,6 +17,14 @@ module KenticoCloud
         MSG_LONG_QUERY = 'The request url is too long. Split your query into multiple calls.'.freeze
 
         class << self
+          # Returns the proper domain for the request along with the
+          # query string parameters configured by the +DeliveryQuery+.
+          #
+          # * *Args*:
+          #   - *query* ( KenticoCloud::Delivery::DeliveryQuery )
+          #
+          # * *Returns*:
+          #   - +string+ The full URL for a Delivery request
           def provide_url(query)
             url = provide_base_url(query)
             url += provide_path_part(query)
@@ -28,39 +36,71 @@ module KenticoCloud
             end
           end
 
+          # Checks whether the provided URL is too long and raises an error if so.
+          #
+          # * *Args*:
+          #   - *url* (+string+) A full Delivery URL
+          #
+          # * *Raises*:
+          #   - +UriFormatException+ if the URL is 65,519 characters or more
           def validate_url(url)
             raise UriFormatException, MSG_LONG_QUERY if url.length > URL_MAX_LENGTH
           end
 
           private
 
-          # Returns relative path part of URL depending on query type
+          # Returns relative path part of URL depending on query type.
+          #
+          # * *Args*:
+          #   - *query* ( KenticoCloud::Delivery::DeliveryQuery )
+          #
+          # * *Returns*:
+          #   - +string+ The URL path part (without protocol or domain)
           def provide_path_part(query)
             case query.query_type
             when KenticoCloud::Delivery::QUERY_TYPE_ITEMS
-              if query.code_name.nil?
-                URL_TEMPLATE_ITEMS
-              else
-                format(URL_TEMPLATE_ITEM, query.code_name)
-              end
+              provide_item query
             when KenticoCloud::Delivery::QUERY_TYPE_TYPES
-              if query.code_name.nil?
-                URL_TEMPLATE_TYPES
-              else
-                format(URL_TEMPLATE_TYPE, query.code_name)
-              end
+              provide_type query
             when KenticoCloud::Delivery::QUERY_TYPE_TAXONOMIES
-              if query.code_name.nil?
-                URL_TEMPLATE_TAXONOMIES
-              else
-                format(URL_TEMPLATE_TAXONOMY, query.code_name)
-              end
+              provide_taxonomy query
             when KenticoCloud::Delivery::QUERY_TYPE_ELEMENT
               format(URL_TEMPLATE_ELEMENTS, query.content_type, query.code_name)
             end
           end
 
-          # Returns the protocol and domain with project ID
+          def provide_item(query)
+            if query.code_name.nil?
+              URL_TEMPLATE_ITEMS
+            else
+              format(URL_TEMPLATE_ITEM, query.code_name)
+            end
+          end
+
+          def provide_taxonomy(query)
+            if query.code_name.nil?
+              URL_TEMPLATE_TAXONOMIES
+            else
+              format(URL_TEMPLATE_TAXONOMY, query.code_name)
+            end
+          end
+
+          def provide_type(query)
+            if query.code_name.nil?
+              URL_TEMPLATE_TYPES
+            else
+              format(URL_TEMPLATE_TYPE, query.code_name)
+            end
+          end
+
+          # Returns the protocol and domain with project ID. Domain changes
+          # according to the query's +use_preview+ attribute.
+          #
+          # * *Args*:
+          #   - *query* ( KenticoCloud::Delivery::DeliveryQuery )
+          #
+          # * *Returns*:
+          #   - +string+ The URL with the project ID
           def provide_base_url(query)
             if query.use_preview
               format(URL_TEMPLATE_PREVIEW, query.project_id)

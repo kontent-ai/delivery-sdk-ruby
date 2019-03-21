@@ -5,8 +5,7 @@ require 'delivery/version'
 
 module KenticoCloud
   module Delivery
-    # Responsible for translating query parameters into the
-    # corresponding REST request to Kentico Cloud.
+    # Responsible for executing REST requests to Kentico Cloud.
     class DeliveryQuery
       ERROR_PREVIEW = 'Preview is enabled for the query, but the key is null. '\
                       'You can set the preview_key attribute of the query, or '\
@@ -25,14 +24,23 @@ module KenticoCloud
                     :query_string,
                     :content_type
 
-      # Setter for url, returns self for chaining
-      # .url represents *manually* configured urls, otherwise final url is
-      # generated in .execute and this will return nil
+      # Setter for a custom URL.
+      #
+      # * *Args*:
+      #   - *url* (+string+) _optional_ Custom URL to use for the query
+      #
+      # * *Returns*:
+      #   - +self+
       def url(url = nil)
         @url = url unless url.nil?
         self
       end
 
+      # Constructor. Queries should not be instantiated using the constructor, but
+      # using one of the KenticoCloud::Delivery::DeliveryClient methods instead.
+      #
+      # * *Args*:
+      #   - *config* (+Hash+) A hash in which each key automatically has its value paired with the corresponding attribute
       def initialize(config)
         @headers = {}
 
@@ -48,6 +56,10 @@ module KenticoCloud
         validate_params config.fetch(:qp)
       end
 
+      # Executes the REST request.
+      #
+      # * *Returns*:
+      #   - KenticoCloud::Delivery::Responses::ResponseBase or a class extending it
       def execute
         provide_url
         begin
@@ -66,45 +78,120 @@ module KenticoCloud
         end
       end
 
+      # Sets a content link resolver to render links contained in rich text. See
+      # https://github.com/Kentico/delivery-sdk-ruby#resolving-links
+      #
+      # * *Args*:
+      #   - *resolver* ( KenticoCloud::Delivery::Resolvers::ContentLinkResolver ) The resolver. Replaces a resolver registered during +DeliveryClient+ instantiation, for this query only.
+      #
+      # * *Returns*:
+      #   - +self+
       def with_link_resolver(resolver)
         self.content_link_url_resolver = resolver
         self
       end
 
+      # Sets an inline content itme to render content items and components in rich text.
+      # See https://github.com/Kentico/delivery-sdk-ruby#resolving-inline-content
+      #
+      # * *Args*:
+      #   - *resolver* ( KenticoCloud::Delivery::Resolvers::InlineContentItemResolver ) The resolver. Replaces a resolver registered during +DeliveryClient+ instantiation, for this query only.
+      #
+      # * *Returns*:
+      #   - +self+
       def with_inline_content_item_resolver(resolver)
         self.inline_content_item_resolver = resolver
         self
       end
 
+      # Sets the 'order' query string parameter
+      #
+      # * *Args*:
+      #   - *value* (+string+) The value to order by
+      #   - *sort* (+string+) _optional_ The direction of the order, surrounded by brackets. The default value is '[asc]'
+      #
+      # * *Returns*:
+      #   - +self+
       def order_by(value, sort = '[asc]')
         query_string.set_param('order', value + sort)
         self
       end
 
+      # Sets the 'skip' query string parameter for paging results.
+      # See https://developer.kenticocloud.com/v1/reference#listing-response-paging
+      #
+      # * *Args*:
+      #   - *value* (+integer+) The number to skip by
+      #
+      # * *Returns*:
+      #   - +self+
       def skip(value)
         query_string.set_param('skip', value)
         self
       end
 
+      # Sets the 'language' query string parameter. Language fallbacks will be used
+      # if untranslated content items are found.
+      # See https://developer.kenticocloud.com/docs/localization#section-getting-localized-content-items
+      #
+      # * *Args*:
+      #   - *value* (+string+) The code name of the desired language
+      #
+      # * *Returns*:
+      #   - +self+
       def language(value)
         query_string.set_param('language', value)
       end
 
+      # Sets the 'limit' query string parameter for paging results, or just to
+      # return a specific number of content items.
+      # See https://developer.kenticocloud.com/v1/reference#listing-response-paging
+      #
+      # * *Args*:
+      #   - *value* (+integer+) The number of content items to return
+      #
+      # * *Returns*:
+      #   - +self+
       def limit(value)
         query_string.set_param('limit', value)
         self
       end
 
+      # Sets the 'elements' query string parameter to limit the elements returned
+      # by the query.
+      # See https://developer.kenticocloud.com/v1/reference#projection
+      #
+      # * *Args*:
+      #   - *value* (+Array+) A single string or array of strings specifying the desired elements, e.g. %w[price product_name image]
+      #
+      # * *Returns*:
+      #   - +self+
       def elements(value)
         query_string.set_param('elements', value)
         self
       end
 
+      # Sets the 'depth' query string parameter to determine how many levels of
+      # linked content items should be returned. By default, only 1 level of depth
+      # is used.
+      # See https://developer.kenticocloud.com/v1/reference#linked-content
+      #
+      # * *Args*:
+      #   - *value* (+integer+) Level of linked items to be returned
+      #
+      # * *Returns*:
+      #   - +self+
       def depth(value)
         query_string.set_param('depth', value)
         self
       end
 
+      # Allows the request to bypass caching and return the latest content
+      # directly from Kentico Cloud.
+      # See https://github.com/Kentico/delivery-sdk-ruby#requesting-the-latest-content
+      #
+      # * *Returns*:
+      #   - +self+
       def request_latest_content
         @headers['X-KC-Wait-For-Loading-New-Content'] = true
         self
@@ -112,17 +199,27 @@ module KenticoCloud
 
       private
 
+      # Uses KenticoCloud::Delivery::Builders::UrlBuilder.provide_url to set
+      # the URL for the query. The +UrlBuilder+ also validates the URL.
+      #
+      # * *Raises*:
+      #   - +UriFormatException+ if the URL is 65,519 characters or more
       def provide_url
         @url = KenticoCloud::Delivery::Builders::UrlBuilder.provide_url self if @url.nil?
         KenticoCloud::Delivery::Builders::UrlBuilder.validate_url @url
       end
 
+      # Initializes the +query_string+ attribute with the passed array of
+      # KenticoCloud::Delivery::QueryParameters::Filter objects.
+      #
+      # * *Raises*:
+      #   - +ArgumentError+ if one the passed objects is not a +Filter+
       def validate_params(query_parameters)
         params = if query_parameters.is_a? Array
-                  query_parameters
-                else
-                  [query_parameters]
-                end
+                   query_parameters
+                 else
+                   [query_parameters]
+                 end
         params.each do |p|
           query_string.set_param p
           unless p.is_a? KenticoCloud::Delivery::QueryParameters::Filter
@@ -131,14 +228,23 @@ module KenticoCloud
         end
       end
 
-      # Returns true if this query should use preview mode. Raises an error if
-      # preview is enabled, but the key is nil
+      # Determines whether the query should use preview mode.
+      #
+      # * *Returns*:
+      #   - +boolean+ Whether preview mode should be used for the query
+      #
+      # * *Raises*:
+      #   - +StandardError+ if +use_preview+ is true, but +preview_key+ is +nil+
       def should_preview
         raise ERROR_PREVIEW if use_preview && preview_key.nil?
 
         use_preview && !preview_key.nil?
       end
 
+      # Executes the REST request using the +rest-client+ gem.
+      #
+      # * *Returns*:
+      #   - +Object+ The response from the server
       def execute_rest
         headers = @headers.clone
 
@@ -153,36 +259,52 @@ module KenticoCloud
         "rubygems.org;delivery-sdk-ruby;#{KenticoCloud::Delivery::VERSION}"
       end
 
+      # Converts a standard REST response based on the type of query.
+      #
+      # * *Returns*:
+      #   - An object derived from the KenticoCloud::Delivery::Responses::ResponseBase class
       def make_response(response)
         case query_type
         when KenticoCloud::Delivery::QUERY_TYPE_ITEMS
-          if code_name.nil?
-            KenticoCloud::Delivery::Responses::DeliveryItemListingResponse.new(
-              JSON.parse(response),
-              content_link_url_resolver,
-              inline_content_item_resolver
-            )
-          else
-            KenticoCloud::Delivery::Responses::DeliveryItemResponse.new(
-              JSON.parse(response),
-              content_link_url_resolver,
-              inline_content_item_resolver
-            )
-          end
+          respond_item response
         when KenticoCloud::Delivery::QUERY_TYPE_TYPES
-          if code_name.nil?
-            KenticoCloud::Delivery::Responses::DeliveryTypeListingResponse.new JSON.parse(response)
-          else
-            KenticoCloud::Delivery::Responses::DeliveryTypeResponse.new JSON.parse(response)
-          end
+          respond_type response
         when KenticoCloud::Delivery::QUERY_TYPE_TAXONOMIES
-          if code_name.nil?
-            KenticoCloud::Delivery::Responses::DeliveryTaxonomyListingResponse.new JSON.parse(response)
-          else
-            KenticoCloud::Delivery::Responses::DeliveryTaxonomyResponse.new JSON.parse(response)
-          end
+          respond_taxonomy response
         when KenticoCloud::Delivery::QUERY_TYPE_ELEMENT
           KenticoCloud::Delivery::Responses::DeliveryElementResponse.new JSON.parse(response)
+        end
+      end
+
+      def respond_type(response)
+        if code_name.nil?
+          KenticoCloud::Delivery::Responses::DeliveryTypeListingResponse.new JSON.parse(response)
+        else
+          KenticoCloud::Delivery::Responses::DeliveryTypeResponse.new JSON.parse(response)
+        end
+      end
+
+      def respond_taxonomy(response)
+        if code_name.nil?
+          KenticoCloud::Delivery::Responses::DeliveryTaxonomyListingResponse.new JSON.parse(response)
+        else
+          KenticoCloud::Delivery::Responses::DeliveryTaxonomyResponse.new JSON.parse(response)
+        end
+      end
+
+      def respond_item(response)
+        if code_name.nil?
+          KenticoCloud::Delivery::Responses::DeliveryItemListingResponse.new(
+            JSON.parse(response),
+            content_link_url_resolver,
+            inline_content_item_resolver
+          )
+        else
+          KenticoCloud::Delivery::Responses::DeliveryItemResponse.new(
+            JSON.parse(response),
+            content_link_url_resolver,
+            inline_content_item_resolver
+          )
         end
       end
     end

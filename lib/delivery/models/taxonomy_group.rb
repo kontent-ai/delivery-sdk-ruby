@@ -1,7 +1,10 @@
 module KenticoCloud
   module Delivery
-    # JSON data of a taxonomy group parsed as OpenStruct objects for dynamic use
     class TaxonomyGroup
+      # Parses the 'terms' JSON node as a dynamic OpenStruct object.
+      #
+      # * *Returns*:
+      #   - +OpenStruct+ The terms of the taxonomy group as a dynamic object
       def terms
         @terms unless @terms.nil?
         @terms = JSON.parse(
@@ -10,6 +13,10 @@ module KenticoCloud
         )
       end
 
+      # Parses the 'system' JSON node as a dynamic OpenStruct object.
+      #
+      # * *Returns*:
+      #   - +OpenStruct+ The system properties of the taxonomy group
       def system
         @system unless @system.nil?
         @system = JSON.parse(
@@ -18,6 +25,10 @@ module KenticoCloud
         )
       end
 
+      # Constructor.
+      #
+      # * *Args*:
+      #   - *json* (+JSON+) A JSON node representing a taxonomy group
       def initialize(source)
         @source = source
       end

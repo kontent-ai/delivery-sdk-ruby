@@ -2,8 +2,11 @@ require 'ostruct'
 
 module KenticoCloud
   module Delivery
-    # JSON data of a content type parsed as OpenStruct objects for dynamic use
     class ContentType
+      # Parses the 'elements' JSON object as a dynamic OpenStruct object.
+      #
+      # * *Returns*:
+      #   - +OpenStruct+ The elements of the content type
       def elements
         @elements unless @elements.nil?
         @elements = JSON.parse(
@@ -12,6 +15,10 @@ module KenticoCloud
         )
       end
 
+      # Parses the 'system' JSON object as a dynamic OpenStruct object.
+      #
+      # * *Returns*:
+      #   - +OpenStruct+ The system properties of the content type
       def system
         @system unless @system.nil?
         @system = JSON.parse(
@@ -20,6 +27,10 @@ module KenticoCloud
         )
       end
 
+      # Constructor.
+      #
+      # * *Args*:
+      #   - *source* (+JSON+) The response from a REST request for content types
       def initialize(source)
         @source = source
       end

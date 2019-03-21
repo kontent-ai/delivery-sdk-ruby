@@ -3,8 +3,14 @@ require 'delivery/responses/response_base'
 module KenticoCloud
   module Delivery
     module Responses
-      # Returned by DeliveryClient.element containing a single element
+      # The response of a successful query of a content type's element
+      # See https://github.com/Kentico/delivery-sdk-ruby#retrieving-content-type-elements
       class DeliveryElementResponse < ResponseBase
+        # An element's definition from a
+        # KenticoCloud::Delivery::DeliveryClient.element call
+        #
+        # * *Returns*:
+        #   - +OpenStruct+ The element of a content item
         def element
           @element unless @element.nil?
           @element = JSON.parse(

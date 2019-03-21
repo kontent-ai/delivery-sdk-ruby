@@ -14,6 +14,15 @@ module KenticoCloud
     class DeliveryClient
       attr_accessor :use_preview
 
+      # Constructor. Accepts a hash with the options for client.
+      #
+      # * *Args*:
+      #   - *config* (+Hash+) May contain the following keys:
+      #     - project_id (+string+) _required_
+      #     - preview_key (+string+)
+      #     - secure_key (+string+)
+      #     - content_link_url_resolver ( KenticoCloud::Delivery::Resolvers::ContentLinkResolver )
+      #     - inline_content_item_resolver ( KenticoCloud::Delivery::Resolvers::InlineContentItemResolver )
       def initialize(config)
         @project_id = config.fetch(:project_id)
         @preview_key = config.fetch(:preview_key, nil)
@@ -23,12 +32,23 @@ module KenticoCloud
         self.use_preview = !@preview_key.nil?
       end
 
+      # Return all content types of the project
+      #
+      # * *Returns*:
+      #   - KenticoCloud::Delivery::DeliveryQuery
       def types
         DeliveryQuery.new project_id: @project_id,
                           secure_key: @secure_key,
                           query_type: QUERY_TYPE_TYPES
       end
 
+      # Return a single content type of the project
+      #
+      # * *Args*:
+      #   - *code_name* (+string+) Code name of the desired content type
+      #
+      # * *Returns*:
+      #   - KenticoCloud::Delivery::DeliveryQuery
       def type(code_name)
         DeliveryQuery.new project_id: @project_id,
                           secure_key: @secure_key,
@@ -36,6 +56,13 @@ module KenticoCloud
                           query_type: QUERY_TYPE_TYPES
       end
 
+      # Return all content items of the project
+      #
+      # * *Args*:
+      #   - *query_parameters* (+Array+) _optional_ One or more KenticoCloud::Delivery::QueryParameters::Filter objects. A single object will automatically be converted into an Array.
+      #
+      # * *Returns*:
+      #   - KenticoCloud::Delivery::DeliveryQuery
       def items(query_parameters = [])
         q = DeliveryQuery.new project_id: @project_id,
                               secure_key: @secure_key,
@@ -48,6 +75,14 @@ module KenticoCloud
         q
       end
 
+      # Return a single content item of the project
+      #
+      # * *Args*:
+      #   - *code_name* (+string+) The code name of the desired content item
+      #   - *query_parameters* (+Array+) _optional_ One or more KenticoCloud::Delivery::QueryParameters::Filter objects. A single object will automatically be converted into an Array.
+      #
+      # * *Returns*:
+      #   - KenticoCloud::Delivery::DeliveryQuery
       def item(code_name, query_parameters = [])
         q = DeliveryQuery.new project_id: @project_id,
                               secure_key: @secure_key,
@@ -61,6 +96,13 @@ module KenticoCloud
         q
       end
 
+      # Return all taxonomy groups of the project
+      #
+      # * *Args*:
+      #   - *query_parameters* (+Array+) _optional_ One or more KenticoCloud::Delivery::QueryParameters::Filter objects. A single object will automatically be converted into an Array.
+      #
+      # * *Returns*:
+      #   - KenticoCloud::Delivery::DeliveryQuery
       def taxonomies(query_parameters = [])
         DeliveryQuery.new project_id: @project_id,
                           secure_key: @secure_key,
@@ -68,6 +110,13 @@ module KenticoCloud
                           query_type: QUERY_TYPE_TAXONOMIES
       end
 
+      # Return a single taxonomy group of the project
+      #
+      # * *Args*:
+      #   - *code_name* (+string+) The code name of the desired taxonomy group
+      #
+      # * *Returns*:
+      #   - KenticoCloud::Delivery::DeliveryQuery
       def taxonomy(code_name)
         DeliveryQuery.new project_id: @project_id,
                           secure_key: @secure_key,
@@ -75,6 +124,14 @@ module KenticoCloud
                           query_type: QUERY_TYPE_TAXONOMIES
       end
 
+      # Return a single element of a content type
+      #
+      # * *Args*:
+      #   - *content_type* (+string+) The code name of the content type containing the element
+      #   - *element* (+string+) The code name of the desired element
+      #
+      # * *Returns*:
+      #   - KenticoCloud::Delivery::DeliveryQuery
       def element(content_type, element)
         DeliveryQuery.new project_id: @project_id,
                           secure_key: @secure_key,
