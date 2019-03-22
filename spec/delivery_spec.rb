@@ -194,6 +194,8 @@ RSpec.describe KenticoCloud::Delivery::Resolvers::ContentLinkResolver do
       lambda_resolver = KenticoCloud::Delivery::Resolvers::ContentLinkResolver.new(lambda do |link|
         return "/coffees/#{link.url_slug}" if link.type.eql? 'coffee'
         return "/brewers/#{link.url_slug}" if link.type.eql? 'brewer'
+      end, lambda do |id|
+        return "/notfound?id=#{id}"
       end)
 
       @dc.item('coffee_processing_techniques')
@@ -209,6 +211,10 @@ RSpec.describe KenticoCloud::Delivery::Resolvers::ContentLinkResolver do
     def resolve_link(link)
       return "/coffees/#{link.url_slug}" if link.type.eql? 'coffee'
       return "/brewers/#{link.url_slug}" if link.type.eql? 'brewer'
+    end
+
+    def resolve_404(id)
+      "/notfound?id=#{id}"
     end
   end
 end

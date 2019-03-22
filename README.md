@@ -346,24 +346,32 @@ The element will always contain __codename__, __type__, and __name__, but multip
 
 ## Resolving links
 
-If a rich text element contains links to other content items, you will need to generate the URLs to those items. You can do this by registering a `KenticoCloud::Delivery::Resolvers::ContentLinkResolver` when you instantiate the DeliveryClient. When you create a ContentLinkResolver, you must pass a method that will return the URL:
+If a rich text element contains links to other content items, you will need to generate the URLs to those items. You can do this by registering a `KenticoCloud::Delivery::Resolvers::ContentLinkResolver` when you instantiate the DeliveryClient. When you create a ContentLinkResolver, you must pass a method that will return the URL, and you may pass another method that will be called if the content contains a link, but the content item is not present in the response:
 
 ```ruby
 link_resolver = KenticoCloud::Delivery::Resolvers::ContentLinkResolver.new(lambda do |link|
-  return "/coffees/#{link.url_slug}" if link.type.eql? 'coffee'
-  return "/brewers/#{link.url_slug}" if link.type.eql? 'brewer'
-end)
+        # Link valid
+        return "/coffees/#{link.url_slug}" if link.type.eql? 'coffee'
+        return "/brewers/#{link.url_slug}" if link.type.eql? 'brewer'
+      end, lambda do |id|
+        # link broken
+        return "/notfound?id=#{id}"
+      end)
 delivery_client = KenticoCloud::Delivery::DeliveryClient.new project_id: '<your-project-id>',
                                                              content_link_url_resolver: link_resolver
 ```
 
-You can also build the logic for your resolver in a separate class and register an instance of that class in the DeliveryClient. The class must extend `KenticoCloud::Delivery::Resolvers::ContentLinkResolver` and contain a `resolve_link(link)` method. For example, you can create `MyLinkResolver.rb`:
+You can also build the logic for your resolver in a separate class and register an instance of that class in the DeliveryClient. The class must extend `KenticoCloud::Delivery::Resolvers::ContentLinkResolver` and contain a `resolve_link(link)` method, as well as the `resolve_404(id)` method for broken links. For example, you can create `MyLinkResolver.rb`:
 
 ```ruby
 class MyLinkResolver < KenticoCloud::Delivery::Resolvers::ContentLinkResolver
   def resolve_link(link)
     return "/coffees/#{link.url_slug}" if link.type.eql? 'coffee'
     return "/brewers/#{link.url_slug}" if link.type.eql? 'brewer'
+  end
+
+  def resolve_404(id)
+    "/notfound?id=#{id}"
   end
 end
 ```
