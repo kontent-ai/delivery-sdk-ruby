@@ -354,7 +354,7 @@ link_resolver = KenticoCloud::Delivery::Resolvers::ContentLinkResolver.new(lambd
         return "/coffees/#{link.url_slug}" if link.type.eql? 'coffee'
         return "/brewers/#{link.url_slug}" if link.type.eql? 'brewer'
       end, lambda do |id|
-        # link broken
+        # Link broken
         return "/notfound?id=#{id}"
       end)
 delivery_client = KenticoCloud::Delivery::DeliveryClient.new project_id: '<your-project-id>',
