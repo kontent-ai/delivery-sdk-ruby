@@ -141,6 +141,7 @@ module KenticoCloud
       #   - +self+
       def language(value)
         query_string.set_param('language', value)
+        self
       end
 
       # Sets the 'limit' query string parameter for paging results, or just to
