@@ -31,7 +31,7 @@ module KenticoCloud
           tags = doc.xpath('//a[@data-item-id]')
           # This line performs the link resolving and replaces the tags in doc
           tags.map { |tag| resolve_tag tag, links }
-          doc.inner_html
+          doc.to_xhtml
         end
 
         private
