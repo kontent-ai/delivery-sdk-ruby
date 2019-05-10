@@ -90,6 +90,26 @@ KenticoCloud::Delivery::DeliveryClient.new project_id: '<your-project-id>',
                                            secure_key: '<your-secure-key>'
 ```
 
+### Retry policy
+
+By default, the SDK uses a retry policy, asking for requested content again in case of an error. The default policy retries the HTTP requests if the following status codes are returned:
+
+* 408 - `RequestTimeout`
+* 500 - `InternalServerError`
+* 502 - `BadGateway`
+* 503 - `ServiceUnavailable`
+* 504 - `GatewayTimeout`
+
+The default policy retries requests 5 times, totaling 6 overall attempts to retrieve content before returning a `ResponseBase` object containing the error. The consecutive attempts are delayed exponentially: 200 milliseconds, 400 milliseconds, 800 milliseconds, etc.
+
+To disable the retry policy, you can use the `with_retry_policy` argument:
+
+```ruby
+KenticoCloud::Delivery::DeliveryClient.new project_id: '<your-project-id>',
+                                           secure_key: '<your-secure-key>',
+                                           with_retry_policy: false
+```
+
 ## Listing items
 
 

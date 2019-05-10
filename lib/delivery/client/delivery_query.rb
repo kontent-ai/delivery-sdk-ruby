@@ -1,4 +1,3 @@
-require 'rest-client'
 require 'delivery/builders/url_builder'
 require 'delivery/query_parameters/query_string'
 require 'delivery/version'
@@ -22,7 +21,8 @@ module KenticoCloud
                     :inline_content_item_resolver,
                     :query_type,
                     :query_string,
-                    :content_type
+                    :content_type,
+                    :with_retry_policy
 
       # Setter for a custom URL.
       #
@@ -61,21 +61,14 @@ module KenticoCloud
       # * *Returns*:
       #   - KenticoCloud::Delivery::Responses::ResponseBase or a class extending it
       def execute
-        provide_url
-        begin
-          resp = execute_rest
-        rescue RestClient::ExceptionWithResponse => err
-          resp = KenticoCloud::Delivery::Responses::ResponseBase.new err.http_code, err.response
-        rescue RestClient::SSLCertificateNotVerified => err
-          resp = KenticoCloud::Delivery::Responses::ResponseBase.new 500, err
-        rescue SocketError => err
-          resp = KenticoCloud::Delivery::Responses::ResponseBase.new 500, err.message
-        else
-          resp = make_response resp
-        ensure
-          yield resp if block_given?
-          resp
-        end
+        headers = @headers.clone
+        headers['X-KC-SDKID'] = provide_sdk_header
+        headers['Authorization'] = "Bearer #{preview_key}" if should_preview
+        headers['Authorization'] = "Bearer #{secure_key}" if !should_preview && secure_key
+
+        resp = KenticoCloud::Delivery::RequestManager.start self, headers
+        yield resp if block_given?
+        resp
       end
 
       # Sets a content link resolver to render links contained in rich text. See
@@ -198,17 +191,21 @@ module KenticoCloud
         self
       end
 
-      private
-
       # Uses KenticoCloud::Delivery::Builders::UrlBuilder.provide_url to set
       # the URL for the query. The +UrlBuilder+ also validates the URL.
       #
       # * *Raises*:
       #   - +UriFormatException+ if the URL is 65,519 characters or more
+      #
+      # * *Returns*:
+      #   - +string+ The full URL for this query
       def provide_url
         @url = KenticoCloud::Delivery::Builders::UrlBuilder.provide_url self if @url.nil?
         KenticoCloud::Delivery::Builders::UrlBuilder.validate_url @url
+        @url
       end
+
+      private
 
       # Initializes the +query_string+ attribute with the passed array of
       # KenticoCloud::Delivery::QueryParameters::Filter objects.
@@ -242,71 +239,8 @@ module KenticoCloud
         use_preview && !preview_key.nil?
       end
 
-      # Executes the REST request using the +rest-client+ gem.
-      #
-      # * *Returns*:
-      #   - +Object+ The response from the server
-      def execute_rest
-        headers = @headers.clone
-
-        headers['X-KC-SDKID'] = provide_sdk_header
-        headers['Authorization'] = "Bearer #{preview_key}" if should_preview
-        headers['Authorization'] = "Bearer #{secure_key}" if !should_preview && secure_key
-
-        RestClient.get @url, headers
-      end
-
       def provide_sdk_header
         "rubygems.org;delivery-sdk-ruby;#{KenticoCloud::Delivery::VERSION}"
-      end
-
-      # Converts a standard REST response based on the type of query.
-      #
-      # * *Returns*:
-      #   - An object derived from the KenticoCloud::Delivery::Responses::ResponseBase class
-      def make_response(response)
-        case query_type
-        when KenticoCloud::Delivery::QUERY_TYPE_ITEMS
-          respond_item response
-        when KenticoCloud::Delivery::QUERY_TYPE_TYPES
-          respond_type response
-        when KenticoCloud::Delivery::QUERY_TYPE_TAXONOMIES
-          respond_taxonomy response
-        when KenticoCloud::Delivery::QUERY_TYPE_ELEMENT
-          KenticoCloud::Delivery::Responses::DeliveryElementResponse.new JSON.parse(response)
-        end
-      end
-
-      def respond_type(response)
-        if code_name.nil?
-          KenticoCloud::Delivery::Responses::DeliveryTypeListingResponse.new JSON.parse(response)
-        else
-          KenticoCloud::Delivery::Responses::DeliveryTypeResponse.new JSON.parse(response)
-        end
-      end
-
-      def respond_taxonomy(response)
-        if code_name.nil?
-          KenticoCloud::Delivery::Responses::DeliveryTaxonomyListingResponse.new JSON.parse(response)
-        else
-          KenticoCloud::Delivery::Responses::DeliveryTaxonomyResponse.new JSON.parse(response)
-        end
-      end
-
-      def respond_item(response)
-        if code_name.nil?
-          KenticoCloud::Delivery::Responses::DeliveryItemListingResponse.new(
-            JSON.parse(response),
-            content_link_url_resolver,
-            inline_content_item_resolver
-          )
-        else
-          KenticoCloud::Delivery::Responses::DeliveryItemResponse.new(
-            JSON.parse(response),
-            content_link_url_resolver,
-            inline_content_item_resolver
-          )
-        end
       end
     end
   end

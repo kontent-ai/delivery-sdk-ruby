@@ -1,5 +1,6 @@
 require File.dirname(__FILE__) + '/delivery/client/delivery_client'
 require File.dirname(__FILE__) + '/delivery/client/delivery_query'
+require File.dirname(__FILE__) + '/delivery/client/request_manager'
 require File.dirname(__FILE__) + '/delivery/models/content_item'
 require File.dirname(__FILE__) + '/delivery/models/content_type'
 require File.dirname(__FILE__) + '/delivery/models/taxonomy_group'
