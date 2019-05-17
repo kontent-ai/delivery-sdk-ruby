@@ -1,4 +1,5 @@
 require 'rest-client'
+require 'dotenv/load'
 
 module KenticoCloud
   module Delivery
@@ -31,15 +32,24 @@ module KenticoCloud
         end
 
         def continue
-          resp = RestClient.get @url, @headers
-        rescue RestClient::ExceptionWithResponse => err
-          should_retry KenticoCloud::Delivery::Responses::ResponseBase.new err.http_code, err.response
-        rescue RestClient::SSLCertificateNotVerified => err
-          should_retry KenticoCloud::Delivery::Responses::ResponseBase.new 500, err
-        rescue SocketError => err
-          should_retry KenticoCloud::Delivery::Responses::ResponseBase.new 500, err.message
-        else
-          make_response resp
+          if ENV['TEST'] == '1'
+            resp = KenticoCloud::Delivery::Tests::FakeResponder.get_response @query, @url, @headers
+            return resp if resp.is_a? KenticoCloud::Delivery::Responses::ResponseBase
+
+            make_response resp # resp is pure JSON
+          else
+            begin
+              resp = RestClient.get @url, @headers
+            rescue RestClient::ExceptionWithResponse => err
+              should_retry KenticoCloud::Delivery::Responses::ResponseBase.new err.http_code, err.response
+            rescue RestClient::SSLCertificateNotVerified => err
+              should_retry KenticoCloud::Delivery::Responses::ResponseBase.new 500, err
+            rescue SocketError => err
+              should_retry KenticoCloud::Delivery::Responses::ResponseBase.new 500, err.message
+            else
+              make_response resp
+            end
+          end
         end
 
         # Converts a standard REST response based on the type of query.

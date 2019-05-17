@@ -81,8 +81,7 @@ end
 RSpec.describe KenticoCloud::Delivery::DeliveryClient do
   before(:all) do
     @dc = KenticoCloud::Delivery::DeliveryClient.new project_id: PROJECT_ID,
-                                                     secure_key: SECURE_KEY,
-                                                     preview_key: PREVIEW_KEY
+                                                     secure_key: SECURE_KEY
   end
 
   describe '.taxonomies' do
@@ -105,27 +104,16 @@ RSpec.describe KenticoCloud::Delivery::DeliveryClient do
   describe 'secure_key' do
     it 'results in 200 status' do
       insecure = KenticoCloud::Delivery::DeliveryClient.new project_id: PROJECT_ID
-      insecure.items.execute do |response|
-        @status1 = response.http_code
-      end
 
-      @dc.items.execute do |response|
-        expect(@status1).to eql(401)
-        expect(response.http_code).to eql(200)
-      end
-    end
-  end
-
-  describe 'ctor' do
-    it 'enables preview' do
-      expect(@dc.use_preview).to be true
+      expect(insecure.items.execute.http_code).to eql(401)
+      expect(@dc.items.execute.http_code).to eql(200)
     end
   end
 
   describe '.items' do
-    it 'return 43 items' do
+    it 'return 31 items' do
       @dc.items.execute do |response|
-        expect(response.items.length).to eq(43)
+        expect(response.items.length).to eq(31)
       end
     end
   end
@@ -200,7 +188,7 @@ RSpec.describe KenticoCloud::Delivery::Resolvers::ContentLinkResolver do
 
       @dc.item('coffee_processing_techniques')
          .with_link_resolver(lambda_resolver)
-         .depth(0).execute do |response|
+         .execute do |response|
            expect(response.item.get_string('body_copy')).not_to eql(response.item.elements.body_copy.value)
          end
     end
@@ -227,7 +215,7 @@ RSpec.describe KenticoCloud::Delivery::Resolvers::InlineContentItemResolver do
       return "<div>$#{item.elements.price.value}</div>" if item.system.type.eql? 'brewer'
     end)
     @dc = KenticoCloud::Delivery::DeliveryClient.new project_id: PROJECT_ID,
-                                                     preview_key: PREVIEW_KEY,
+                                                     secure_key: SECURE_KEY,
                                                      inline_content_item_resolver: lambda_resolver
   end
 

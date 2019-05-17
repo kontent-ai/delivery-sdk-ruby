@@ -71,6 +71,19 @@ module KenticoCloud
         resp
       end
 
+      # Determines whether the query should use preview mode.
+      #
+      # * *Returns*:
+      #   - +boolean+ Whether preview mode should be used for the query
+      #
+      # * *Raises*:
+      #   - +StandardError+ if +use_preview+ is true, but +preview_key+ is +nil+
+      def should_preview
+        raise ERROR_PREVIEW if use_preview && preview_key.nil?
+
+        use_preview && !preview_key.nil?
+      end
+
       # Sets a content link resolver to render links contained in rich text. See
       # https://github.com/Kentico/delivery-sdk-ruby#resolving-links
       #
@@ -224,19 +237,6 @@ module KenticoCloud
             raise ArgumentError, ERROR_PARAMS
           end
         end
-      end
-
-      # Determines whether the query should use preview mode.
-      #
-      # * *Returns*:
-      #   - +boolean+ Whether preview mode should be used for the query
-      #
-      # * *Raises*:
-      #   - +StandardError+ if +use_preview+ is true, but +preview_key+ is +nil+
-      def should_preview
-        raise ERROR_PREVIEW if use_preview && preview_key.nil?
-
-        use_preview && !preview_key.nil?
       end
 
       def provide_sdk_header

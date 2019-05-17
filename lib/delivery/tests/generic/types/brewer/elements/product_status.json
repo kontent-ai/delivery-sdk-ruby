@@ -1,0 +1,6 @@
+{
+    "type": "taxonomy",
+    "name": "Product status",
+    "taxonomy_group": "product_status",
+    "codename": "product_status"
+  }
