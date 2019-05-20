@@ -124,17 +124,17 @@ module KenticoCloud
       # Gets the JSON object from the 'elements' collection with the specified key
       #
       # * *Args*:
-      #   - *code_name* (+string+) The code name of the desired element
+      #   - *code_name* (+string+, +symbol+) The code name or symbol of the desired element
       #
       # * *Returns*:
       #   - +JSON+ The element as a JSON object
       #
       # * *Raises*:
-      #   - +ArgumentError+ if +code_name+ is +nil+ or not a +string+
+      #   - +ArgumentError+ if +code_name+ is +nil+
       def get_element(code_name)
         raise ArgumentError, "Argument 'code_name' cannot be null" if code_name.nil?
-        raise ArgumentError, "Argument 'code_name' is not a string" unless code_name.is_a? String
 
+        code_name = code_name.to_s if code_name.is_a? Symbol
         @source['elements'][code_name]
       end
 
