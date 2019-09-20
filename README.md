@@ -3,7 +3,7 @@
 [![Stack Overflow](https://img.shields.io/badge/Stack%20Overflow-ASK%20NOW-FE7A16.svg?logo=stackoverflow&logoColor=white)](https://stackoverflow.com/tags/kentico-cloud)
  [![Version](https://img.shields.io/gem/v/kontent-delivery-sdk-ruby.svg?style=flat)](https://rubygems.org/gems/kontent-delivery-sdk-ruby)
  [![Maintainability](https://api.codeclimate.com/v1/badges/b2e3fae28a2b2601d815/maintainability)](https://codeclimate.com/github/Kentico/kontent-delivery-sdk-ruby/maintainability)
- [![Test coverage](https://codeclimate.com/github/Kentico/delivery-sdk-ruby/test_coverage)](https://api.codeclimate.com/v1/badges/b2e3fae28a2b2601d815/test_coverage)
+ [![Test coverage](https://api.codeclimate.com/v1/badges/b2e3fae28a2b2601d815/test_coverage)](https://codeclimate.com/github/Kentico/delivery-sdk-ruby/test_coverage)
 
 # Delivery Ruby SDK
 
