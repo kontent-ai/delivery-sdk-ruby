@@ -3,14 +3,14 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require "delivery/version"
 
 Gem::Specification.new do |spec|
-  spec.name          = "delivery-sdk-ruby"
-  spec.version       = KenticoCloud::Delivery::VERSION
+  spec.name          = "kontent-delivery-sdk-ruby"
+  spec.version       = Kentico::Kontent::Delivery::VERSION
   spec.authors       = ["Eric Dugre"]
   spec.email         = ["EricD@kentico.com"]
 
-  spec.summary       = "Kentico Cloud Delivery SDK for Ruby"
-  spec.description   = "Kentico Cloud Delivery SDK for Ruby"
-  spec.homepage      = "https://github.com/Kentico/delivery-sdk-ruby"
+  spec.summary       = "Kentico Kontent Delivery SDK for Ruby"
+  spec.description   = "Kentico Kontent Delivery SDK for Ruby"
+  spec.homepage      = "https://github.com/Kentico/kontent-delivery-sdk-ruby"
   spec.license       = "MIT"
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
@@ -19,8 +19,8 @@ Gem::Specification.new do |spec|
     spec.metadata["allowed_push_host"] = "https://rubygems.org"
 
     spec.metadata["homepage_uri"] = spec.homepage
-    spec.metadata["source_code_uri"] = "https://github.com/Kentico/delivery-sdk-ruby"
-    spec.metadata["changelog_uri"] = "https://github.com/Kentico/delivery-sdk-ruby"
+    spec.metadata["source_code_uri"] = "https://github.com/Kentico/kontent-delivery-sdk-ruby"
+    spec.metadata["changelog_uri"] = "https://github.com/Kentico/kontent-delivery-sdk-ruby"
   else
     raise "RubyGems 2.0 or newer is required to protect against " \
       "public gem pushes."

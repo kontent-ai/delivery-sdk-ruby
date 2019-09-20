@@ -1,7 +1,7 @@
 require 'simplecov'
 SimpleCov.start
 require 'bundler/setup'
-require 'delivery-sdk-ruby'
+require 'kontent-delivery-sdk-ruby'
 
 RSpec.configure do |config|
   ENV['TEST'] = '1'
