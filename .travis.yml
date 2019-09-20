@@ -25,4 +25,4 @@ deploy:
   gem: delivery-sdk-ruby
   on:
     tags: true
-    repo: Kentico/delivery-sdk-ruby
+    repo: Kentico/kontent-delivery-sdk-ruby
