@@ -1,19 +1,21 @@
 require 'delivery/query_parameters/parameter_base'
 
-module KenticoCloud
-  module Delivery
-    module QueryParameters
-      # Provides the base class for filter implementations.
-      # See https://developer.kenticocloud.com/v1/reference#content-filtering
-      class Filter < ParameterBase
-        # Constructor.
-        #
-        # * *Args*:
-        #   - *key* (+string+) The field to filter upon
-        #   - *operator* (+string+) The Kentico Cloud filter being applied to the field, in brackets
-        #   - *values* (+Object+) One or more values which will appear as the value of the query string parameter
-        def initialize(key, operator, values)
-          super(key, operator, values)
+module Kentico
+  module Kontent
+    module Delivery
+      module QueryParameters
+        # Provides the base class for filter implementations.
+        # See https://developer.kenticocloud.com/v1/reference#content-filtering
+        class Filter < ParameterBase
+          # Constructor.
+          #
+          # * *Args*:
+          #   - *key* (+string+) The field to filter upon
+          #   - *operator* (+string+) The Kentico Cloud filter being applied to the field, in brackets
+          #   - *values* (+Object+) One or more values which will appear as the value of the query string parameter
+          def initialize(key, operator, values)
+            super(key, operator, values)
+          end
         end
       end
     end
@@ -31,9 +33,9 @@ class String
   #   - +Object+ One or more objects representing the values that must appear in the field
   #
   # * *Returns*:
-  #   - KenticoCloud::Delivery::QueryParameters::Filter
+  #   - Kentico::Kontent::Delivery::QueryParameters::Filter
   def all(*args)
-    KenticoCloud::Delivery::QueryParameters::Filter.new(self, '[all]', *args)
+    Kentico::Kontent::Delivery::QueryParameters::Filter.new(self, '[all]', *args)
   end
 
   # Represents a filter that matches a content item if the specified content
@@ -45,9 +47,9 @@ class String
   #   - +Object+ One or more objects representing the values that may appear in the field
   #
   # * *Returns*:
-  #   - KenticoCloud::Delivery::QueryParameters::Filter
+  #   - Kentico::Kontent::Delivery::QueryParameters::Filter
   def any(*args)
-    KenticoCloud::Delivery::QueryParameters::Filter.new(self, '[any]', *args)
+    Kentico::Kontent::Delivery::QueryParameters::Filter.new(self, '[any]', *args)
   end
 
   # Represents a filter that matches a content item if the specified content element
@@ -59,9 +61,9 @@ class String
   #   - +Object+ An object representing the value that must appear in the field
   #
   # * *Returns*:
-  #   - KenticoCloud::Delivery::QueryParameters::Filter
+  #   - Kentico::Kontent::Delivery::QueryParameters::Filter
   def contains(*args)
-    KenticoCloud::Delivery::QueryParameters::Filter.new(self, '[contains]', *args)
+    Kentico::Kontent::Delivery::QueryParameters::Filter.new(self, '[contains]', *args)
   end
 
   # Represents a filter that matches a content item if the specified
@@ -71,9 +73,9 @@ class String
   #   - +Object+ An object representing the value that must equal the value in the field
   #
   # * *Returns*:
-  #   - KenticoCloud::Delivery::QueryParameters::Filter
+  #   - Kentico::Kontent::Delivery::QueryParameters::Filter
   def eq(*args)
-    KenticoCloud::Delivery::QueryParameters::Filter.new(self, '', *args)
+    Kentico::Kontent::Delivery::QueryParameters::Filter.new(self, '', *args)
   end
 
   # Represents a filter that matches a content item if the specified content
@@ -84,9 +86,9 @@ class String
   #   - +Object+ An object representing the lowest possible value of the field, non-inclusive
   #
   # * *Returns*:
-  #   - KenticoCloud::Delivery::QueryParameters::Filter
+  #   - Kentico::Kontent::Delivery::QueryParameters::Filter
   def gt(*args)
-    KenticoCloud::Delivery::QueryParameters::Filter.new(self, '[gt]', *args)
+    Kentico::Kontent::Delivery::QueryParameters::Filter.new(self, '[gt]', *args)
   end
 
   # Represents a filter that matches a content item if the specified content
@@ -97,9 +99,9 @@ class String
   #   - +Object+ An object representing the lowest possible value of the field
   #
   # * *Returns*:
-  #   - KenticoCloud::Delivery::QueryParameters::Filter
+  #   - Kentico::Kontent::Delivery::QueryParameters::Filter
   def gt_or_eq(*args)
-    KenticoCloud::Delivery::QueryParameters::Filter.new(self, '[gte]', *args)
+    Kentico::Kontent::Delivery::QueryParameters::Filter.new(self, '[gte]', *args)
   end
 
   # Represents a filter that matches a content item if the specified
@@ -110,9 +112,9 @@ class String
   #   - +Object+ One or more objects representing the required values of the field
   #
   # * *Returns*:
-  #   - KenticoCloud::Delivery::QueryParameters::Filter
+  #   - Kentico::Kontent::Delivery::QueryParameters::Filter
   def in(*args)
-    KenticoCloud::Delivery::QueryParameters::Filter.new(self, '[in]', *args)
+    Kentico::Kontent::Delivery::QueryParameters::Filter.new(self, '[in]', *args)
   end
 
   # Represents a filter that matches a content item if the specified content
@@ -123,9 +125,9 @@ class String
   #   - +Object+ An object representing the highest possible value of the field, non-inclusive
   #
   # * *Returns*:
-  #   - KenticoCloud::Delivery::QueryParameters::Filter
+  #   - Kentico::Kontent::Delivery::QueryParameters::Filter
   def lt(*args)
-    KenticoCloud::Delivery::QueryParameters::Filter.new(self, '[lt]', *args)
+    Kentico::Kontent::Delivery::QueryParameters::Filter.new(self, '[lt]', *args)
   end
 
   # Represents a filter that matches a content item if the specified content
@@ -136,9 +138,9 @@ class String
   #   - +Object+ An object representing the highest possible value of the field
   #
   # * *Returns*:
-  #   - KenticoCloud::Delivery::QueryParameters::Filter
+  #   - Kentico::Kontent::Delivery::QueryParameters::Filter
   def lt_or_eq(*args)
-    KenticoCloud::Delivery::QueryParameters::Filter.new(self, '[lte]', *args)
+    Kentico::Kontent::Delivery::QueryParameters::Filter.new(self, '[lte]', *args)
   end
 
   # Represents a filter that matches a content item if the specified
@@ -149,8 +151,8 @@ class String
   #   - +Object+ An object representing the lowest and highest possible values of the field
   #
   # * *Returns*:
-  #   - KenticoCloud::Delivery::QueryParameters::Filter
+  #   - Kentico::Kontent::Delivery::QueryParameters::Filter
   def range(*args)
-    KenticoCloud::Delivery::QueryParameters::Filter.new(self, '[range]', *args)
+    Kentico::Kontent::Delivery::QueryParameters::Filter.new(self, '[range]', *args)
   end
 end
