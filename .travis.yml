@@ -22,7 +22,7 @@ deploy:
   provider: rubygems
   api_key:
     secure: eoEZvYiWlruYyG1lHjpLmjhPNbn0o4a0xnYbIltEIvna11Bc3A0pNlnjzzxINTZEPgLRnhpwSQnxeqwH0pbgTtxf2fg6NFscBHSiw2Y/wtDl1q/3nyyynwtG19RAL6dbLGj5djSAYnuKb/LXNGWnlPfIJER42DHeiMB6sLKRoj+6KztNaYb96NRf0KvMae0fqGAdFera+Ppzbe5kmtu74luXVQXdqYHIdWoPKTdI3vw7ooOpIm0vSoHspp2yMjWs4vP8pfZbmoqcUOt1TWZvu9Mq1eXNNj6J6IWurErgz4euNylplBJgRu/HId7Im1v6hE0PF/GdTHHkhiU8vUwbCgySegm0f/81bOdGD0VI0n70tPJTApv9dBAi1jKLVX2LNPKdR56WzTPM+5i/BFCggp2GC4X48fuM2kHPtBP63Q0tt0fN0UorPKq48ltFQRIbo2WZOYlCnoMuneUIuvhkUl8OPyOvZCvfDuVxi2CTydP3SWzf5dLouDZAa79J3vytbiFZbQ19lK3o/l7CONkKvBfn3MhUb+z/9pvnl50P7MDQSnkzjPORQUkY0xSV1mCJq+CrlNSy7PEJErCjkcpM6vTnFDfvg9jRAv7ZP5/cgDY4n8H09iOV+1kVK2/jRaqbWD4aNi2/Cl90gmb+e6sJwTy/IEusiBV5NrETqFWYjUA=
-  gem: kontent-delivery-sdk-ruby
+  gem: delivery-sdk-ruby
   on:
     tags: true
-    repo: Kentico/kontent-delivery-sdk-ruby
+    repo: Kentico/delivery-sdk-ruby

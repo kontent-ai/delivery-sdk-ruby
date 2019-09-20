@@ -3,7 +3,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require "delivery/version"
 
 Gem::Specification.new do |spec|
-  spec.name          = "kontent-delivery-sdk-ruby"
+  spec.name          = "delivery-sdk-ruby"
   spec.version       = Kentico::Kontent::Delivery::VERSION
   spec.authors       = ["Eric Dugre"]
   spec.email         = ["EricD@kentico.com"]
