@@ -48,7 +48,7 @@ require 'delivery-sdk-ruby'
 
 ## Creating a client
 
-You will use `Kentico::Kontent::Delivery::DeliveryClient` to obtain content from Kentico Cloud. Create an instance of the client and pass your project ID:
+You will use `Kentico::Kontent::Delivery::DeliveryClient` to obtain content from Kentico Kontent. Create an instance of the client and pass your project ID:
 
 ```ruby
 delivery_client = Kentico::Kontent::Delivery::DeliveryClient.new project_id: '<your-project-id>'
@@ -189,7 +189,7 @@ delivery_client.items('system.type'.eq 'coffee')
 
 ### Requesting the latest content
 
-Kentico caches content using Fastly, so requests made to Kentico Cloud may not be up-to-date. In some cases, such as when reacting to [webhook](https://developer.kenticocloud.com/docs/webhooks) notifications, you might want to request the latest content from your Kentico Cloud project.
+Kentico caches content using Fastly, so requests made to Kentico Kontent may not be up-to-date. In some cases, such as when reacting to [webhook](https://developer.kenticocloud.com/docs/webhooks) notifications, you might want to request the latest content from your Kentico Kontent project.
 
 You can bypass the cache and get the latest content using `request_latest_content`
 
@@ -286,7 +286,7 @@ You can then request the secure published content in your project. Be sure to no
 
 ## Retrieving content types
 
-You can use the `.type` and `.types` methods to request your content types from Kentico Cloud:
+You can use the `.type` and `.types` methods to request your content types from Kentico Kontent:
 
 ```ruby
 delivery_client.types.execute do |response|
@@ -355,7 +355,7 @@ end
 
 ## Retrieving content type elements
 
-Kentico Cloud provides an [endpoint](https://developer.kenticocloud.com/v1/reference#view-a-content-type-element) for obtaining details about a specific element of a content type. In the Ruby SDK, you can use the `.element` method:
+Kentico Kontent provides an [endpoint](https://developer.kenticocloud.com/v1/reference#view-a-content-type-element) for obtaining details about a specific element of a content type. In the Ruby SDK, you can use the `.element` method:
 
 ```ruby
 delivery_client.element('brewer', 'product_status').execute do |response|
