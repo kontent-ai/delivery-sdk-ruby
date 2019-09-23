@@ -108,7 +108,7 @@
       "metadata__twitter_creator": {
         "type": "text",
         "name": "twitter:creator",
-        "value": "@kenticoCloud"
+        "value": "@kenticokontent"
       },
       "metadata__twitter_title": {
         "type": "text",

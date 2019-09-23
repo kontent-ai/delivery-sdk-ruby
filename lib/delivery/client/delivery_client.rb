@@ -11,7 +11,7 @@ module Kentico
       QUERY_TYPE_TAXONOMIES = 'QUERY_TYPE_TAXONOMIES'.freeze
       QUERY_TYPE_ELEMENT = 'QUERY_TYPE_ELEMENT'.freeze
 
-      # Executes requests against the Kentico Cloud Delivery API.
+      # Executes requests against the Kentico Kontent Delivery API.
       class DeliveryClient
         attr_accessor :use_preview
 

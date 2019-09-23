@@ -1,6 +1,6 @@
 [![Build Status](https://api.travis-ci.com/Kentico/kontent-delivery-sdk-ruby.svg?branch=master)](https://travis-ci.com/Kentico/kontent-delivery-sdk-ruby)
 [![Join the chat at https://kentico-community.slack.com](https://img.shields.io/badge/join-slack-E6186D.svg)](https://kentico-community.slack.com)
-[![Stack Overflow](https://img.shields.io/badge/Stack%20Overflow-ASK%20NOW-FE7A16.svg?logo=stackoverflow&logoColor=white)](https://stackoverflow.com/tags/kentico-cloud)
+[![Stack Overflow](https://img.shields.io/badge/Stack%20Overflow-ASK%20NOW-FE7A16.svg?logo=stackoverflow&logoColor=white)](https://stackoverflow.com/tags/kentico-kontent)
  [![Version](https://img.shields.io/gem/v/kontent-delivery-sdk-ruby.svg?style=flat)](https://rubygems.org/gems/kontent-delivery-sdk-ruby)
  [![Maintainability](https://api.codeclimate.com/v1/badges/b2e3fae28a2b2601d815/maintainability)](https://codeclimate.com/github/Kentico/kontent-delivery-sdk-ruby/maintainability)
  [![Test coverage](https://api.codeclimate.com/v1/badges/b2e3fae28a2b2601d815/test_coverage)](https://codeclimate.com/github/Kentico/delivery-sdk-ruby/test_coverage)
@@ -9,7 +9,7 @@
 
 ![Banner](https://github.com/Kentico/kontent-delivery-sdk-ruby/blob/master/banner.png)
 
-The Delivery Ruby SDK can be used in Ruby/Rails projects to retrieve content from Kentico Cloud. This is a community project and not an official Kentico SDK. If you find a bug in the SDK or have a feature request, please submit a GitHub issue.
+The Delivery Ruby SDK can be used in Ruby/Rails projects to retrieve content from Kentico Kontent. This is a community project and not an official Kentico SDK. If you find a bug in the SDK or have a feature request, please submit a GitHub issue.
 
 See [How to setup a development environment on Windows](https://github.com/Kentico/kontent-delivery-sdk-ruby/wiki/How-to-setup-development-environment-on-Windows) for local development.
 
@@ -23,7 +23,7 @@ class ApplicationController < ActionController::Base
   PROJECT_ID = '<your-project-id>'.freeze
 ```
 
-If you don't have the sample project installed in Kentico Cloud, you can generate a new project [here](https://app.kontent.ai/sample-project-generator). Save the file, then open a terminal in the `/dancing_goat` directory and run the following commands:
+If you don't have the sample project installed in Kentico Kontent, you can generate a new project [here](https://app.kontent.ai/sample-project-generator). Save the file, then open a terminal in the `/dancing_goat` directory and run the following commands:
 
 ```
 bundle install

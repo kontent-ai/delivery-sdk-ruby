@@ -5,7 +5,7 @@ require 'delivery/version'
 module Kentico
   module Kontent
     module Delivery
-      # Responsible for executing REST requests to Kentico Cloud.
+      # Responsible for executing REST requests to Kentico Kontent.
       class DeliveryQuery
         ERROR_PREVIEW = 'Preview is enabled for the query, but the key is null. '\
                         'You can set the preview_key attribute of the query, or '\
@@ -195,7 +195,7 @@ module Kentico
         end
 
         # Allows the request to bypass caching and return the latest content
-        # directly from Kentico Cloud.
+        # directly from Kentico Kontent.
         # See https://github.com/Kentico/kontent-delivery-sdk-ruby#requesting-the-latest-content
         #
         # * *Returns*:

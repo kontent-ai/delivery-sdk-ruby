@@ -12,7 +12,7 @@ module Kentico
           #
           # * *Args*:
           #   - *key* (+string+) The field to filter upon
-          #   - *operator* (+string+) The Kentico Cloud filter being applied to the field, in brackets
+          #   - *operator* (+string+) The Kentico Kontent filter being applied to the field, in brackets
           #   - *values* (+Object+) One or more values which will appear as the value of the query string parameter
           def initialize(key, operator, values)
             self.key = key

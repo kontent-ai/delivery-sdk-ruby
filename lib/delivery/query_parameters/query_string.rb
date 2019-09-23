@@ -15,7 +15,7 @@ module Kentico
           # * *Args*:
           #   - *param* (+Object+) Either a string representing the key for the parameter, or a complete Kentico::Kontent::Delivery::QueryParameters::ParameterBase object
           #   - *values* (+string+) A string or array of strings representing the values for the parameter
-          #   - *operator* (+string+) Kentico Cloud filtering parameter, placed after the key, before the equal sign
+          #   - *operator* (+string+) Kentico Kontent filtering parameter, placed after the key, before the equal sign
           def set_param(param, values = '', operator = '')
             parameter_base =
               if param.is_a? String
