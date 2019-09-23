@@ -37,13 +37,13 @@ The site should be accessible at localhost:3000. You can also follow a step-by-s
 To use the SDK in your own project, add the gem to your Gemfile:
 
 ```ruby
-gem 'kontent-delivery-sdk-ruby'
+gem 'delivery-sdk-ruby'
 ```
 
-Then run `bundle install`. You can also download the gem from [RubyGems.org](https://rubygems.org/gems/kontent-delivery-sdk-ruby). To use the SDK in an `.rb` file, you need to require it:
+Then run `bundle install`. You can also download the gem from [RubyGems.org](https://rubygems.org/gems/delivery-sdk-ruby). To use the SDK in an `.rb` file, you need to require it:
 
 ```ruby
-require 'kontent-delivery-sdk-ruby'
+require 'delivery-sdk-ruby'
 ```
 
 ## Creating a client
