@@ -43,7 +43,7 @@ gem 'delivery-sdk-ruby'
 Then run `bundle install`. You can also download the gem from [RubyGems.org](https://rubygems.org/gems/delivery-sdk-ruby). To use the SDK in an `.rb` file, you need to require it:
 
 ```ruby
-require 'delivery-sdk-ruby'
+require 'kontent-delivery-sdk-ruby'
 ```
 
 ## Creating a client
