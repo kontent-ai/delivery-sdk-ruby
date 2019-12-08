@@ -1,3 +1,4 @@
+require 'kontent-delivery-sdk-ruby'
 class ApplicationController < ActionController::Base
   PROJECT_ID = '<your-project-id>'.freeze
   item_resolver = Kentico::Kontent::Delivery::Resolvers::InlineContentItemResolver.new(lambda do |item|
