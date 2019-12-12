@@ -3,7 +3,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require "delivery/version"
 
 Gem::Specification.new do |spec|
-  spec.name          = "delivery-sdk-ruby"
+  spec.name          = "kontent-delivery-sdk-ruby"
   spec.version       = Kentico::Kontent::Delivery::VERSION
   spec.authors       = ["Eric Dugre"]
   spec.email         = ["EricD@kentico.com"]
@@ -25,11 +25,6 @@ Gem::Specification.new do |spec|
     raise "RubyGems 2.0 or newer is required to protect against " \
       "public gem pushes."
   end
-
-  spec.post_install_message = <<-MESSAGE
-  !    The delivery-sdk-ruby gem has been deprecated and has been replaced by kontent-delivery-sdk-ruby.
-  !    See: https://github.com/Kentico/kontent-delivery-sdk-ruby
-  MESSAGE
 
   spec.files         = Dir.glob("{bin,lib}/**/*") + %w(LICENSE.md README.md)
   spec.bindir        = "exe"
