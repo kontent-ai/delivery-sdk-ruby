@@ -18,11 +18,11 @@ module Kentico
             @type = Kentico::Kontent::Delivery::ContentType.new(@response)
           end
 
-          def initialize(response)
-            @response = JSON.parse(response)
+          def initialize(headers, body)
+            @response = JSON.parse(body)
             super 200,
                   "Success, type '#{type.system.codename}' returned",
-                  response.headers
+                  headers,
                   JSON.generate(@response)
           end
         end

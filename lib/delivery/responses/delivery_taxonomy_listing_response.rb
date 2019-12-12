@@ -32,12 +32,12 @@ module Kentico
             @taxonomies = taxonomies
           end
 
-          def initialize(response)
-            @response = JSON.parse(response)
+          def initialize(headers, body)
+            @response = JSON.parse(body)
 
             super 200,
                   "Success, #{taxonomies.length} taxonomies returned",
-                  response.headers,
+                  headers,
                   JSON.generate(@response)
           end
         end

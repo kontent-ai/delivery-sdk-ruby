@@ -66,36 +66,38 @@ module Kentico
             when Kentico::Kontent::Delivery::QUERY_TYPE_TAXONOMIES
               respond_taxonomy response
             when Kentico::Kontent::Delivery::QUERY_TYPE_ELEMENT
-              Kentico::Kontent::Delivery::Responses::DeliveryElementResponse.new response
+              Kentico::Kontent::Delivery::Responses::DeliveryElementResponse.new response.headers, response.body
             end
           end
 
           def respond_type(response)
             if @query.code_name.nil?
-              Kentico::Kontent::Delivery::Responses::DeliveryTypeListingResponse.new response
+              Kentico::Kontent::Delivery::Responses::DeliveryTypeListingResponse.new response.headers, response.body
             else
-              Kentico::Kontent::Delivery::Responses::DeliveryTypeResponse.new response
+              Kentico::Kontent::Delivery::Responses::DeliveryTypeResponse.new response.headers, response.body
             end
           end
 
           def respond_taxonomy(response)
             if @query.code_name.nil?
-              Kentico::Kontent::Delivery::Responses::DeliveryTaxonomyListingResponse.new response
+              Kentico::Kontent::Delivery::Responses::DeliveryTaxonomyListingResponse.new response.headers, response.body
             else
-              Kentico::Kontent::Delivery::Responses::DeliveryTaxonomyResponse.new response
+              Kentico::Kontent::Delivery::Responses::DeliveryTaxonomyResponse.new response.headers, response.body
             end
           end
 
           def respond_item(response)
             if @query.code_name.nil?
               Kentico::Kontent::Delivery::Responses::DeliveryItemListingResponse.new(
-                response,
+                response.headers,
+                response.body,
                 @query.content_link_url_resolver,
                 @query.inline_content_item_resolver
               )
             else
               Kentico::Kontent::Delivery::Responses::DeliveryItemResponse.new(
-                response,
+                response.headers,
+                response.body,
                 @query.content_link_url_resolver,
                 @query.inline_content_item_resolver
               )

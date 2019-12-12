@@ -1,6 +1,7 @@
 require 'dotenv/load'
 require 'pathname'
 require 'cgi'
+require 'ostruct'
 
 module Kentico
   module Kontent
@@ -39,7 +40,10 @@ module Kentico
 
             def respond_generic(url)
               path = Pathname.new(File.dirname(__FILE__) + "/generic#{url}.json")
-              path.read if path.exist?
+              OpenStruct.new(
+                headers: '',
+                body: path.read
+              )
             end
 
             def respond_filtering(query)
@@ -52,12 +56,16 @@ module Kentico
                 when 'elements.price[gt]=20&system.type=grinder'
                   Pathname.new(File.dirname(__FILE__) + '/filtering/multiple.json')
                 end
-              path.read unless path.nil? && !path.exist?
+              OpenStruct.new(
+                headers: '',
+                body: path.read
+              )
+              ##Kentico::Kontent::Delivery::Responses::ResponseBase.new 200, '', '', path.read if path.exist?
             end
 
             def respond_401
               path = Pathname.new(File.dirname(__FILE__) + '/401.json')
-              Kentico::Kontent::Delivery::Responses::ResponseBase.new 401, '', path.read if path.exist?
+              Kentico::Kontent::Delivery::Responses::ResponseBase.new 401, '', '', path.read if path.exist?
             end
           end
         end

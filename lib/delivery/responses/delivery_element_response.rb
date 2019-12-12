@@ -20,11 +20,11 @@ module Kentico
             )
           end
 
-          def initialize(response)
-            @response = JSON.parse(response)
+          def initialize(headers, body)
+            @response = JSON.parse(body)
             super 200,
               "Success, '#{element.codename}' returned",
-              response.headers,
+              headers,
               JSON.generate(@response)
           end
         end

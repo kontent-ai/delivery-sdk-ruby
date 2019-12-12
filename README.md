@@ -213,7 +213,13 @@ delivery_client.items
 
 ### Responses
 
-All responses from the `.execute` method will be/extend the `Kentico::Kontent::Delivery::Responses::ResponseBase` class which contains an `http_code` attribute and a friendly message that can be displayed by calling `.to_s`. You can check the code to determine if the request was successful:
+All responses from the `.execute` method will be/extend the `Kentico::Kontent::Delivery::Responses::ResponseBase` class which contains the following attributes:
+
+- **http_code**: The HTTP status code of the response
+- **headers**: The headers of the response
+- **json**: The full JSON body of the response
+
+You can check the response code to determine if the request was successful:
 
 ```ruby
 delivery_client.items.execute do |response|
@@ -223,6 +229,7 @@ delivery_client.items.execute do |response|
   when 401
     # Did you forget the secure key?
   else
+    # to_s displays a friendly message with details of the response
     puts response.to_s
   end
 end
