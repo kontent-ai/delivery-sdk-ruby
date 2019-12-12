@@ -26,6 +26,11 @@ Gem::Specification.new do |spec|
       "public gem pushes."
   end
 
+  spec.post_install_message = <<-MESSAGE
+  !    The delivery-sdk-ruby gem has been deprecated and has been replaced by kontent-delivery-sdk-ruby.
+  !    See: https://github.com/Kentico/kontent-delivery-sdk-ruby
+  MESSAGE
+
   spec.files         = Dir.glob("{bin,lib}/**/*") + %w(LICENSE.md README.md)
   spec.bindir        = "exe"
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
