@@ -187,30 +187,6 @@ delivery_client.items('system.type'.eq 'coffee')
   end
 ```
 
-### Requesting the latest content
-
-Kentico caches content using Fastly, so requests made to Kentico Kontent may not be up-to-date. In some cases, such as when reacting to [webhook](https://developer.kenticocloud.com/docs/webhooks) notifications, you might want to request the latest content from your Kentico Kontent project.
-
-You can bypass the cache and get the latest content using `request_latest_content`
-
-```ruby
-delivery_client.items('system.type'.eq 'coffee')
-  .request_latest_content
-  .execute
-```
-
-### Custom URLs
-
-When you have a URL (i.e. `next_page` for paging, for testing purposes, or if you prefer to build it on your own) and still want to leverage SDK functionality such as rich text resolving, use the .url method:
-
-```ruby
-delivery_client.items
-  .url('https://deliver.kontent.ai/<your-project-id>/items?system.type=grinder')
-  .execute do |response|
-    # Do something
-  end
-```
-
 ### Responses
 
 All responses from the `.execute` method will be/extend the `Kentico::Kontent::Delivery::Responses::ResponseBase` class which contains the following attributes:
@@ -235,14 +211,46 @@ delivery_client.items.execute do |response|
 end
 ```
 
-You can also view the raw JSON response of the the query using the `.json` attribute.
-
 For successful content item queries, you will get either `DeliveryItemResponse` for single item queries, or `DeliveryItemListingResponse` for multiple item queries. You can access the returned content item(s) at `.item` or `.items` respectively.
 
 The `ContentItem` object gives you access to all system elements and content type elements at the `.system` and `.elements` properies. These are dynamic objects, so you can simply type the name of the element you need:
 
 ```ruby
 price = response.item.elements.price.value
+```
+
+### Requesting the latest content
+
+Kentico caches content using Fastly, so requests made to Kentico Kontent may not be up-to-date. In some cases, such as when reacting to [webhook](https://developer.kenticocloud.com/docs/webhooks) notifications, you might want to request the latest content from your Kentico Kontent project.
+
+You can check the headers of the response for the **X-Stale-Content** header to check if the response was served from cache:
+
+```ruby
+delivery_client.item('about_us').execute do |response|
+  if response.headers[:x_stale_content].eq 1
+    ## Content is stale
+  end
+end
+```
+
+You can bypass the cache and get the latest content using `request_latest_content`
+
+```ruby
+delivery_client.item('about_us')
+  .request_latest_content
+  .execute
+```
+
+### Custom URLs
+
+When you have a URL (i.e. `next_page` for paging, for testing purposes, or if you prefer to build it on your own) and still want to leverage SDK functionality such as rich text resolving, use the .url method:
+
+```ruby
+delivery_client.items
+  .url('https://deliver.kontent.ai/<your-project-id>/items?system.type=grinder')
+  .execute do |response|
+    # Do something
+  end
 ```
 
 ### Assets
