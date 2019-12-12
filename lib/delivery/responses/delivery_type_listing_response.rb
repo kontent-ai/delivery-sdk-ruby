@@ -33,9 +33,10 @@ module Kentico
           end
 
           def initialize(response)
-            @response = response
+            @response = JSON.parse(response)
             super 200,
                   "Success, #{types.length} types returned",
+                  response.headers,
                   JSON.generate(@response)
           end
         end

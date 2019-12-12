@@ -1,3 +1,5 @@
+require 'cgi'
+
 module Kentico
   module Kontent
     module Delivery
@@ -6,7 +8,7 @@ module Kentico
         # QueryParameters will appear in the query string.
         class ParameterBase
           attr_accessor :key
-          SEPARATOR = CGI.escape(',')
+          SEPARATOR = CGI::escape(',')
 
           # Constructor.
           #

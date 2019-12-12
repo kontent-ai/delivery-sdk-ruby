@@ -7,6 +7,7 @@ module Kentico
         class ResponseBase
           attr_accessor :http_code,
                         :message,
+                        :headers,
                         :json
 
           # Constructor.
@@ -14,10 +15,12 @@ module Kentico
           # * *Args*:
           #   - *http_code* (+integer+) The status code returned by the REST request
           #   - *message* (+string+) An informative message about the response, visible when calling +to_s+
+          #   - *headers* (+hash+) The headers of the REST response
           #   - *json* (+string+) _optional_ The complete, unmodified JSON response from the server
-          def initialize(http_code, message, json = '')
+          def initialize(http_code, message, headers, json = '')
             self.http_code = http_code
             self.message = message
+            self.headers = headers
             self.json = json
           end
 

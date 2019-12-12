@@ -25,11 +25,12 @@ module Kentico
           end
 
           def initialize(response, content_link_url_resolver, inline_content_item_resolver)
-            @response = response
+            @response = JSON.parse(response)
             @content_link_url_resolver = content_link_url_resolver
             @inline_content_item_resolver = inline_content_item_resolver
             super 200,
               "Success, '#{item.system.codename}' returned",
+              response.headers,
               JSON.generate(@response)
           end
         end

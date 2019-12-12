@@ -66,36 +66,36 @@ module Kentico
             when Kentico::Kontent::Delivery::QUERY_TYPE_TAXONOMIES
               respond_taxonomy response
             when Kentico::Kontent::Delivery::QUERY_TYPE_ELEMENT
-              Kentico::Kontent::Delivery::Responses::DeliveryElementResponse.new JSON.parse(response)
+              Kentico::Kontent::Delivery::Responses::DeliveryElementResponse.new response
             end
           end
 
           def respond_type(response)
             if @query.code_name.nil?
-              Kentico::Kontent::Delivery::Responses::DeliveryTypeListingResponse.new JSON.parse(response)
+              Kentico::Kontent::Delivery::Responses::DeliveryTypeListingResponse.new response
             else
-              Kentico::Kontent::Delivery::Responses::DeliveryTypeResponse.new JSON.parse(response)
+              Kentico::Kontent::Delivery::Responses::DeliveryTypeResponse.new response
             end
           end
 
           def respond_taxonomy(response)
             if @query.code_name.nil?
-              Kentico::Kontent::Delivery::Responses::DeliveryTaxonomyListingResponse.new JSON.parse(response)
+              Kentico::Kontent::Delivery::Responses::DeliveryTaxonomyListingResponse.new response
             else
-              Kentico::Kontent::Delivery::Responses::DeliveryTaxonomyResponse.new JSON.parse(response)
+              Kentico::Kontent::Delivery::Responses::DeliveryTaxonomyResponse.new response
             end
           end
 
           def respond_item(response)
             if @query.code_name.nil?
               Kentico::Kontent::Delivery::Responses::DeliveryItemListingResponse.new(
-                JSON.parse(response),
+                response,
                 @query.content_link_url_resolver,
                 @query.inline_content_item_resolver
               )
             else
               Kentico::Kontent::Delivery::Responses::DeliveryItemResponse.new(
-                JSON.parse(response),
+                response,
                 @query.content_link_url_resolver,
                 @query.inline_content_item_resolver
               )
