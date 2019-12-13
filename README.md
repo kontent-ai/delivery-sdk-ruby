@@ -244,6 +244,19 @@ delivery_client.item('about_us')
   .execute
 ```
 
+### Providing custom headers
+
+If you want to pass any custom headers, you can use this method. It comes useful when you are developing your package on top of the SDK.
+
+Note that you can not override internal headers such as `Authorization`.
+
+```ruby
+delivery_client
+  .items
+  .custom_headers({ 'MY-HEADER' => 'HEADER VALUE' })
+  .execute
+```
+
 ### Custom URLs
 
 When you have a URL (i.e. `next_page` for paging, for testing purposes, or if you prefer to build it on your own) and still want to leverage SDK functionality such as rich text resolving, use the .url method:
