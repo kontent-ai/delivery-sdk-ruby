@@ -97,15 +97,16 @@ You can then request the secure published content in your project. Be sure to no
 
 ### Retry policy
 
-By default, the SDK uses a retry policy, asking for requested content again in case of an error. The default policy retries the HTTP requests if the following status codes are returned:
+By default, the SDK uses a retry policy, asking for requested content again in case of an error. The default policy retries the HTTP request if the following status codes are returned:
 
 * 408 - `RequestTimeout`
+* 429 - `TooManyRequests`
 * 500 - `InternalServerError`
 * 502 - `BadGateway`
 * 503 - `ServiceUnavailable`
 * 504 - `GatewayTimeout`
 
-The default policy retries requests 5 times, totaling 6 overall attempts to retrieve content before returning a `ResponseBase` object containing the error. The consecutive attempts are delayed exponentially: 200 milliseconds, 400 milliseconds, 800 milliseconds, etc.
+The SDK will perform a total of 6 attempts at a maximum of 30 seconds to retrieve content before returning a `ResponseBase` object containing the error. The consecutive attempts are delayed with [exponential backoff and jitter](https://aws.amazon.com/blogs/architecture/exponential-backoff-and-jitter/).
 
 To disable the retry policy, you can use the `with_retry_policy` argument:
 

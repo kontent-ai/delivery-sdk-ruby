@@ -7,8 +7,10 @@ module Kentico
       class RequestManager
         class << self
           MAX_ATTEMPTS = 6
-          INITIAL_DELAY = 0.2
-          RETRY_WHEN_CODE = [408, 500, 502, 503, 504].freeze
+          MAX_DELAY_SECONDS = 30
+          INITIAL_DELAY = 1
+          RETRY_WHEN_CODE = [408, 429, 500, 502, 503, 504].freeze
+          CODES_WITH_POSSIBLE_RETRY_HEADER = [429, 503].freeze
 
           def start(query, headers)
             @query = query
@@ -16,6 +18,7 @@ module Kentico
             @times_run = 1
             @delay = INITIAL_DELAY
             @url = @query.provide_url
+            @total_delay = 0
             continue
           end
 
@@ -23,19 +26,28 @@ module Kentico
 
           def should_retry(potential_response)
             return potential_response if @times_run == MAX_ATTEMPTS ||
-                                        !RETRY_WHEN_CODE.include?(potential_response.http_code) ||
-                                        !@query.with_retry_policy
+                                         !RETRY_WHEN_CODE.include?(potential_response.http_code) ||
+                                         !@query.with_retry_policy ||
+                                         @total_delay >= MAX_DELAY_SECONDS
 
-            @times_run += 1
-            @delay *= 2
+            next_delay
             sleep(@delay)
+            @total_delay += @delay
             continue
+          end
+
+          # Generates a random delay based on times_run, then increases times_run
+          def next_delay
+            min = 0.8 * INITIAL_DELAY
+            max = (1.2 * INITIAL_DELAY) * (2**@times_run)
+            @delay = rand(min..max)
+            @times_run += 1
           end
 
           def continue
             if ENV['TEST'] == '1'
               resp = Kentico::Kontent::Delivery::Tests::FakeResponder.get_response @query, @url, @headers
-              return resp if resp.is_a? Kentico::Kontent::Delivery::Responses::ResponseBase
+              return should_retry(resp) if resp.is_a? Kentico::Kontent::Delivery::Responses::ResponseBase
 
               make_response resp # resp is pure JSON
             else

@@ -32,6 +32,8 @@ module Kentico
                   url[BASE_URL.length...url.length]
                 end
 
+              return respond_429 if @query.code_name == '429'
+
               qs = url.contains('?') ? url.split('?')[1] : nil
               return respond_filtering qs unless qs.nil? # e.g. /items/about_us?skip=0&limit=5
 
@@ -63,6 +65,11 @@ module Kentico
                 body: path.read
               )
               ##Kentico::Kontent::Delivery::Responses::ResponseBase.new 200, '', '', path.read if path.exist?
+            end
+
+            def respond_429
+              path = Pathname.new(File.dirname(__FILE__) + '/429.json')
+              Kentico::Kontent::Delivery::Responses::ResponseBase.new 429, '', '', path.read if path.exist?
             end
 
             def respond_401

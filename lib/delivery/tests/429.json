@@ -1,0 +1,5 @@
+{
+    "request_id": "80000004-0002-fd00-b63f-84710c7967bb",
+    "error_code": 10000,
+    "message": "API rate limit exceeded. Please retry your request later."
+}

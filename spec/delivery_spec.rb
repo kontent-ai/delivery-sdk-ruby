@@ -92,6 +92,19 @@ RSpec.describe Kentico::Kontent::Delivery::DeliveryClient do
                                                      secure_key: SECURE_KEY
   end
 
+  describe 'retry policy' do
+    it 'delays for at least 6 seconds' do
+      start = (Time.now.to_f * 1000).to_i
+      @dc.item('429').execute do |response|
+        finish = (Time.now.to_f * 1000).to_i
+        secs = (finish - start) / 1000
+
+        expect(response.http_code).to be 429
+        expect(secs).to be > 6
+      end
+    end
+  end
+
   describe '.taxonomies' do
     it 'returns 4 groups' do
       @dc.taxonomies.execute do |response|
