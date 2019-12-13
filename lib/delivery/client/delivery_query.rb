@@ -85,6 +85,17 @@ module Kentico
           use_preview && !preview_key.nil?
         end
 
+        # Enables the total_count attribute of the pagination object, which specifies
+        # the total number of items returned by the query regardless of paging. See
+        # https://docs.kontent.ai/reference/delivery-api#operation/list-content-items
+        #
+        # * *Returns*:
+        #   - +self+
+        def include_total_count
+          query_string.set_param('includeTotalCount', 1)
+          self
+        end
+
         # Sets a content link resolver to render links contained in rich text. See
         # https://github.com/Kentico/kontent-delivery-sdk-ruby#resolving-links
         #

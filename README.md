@@ -93,6 +93,8 @@ Kentico::Kontent::Delivery::DeliveryClient.new project_id: '<your-project-id>',
                                            secure_key: '<your-secure-key>'
 ```
 
+You can then request the secure published content in your project. Be sure to not expose the key if the file(s) it appears in are publicly-available.
+
 ### Retry policy
 
 By default, the SDK uses a retry policy, asking for requested content again in case of an error. The default policy retries the HTTP requests if the following status codes are returned:
@@ -285,6 +287,7 @@ The `DeliveryItemListingResponse` also contains a `pagination` attribute to acce
 - **limit**
 - **count**
 - **next_page**
+- **total_count** (only if `include_total_count` is called)
 
 For example, to access the next page URL you can use:
 
@@ -292,12 +295,13 @@ For example, to access the next page URL you can use:
 delivery_client.items
     .skip(0)
     .limit(5)
+    .include_total_count
     .execute do |response|
       next_page_url = response.pagination.next_page
     end
 ```
 
-You can then request the secure published content in your project. Be sure to not expose the key if the file(s) it appears in are publicly-available.
+:warning: Note that using the `include_total_count` method may increase the response time and should only be used if necessary.
 
 ## Retrieving content types
 

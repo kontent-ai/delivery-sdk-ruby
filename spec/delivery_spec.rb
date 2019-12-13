@@ -55,6 +55,14 @@ RSpec.describe Kentico::Kontent::Delivery::ContentItem do
     end
   end
 
+  describe '.include_total_count' do
+    it 'adds pagination attribute' do
+      @dc.items.include_total_count.execute do |response|
+        expect(response.pagination.total_count).to be_a Integer
+      end
+    end
+  end
+
   describe '.get_asset' do
     it 'returns a URL' do
       @dc.item('aeropress_filters').execute do |response|

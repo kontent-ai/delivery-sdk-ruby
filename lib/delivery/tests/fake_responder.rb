@@ -49,6 +49,8 @@ module Kentico
             def respond_filtering(query)
               path =
                 case CGI.unescape query
+                when 'includeTotalCount=1'
+                  Pathname.new(File.dirname(__FILE__) + '/filtering/items_with_count.json')
                 when 'skip=0&limit=5'
                   Pathname.new(File.dirname(__FILE__) + '/filtering/pagination_about_us.json')
                 when 'elements.price[gt]=20'
