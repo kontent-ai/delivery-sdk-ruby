@@ -246,13 +246,12 @@ delivery_client.item('about_us')
 
 ### Providing custom headers
 
-If you want to pass any custom headers, you can use this method. It comes useful when you are developing your package on top of the SDK.
+If you want to pass custom headers in the request, you can use `custom_headers`. This could be useful when you are developing your package on top of the SDK.
 
-Note that you can not override internal headers such as `Authorization`.
+Note that you can not override internal headers such as `Authorization`. If headers with an existing key are passed into the method, they will be ignored.
 
 ```ruby
-delivery_client
-  .items
+delivery_client.items
   .custom_headers({ 'MY-HEADER' => 'HEADER VALUE' })
   .execute
 ```
