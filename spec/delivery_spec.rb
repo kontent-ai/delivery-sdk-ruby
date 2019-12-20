@@ -22,6 +22,20 @@ RSpec.describe Kentico::Kontent::Delivery::DeliveryQuery do
       expect(@dc.items.execute).to be_a Kentico::Kontent::Delivery::Responses::ResponseBase
     end
   end
+
+  describe '.custom_headers' do
+    it 'adds custom headers' do
+      custom_headers = { 'X-KC-SOURCE' => 'test_gem 1.0.0' }
+
+      expect(@dc.items.custom_headers(custom_headers).send(:headers)).to include custom_headers
+    end
+
+    it 'does not override original headers' do
+      custom_headers = { 'X-KC-SDKID' => 'test' }
+
+      expect(@dc.items.custom_headers(custom_headers).send(:headers)).not_to include custom_headers
+    end
+  end
 end
 
 # UrlBuilder

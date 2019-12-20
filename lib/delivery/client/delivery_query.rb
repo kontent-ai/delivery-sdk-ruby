@@ -62,11 +62,6 @@ module Kentico
         # * *Returns*:
         #   - Kentico::Kontent::Delivery::Responses::ResponseBase or a class extending it
         def execute
-          headers = @headers.clone
-          headers['X-KC-SDKID'] = provide_sdk_header
-          headers['Authorization'] = "Bearer #{preview_key}" if should_preview
-          headers['Authorization'] = "Bearer #{secure_key}" if !should_preview && secure_key
-
           resp = Kentico::Kontent::Delivery::RequestManager.start self, headers
           yield resp if block_given?
           resp
@@ -230,7 +225,38 @@ module Kentico
           @url
         end
 
+        # Allows providing custom headers for client requests.
+        # See https://github.com/Kentico/kontent-delivery-sdk-ruby#providing-custom-headers
+        #
+        # * *Args*:
+        #   - *headers* (+Hash+) A hash that corresponds to provided headers
+        #
+        # * *Returns*:
+        #   - +self+
+        def custom_headers(headers)
+          @custom_headers = headers
+          self
+        end
+
         private
+
+        # Returns request headers that are extended with custom headers.
+        # Custom headers do not override existing headers.
+        #
+        # * *Returns*
+        #   - +Hash+
+        def headers
+          headers = @headers.clone
+          headers['X-KC-SDKID'] = provide_sdk_header
+          headers['Authorization'] = "Bearer #{preview_key}" if should_preview
+          headers['Authorization'] = "Bearer #{secure_key}" if !should_preview && secure_key
+
+          if @custom_headers
+            headers.merge!(@custom_headers) { |key, v1, v2| v1 }
+          end
+
+          headers
+        end
 
         # Initializes the +query_string+ attribute with the passed array of
         # Kentico::Kontent::Delivery::QueryParameters::Filter objects.
