@@ -2,8 +2,8 @@
 [![Join the chat at https://kentico-community.slack.com](https://img.shields.io/badge/join-slack-E6186D.svg)](https://kentico-community.slack.com)
 [![Stack Overflow](https://img.shields.io/badge/Stack%20Overflow-ASK%20NOW-FE7A16.svg?logo=stackoverflow&logoColor=white)](https://stackoverflow.com/tags/kentico-kontent)
  [![Version](https://img.shields.io/gem/v/kontent-delivery-sdk-ruby.svg?style=flat)](https://rubygems.org/gems/kontent-delivery-sdk-ruby)
- [![Maintainability](https://api.codeclimate.com/v1/badges/b2e3fae28a2b2601d815/maintainability)](https://codeclimate.com/github/Kentico/kontent-delivery-sdk-ruby/maintainability)
- [![Test coverage](https://api.codeclimate.com/v1/badges/b2e3fae28a2b2601d815/test_coverage)](https://codeclimate.com/github/Kentico/delivery-sdk-ruby/test_coverage)
+[![Maintainability](https://api.codeclimate.com/v1/badges/c83f2067f9cae9bde737/maintainability)](https://codeclimate.com/github/Kentico/kontent-delivery-sdk-ruby/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/c83f2067f9cae9bde737/test_coverage)](https://codeclimate.com/github/Kentico/kontent-delivery-sdk-ruby/test_coverage)
 
 # Delivery Ruby SDK
 
