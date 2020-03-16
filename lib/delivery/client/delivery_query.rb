@@ -13,6 +13,9 @@ module Kentico
                         'https://github.com/Kentico/kontent-delivery-sdk-ruby#previewing-unpublished-content'.freeze
         ERROR_PARAMS = 'Only filters may be passed in the .item or .items methods'\
                         '. See https://github.com/Kentico/kontent-delivery-sdk-ruby#filtering'.freeze
+        HEADER_WAIT_FOR_CONTENT = 'X-KC-Wait-For-Loading-New-Content'.freeze
+        HEADER_SDK_ID = 'X-KC-SDKID'.freeze
+        HEADER_CONTINUATION = 'X-Continuation'.freeze
         attr_accessor :use_preview,
                       :preview_key,
                       :project_id,
@@ -139,7 +142,7 @@ module Kentico
         # * *Returns*:
         #   - +self+
         def skip(value)
-          query_string.set_param('skip', value)
+          query_string.set_param('skip', value) unless query_type.eql? Kentico::Kontent::Delivery::QUERY_TYPE_ITEMS_FEED
           self
         end
 
@@ -167,7 +170,7 @@ module Kentico
         # * *Returns*:
         #   - +self+
         def limit(value)
-          query_string.set_param('limit', value)
+          query_string.set_param('limit', value) unless query_type.eql? Kentico::Kontent::Delivery::QUERY_TYPE_ITEMS_FEED
           self
         end
 
@@ -196,7 +199,7 @@ module Kentico
         # * *Returns*:
         #   - +self+
         def depth(value)
-          query_string.set_param('depth', value)
+          query_string.set_param('depth', value) unless query_type.eql? Kentico::Kontent::Delivery::QUERY_TYPE_ITEMS_FEED
           self
         end
 
@@ -207,7 +210,7 @@ module Kentico
         # * *Returns*:
         #   - +self+
         def request_latest_content
-          @headers['X-KC-Wait-For-Loading-New-Content'] = true
+          @headers[HEADER_WAIT_FOR_CONTENT] = true
           self
         end
 
@@ -238,6 +241,19 @@ module Kentico
           self
         end
 
+        def update_continuation(token)
+          @headers[HEADER_CONTINUATION] = token
+          self
+        end
+
+        def continuation_exists?
+          !continuation_token.nil?
+        end
+
+        def continuation_token
+          @headers[HEADER_CONTINUATION]
+        end
+
         private
 
         # Returns request headers that are extended with custom headers.
@@ -247,7 +263,7 @@ module Kentico
         #   - +Hash+
         def headers
           headers = @headers.clone
-          headers['X-KC-SDKID'] = provide_sdk_header
+          headers[HEADER_SDK_ID] = provide_sdk_header
           headers['Authorization'] = "Bearer #{preview_key}" if should_preview
           headers['Authorization'] = "Bearer #{secure_key}" if !should_preview && secure_key
 

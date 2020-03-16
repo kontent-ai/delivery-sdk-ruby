@@ -13,6 +13,7 @@ module Kentico
           URL_TEMPLATE_ELEMENTS = '/types/%s/elements/%s'.freeze
           URL_TEMPLATE_TAXONOMY = '/taxonomies/%s'.freeze
           URL_TEMPLATE_TAXONOMIES = '/taxonomies'.freeze
+          URL_TEMPLATE_ITEMS_FEED = '/items-feed'.freeze
 
           URL_MAX_LENGTH = 65_519
           MSG_LONG_QUERY = 'The request url is too long. Split your query into multiple calls.'.freeze
@@ -67,6 +68,8 @@ module Kentico
                 provide_taxonomy query
               when Kentico::Kontent::Delivery::QUERY_TYPE_ELEMENT
                 format(URL_TEMPLATE_ELEMENTS, query.content_type, query.code_name)
+              when Kentico::Kontent::Delivery::QUERY_TYPE_ITEMS_FEED
+                URL_TEMPLATE_ITEMS_FEED
               end
             end
 

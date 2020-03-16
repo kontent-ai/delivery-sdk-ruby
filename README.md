@@ -316,6 +316,26 @@ delivery_client.items
 
 :warning: Note that using the `include_total_count` method may increase the response time and should only be used if necessary.
 
+## Items feed
+
+Use the `items_feed` method to retrieve a dynamically paginated list of content items in your project. The result will have a `more_results?` method which indicates that more items can be retrieved from the feed, using the `next_result` method.
+
+This method accepts all [filtering](https://github.com/Kentico/kontent-delivery-sdk-ruby#filtering) and [parameters](https://github.com/Kentico/kontent-delivery-sdk-ruby#parameters) except _depth_, _skip_, and _limit_. You can read more about the /items-feed endpoint in the [Kontent documentation](https://docs.kontent.ai/reference/delivery-api#operation/enumerate-content-items)
+
+Below is an example that will load all content items of a project into a single array:
+
+```ruby
+result = delivery_client.items_feed.execute
+items = result.items
+if result.more_results?
+  loop do
+    result = result.next_result
+    items.push *result.items
+    break unless result.more_results?
+  end
+end
+```
+
 ## Retrieving content types
 
 You can use the `.type` and `.types` methods to request your content types from Kentico Kontent:

@@ -10,6 +10,7 @@ module Kentico
       QUERY_TYPE_ITEMS = 'QUERY_TYPE_ITEMS'.freeze
       QUERY_TYPE_TAXONOMIES = 'QUERY_TYPE_TAXONOMIES'.freeze
       QUERY_TYPE_ELEMENT = 'QUERY_TYPE_ELEMENT'.freeze
+      QUERY_TYPE_ITEMS_FEED = 'QUERY_TYPE_ITEMS_FEED'.freeze
 
       # Executes requests against the Kentico Kontent Delivery API.
       class DeliveryClient
@@ -59,6 +60,26 @@ module Kentico
                             code_name: code_name,
                             query_type: QUERY_TYPE_TYPES,
                             with_retry_policy: @with_retry_policy
+        end
+
+        # Return a paginated feed of all content items of the project
+        #
+        # * *Args*:
+        #   - *query_parameters* (+Array+) _optional_ One or more Kentico::Kontent::Delivery::QueryParameters::Filter objects. A single object will automatically be converted into an Array.
+        #
+        # * *Returns*:
+        #   - Kentico::Kontent::Delivery::DeliveryQuery
+        def items_feed(query_parameters = [])
+          q = DeliveryQuery.new project_id: @project_id,
+                                secure_key: @secure_key,
+                                qp: query_parameters,
+                                content_link_url_resolver: @content_link_url_resolver,
+                                inline_content_item_resolver: @inline_content_item_resolver,
+                                query_type: QUERY_TYPE_ITEMS_FEED,
+                                with_retry_policy: @with_retry_policy
+          q.use_preview = use_preview
+          q.preview_key = @preview_key
+          q
         end
 
         # Return all content items of the project

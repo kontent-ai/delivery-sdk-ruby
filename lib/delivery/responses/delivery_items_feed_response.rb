@@ -7,19 +7,9 @@ module Kentico
     module Delivery
       module Responses
         # The response of a successful query for content items.
-        # See https://github.com/Kentico/kontent-delivery-sdk-ruby#listing-items
-        class DeliveryItemListingResponse < ResponseBase
-          # Parses the 'pagination' JSON node of the response.
-          #
-          # * *Returns*:
-          #   - Kentico::Kontent::Delivery::Pagination
-          def pagination
-            @pagination unless @pagination.nil?
-            @pagination = Pagination.new @response['pagination']
-          end
-
+        class DeliveryItemsFeedResponse < ResponseBase
           # A collection of Kentico::Kontent::Delivery::ContentItem objects from
-          # a Kentico::Kontent::Delivery::DeliveryClient.items call.
+          # a Kentico::Kontent::Delivery::DeliveryClient.items_feed call.
           #
           # * *Returns*:
           #   - +Array+ One or more Kentico::Kontent::Delivery::ContentItem objects
@@ -39,6 +29,7 @@ module Kentico
           end
 
           def initialize(headers, body, query)
+            @query = query
             @response = JSON.parse(body)
             @content_link_url_resolver = query.content_link_url_resolver
             @inline_content_item_resolver = query.inline_content_item_resolver
@@ -46,6 +37,19 @@ module Kentico
               "Success, #{items.length} items returned",
               headers,
               JSON.generate(@response)
+          end
+
+          def next_result
+            @query.update_continuation continuation_token
+            @query.execute
+          end
+
+          def more_results?
+            !continuation_token.nil?
+          end
+
+          def continuation_token
+            headers[Kentico::Kontent::Delivery::DeliveryQuery::HEADER_CONTINUATION]
           end
         end
       end

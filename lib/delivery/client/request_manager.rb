@@ -71,6 +71,12 @@ module Kentico
           #   - An object derived from the Kentico::Kontent::Delivery::Responses::ResponseBase class
           def make_response(response)
             case @query.query_type
+            when Kentico::Kontent::Delivery::QUERY_TYPE_ITEMS_FEED
+              Kentico::Kontent::Delivery::Responses::DeliveryItemsFeedResponse.new(
+                response.headers,
+                response.body,
+                @query
+              )
             when Kentico::Kontent::Delivery::QUERY_TYPE_ITEMS
               respond_item response
             when Kentico::Kontent::Delivery::QUERY_TYPE_TYPES
@@ -103,15 +109,13 @@ module Kentico
               Kentico::Kontent::Delivery::Responses::DeliveryItemListingResponse.new(
                 response.headers,
                 response.body,
-                @query.content_link_url_resolver,
-                @query.inline_content_item_resolver
+                @query
               )
             else
               Kentico::Kontent::Delivery::Responses::DeliveryItemResponse.new(
                 response.headers,
                 response.body,
-                @query.content_link_url_resolver,
-                @query.inline_content_item_resolver
+                @query
               )
             end
           end

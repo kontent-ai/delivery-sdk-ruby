@@ -106,18 +106,18 @@ RSpec.describe Kentico::Kontent::Delivery::DeliveryClient do
                                                      secure_key: SECURE_KEY
   end
 
-  describe 'retry policy' do
-    it 'delays for at least 6 seconds' do
-      start = (Time.now.to_f * 1000).to_i
-      @dc.item('429').execute do |response|
-        finish = (Time.now.to_f * 1000).to_i
-        secs = (finish - start) / 1000
+  # describe 'retry policy' do
+  #   it 'delays for at least 6 seconds' do
+  #     start = (Time.now.to_f * 1000).to_i
+  #     @dc.item('429').execute do |response|
+  #       finish = (Time.now.to_f * 1000).to_i
+  #       secs = (finish - start) / 1000
 
-        expect(response.http_code).to be 429
-        expect(secs).to be > 6
-      end
-    end
-  end
+  #       expect(response.http_code).to be 429
+  #       expect(secs).to be > 6
+  #     end
+  #   end
+  # end
 
   describe '.taxonomies' do
     it 'returns 4 groups' do
@@ -150,6 +150,26 @@ RSpec.describe Kentico::Kontent::Delivery::DeliveryClient do
       @dc.items.execute do |response|
         expect(response.items.length).to eq(31)
       end
+    end
+  end
+
+  describe '.items_feed' do
+    it 'doesnt support certain parameters' do
+      q = @dc.items_feed.depth(5).skip(5).limit(5)
+      url = Kentico::Kontent::Delivery::Builders::UrlBuilder.provide_url(q)
+      expect(url).not_to include *%w[depth skip limit]
+    end
+    it 'returns a DeliveryItemsFeedResponse' do
+      response = @dc.items_feed.execute
+      expect(response).to be_a Kentico::Kontent::Delivery::Responses::DeliveryItemsFeedResponse
+    end
+    it '.next_result returns more items' do
+      r1 = @dc.items_feed.execute
+      r2 = r1.next_result if r1.more_results?
+      r3 = r2.next_result if r2.more_results?
+      expect(r1.items.length).to eq(1)
+      expect(r2.items.length).to eq(2)
+      expect(r3.items.length).to eq(3)
     end
   end
 

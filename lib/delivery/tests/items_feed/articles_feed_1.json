@@ -1,0 +1,39 @@
+{
+	"items": [{
+			"system": {
+				"id": "b2fea94c-73fd-42ec-a22f-f409878de187",
+				"name": "Origins of Arabica Bourbon",
+				"codename": "origins_of_arabica_bourbon",
+				"language": "en-US",
+				"type": "article",
+				"sitemap_locations": [],
+				"last_modified": "2019-03-27T13:21:49.151Z"
+			},
+			"elements": {
+				"title": {
+					"type": "text",
+					"name": "Title",
+					"value": "Origins of Arabica Bourbon"
+				},
+				"summary": {
+					"type": "text",
+					"name": "Summary",
+					"value": "This one particular type of coffee, the Arabica Bourbon, is now sold only in Japan. It has been brought back to life by enthusiasts after being almost forgotten for nearly sixty years."
+				},
+				"personas": {
+					"type": "taxonomy",
+					"name": "Personas",
+					"taxonomy_group": "personas",
+					"value": [{
+							"name": "Barista",
+							"codename": "barista"
+						}, {
+							"name": "Coffee blogger",
+							"codename": "coffee_blogger"
+						}
+					]
+				}
+			}
+		}
+	]
+}
