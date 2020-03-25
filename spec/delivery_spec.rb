@@ -106,18 +106,18 @@ RSpec.describe Kentico::Kontent::Delivery::DeliveryClient do
                                                      secure_key: SECURE_KEY
   end
 
-  # describe 'retry policy' do
-  #   it 'delays for at least 6 seconds' do
-  #     start = (Time.now.to_f * 1000).to_i
-  #     @dc.item('429').execute do |response|
-  #       finish = (Time.now.to_f * 1000).to_i
-  #       secs = (finish - start) / 1000
+  describe 'retry policy' do
+    it 'delays for at least 6 seconds' do
+      start = (Time.now.to_f * 1000).to_i
+        @dc.item('429').execute do |response|
+         finish = (Time.now.to_f * 1000).to_i
+         secs = (finish - start) / 1000
 
-  #       expect(response.http_code).to be 429
-  #       expect(secs).to be > 6
-  #     end
-  #   end
-  # end
+         expect(response.http_code).to be 429
+         expect(secs).to be > 6
+       end
+     end
+  end
 
   describe '.taxonomies' do
     it 'returns 4 groups' do
@@ -244,7 +244,7 @@ RSpec.describe Kentico::Kontent::Delivery::Resolvers::ContentLinkResolver do
       @dc.item('coffee_processing_techniques')
          .with_link_resolver(lambda_resolver)
          .execute do |response|
-           expect(response.item.get_string('body_copy')).not_to eql(response.item.elements.body_copy.value)
+          expect(response.item.get_string('body_copy')).not_to include 'href=\"\"'
          end
     end
   end
@@ -278,7 +278,7 @@ RSpec.describe Kentico::Kontent::Delivery::Resolvers::InlineContentItemResolver 
     it 'resolves inline items' do
       # A content link was manually added to this item
       @dc.item('where_does_coffee_come_from_').execute do |response|
-        expect(response.item.get_string('body_copy')).not_to eql(response.item.elements.body_copy.value)
+        expect(response.item.get_string('body_copy')).not_to include 'data-rel=\"link\"'
       end
     end
   end
