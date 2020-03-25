@@ -521,6 +521,19 @@ delivery_client.items
                .with_inline_content_item_resolver MyItemResolver.new
 ```
 
+To resolve inline content in elements, you must call `get_string` similar to content item links:
+
+```ruby
+item_resolver = Kentico::Kontent::Delivery::Resolvers::InlineContentItemResolver.new(lambda do |item|
+  return "<div>$#{item.elements.price.value}</div>" if item.system.type.eql? 'brewer'
+end)
+delivery_client = Kentico::Kontent::Delivery::DeliveryClient.new project_id: PROJECT_ID,
+                                                    inline_content_item_resolver: item_resolver
+delivery_client.item('our_brewers').execute do |response|
+  text = response.item.get_string 'body_copy'
+end
+```
+
 ## Image transformation
 
 When you've obtained the URL for an asset, you can use our [Image Transformation API](https://developer.kenticocloud.com/v1/reference#image-transformation) to make on-the-fly modifications to the image. To do this, use the static `.transform` method of `Kentico::Kontent::Delivery::Builders::ImageTransformationBuilder`, then call the transformation methods. When you're done, call the `.url` method to get the new URL:
