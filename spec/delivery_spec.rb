@@ -98,10 +98,11 @@ RSpec.describe Kentico::Kontent::Delivery::ContentItem do
     end
   end
 
-  describe 'richtext element' do
-    it 'handle empty value' do
+  describe 'rich text element' do
+    it 'handles empty value' do
       @dc.item('empty_rich_text').execute do |response|
         expect(response.item.elements.body_copy.value).to eq('')
+        expect(response.item.get_string 'body_copy').to eq('')
       end
     end
   end
