@@ -23,7 +23,7 @@ class ApplicationController < ActionController::Base
   PROJECT_ID = '<your-project-id>'.freeze
 ```
 
-If you don't have the sample project installed in Kentico Kontent, you can generate a new project [here](https://app.kontent.ai/sample-project-generator). Save the file, then open a terminal in the `/dancing_goat` directory and run the following commands:
+If you don't have the sample project installed in Kentico Kontent, you can [generate a new sample project](https://docs.kontent.ai/tutorials/set-up-projects/manage-projects/managing-projects#a-creating-a-sample-project). Save the file, then open a terminal in the `/dancing_goat` directory and run the following commands:
 
 ```
 bundle install
@@ -63,14 +63,14 @@ delivery_client = KK::DeliveryClient.new project_id: '<your-project-id>'
 
 ### Previewing unpublished content
 
-To enable [preview](https://developer.kenticocloud.com/docs/previewing-content-in-a-separate-environment "preview"), pass the Preview API Key to the constructor:
+To [enable preview](https://docs.kontent.ai/tutorials/develop-apps/get-content/configuring-preview-for-content-items "See how to configure your app and Kontent project to enable content preview"), pass the Preview API Key to the constructor:
 
 ```ruby
 delivery_client = Kentico::Kontent::Delivery::DeliveryClient.new project_id: '<your-project-id>',
                                                                  preview_key: '<your-preview-key>'
 ```
 
-This enables preview, but you can toggle preview at any time by setting the `use_preview` attribute of DeliveryClient which is propogated to all queries created by the client, _or_ per-query by setting it's `use_preview` attribute:
+This enables preview, but you can toggle preview at any time by setting the `use_preview` attribute of `DeliveryClient` which is propagated to all queries created by the client, _or_ per-query by setting its `use_preview` attribute:
 
 ```ruby
 # For all queries created by client
@@ -86,14 +86,14 @@ end
 
 ### Making secure requests
 
-If you've [secured access](https://developer.kenticocloud.com/docs/securing-public-access "Securing public access") to your project, you need to provide the DeliveryClient with the primary or secondary key:
+If you've [secured access](https://docs.kontent.ai/tutorials/develop-apps/get-content/securing-public-access "See how to enable secured access for your Kontent project") to your project, you need to provide the `DeliveryClient` with either the primary or secondary key:
 
 ```ruby
 Kentico::Kontent::Delivery::DeliveryClient.new project_id: '<your-project-id>',
                                            secure_key: '<your-secure-key>'
 ```
 
-You can then request the secure published content in your project. Be sure to not expose the key if the file(s) it appears in are publicly-available.
+You can then securely request published content in your project. Be sure to not expose the key if the file(s) it appears in are publicly available.
 
 ### Retry policy
 
@@ -137,7 +137,7 @@ response = delivery_client.items.execute
 
 ### Filtering
 
-You can use [filtering](https://developer.kenticocloud.com/v1/reference#content-filtering "filtering") to retrieve particular items. The filtering methods are applied directly to a string and the available methods are:
+You can use [filtering](https://docs.kontent.ai/reference/delivery-api#tag/Filtering-content "See content filtering options in Delivery API") to retrieve particular items. The filtering methods are applied directly to a string and the available methods are:
 
 |Method|Example|REST equivalent|
 |--|--|--|
@@ -171,12 +171,12 @@ The `.item` and `.items` methods return a `Kentico::Kontent::Delivery::DeliveryQ
 
 |Method|Example|REST equivalent
 |--|--|--|
-|[order_by](https://developer.kenticocloud.com/v1/reference#content-ordering "order_by")|`order_by 'system.last_modified' '[desc]'`|?order=system.last_modified[desc]
-|[skip](https://developer.kenticocloud.com/v1/reference#listing-response-paging "skip")|`skip 5`|?skip=5
-|[limit](https://developer.kenticocloud.com/v1/reference#listing-response-paging "limit")|`limit 5`|?limit=5
-|[elements](https://developer.kenticocloud.com/v1/reference#projection "elements")|`elements %w[price product_name image]`|?elements=price,product_name,image
-|[depth](https://developer.kenticocloud.com/v1/reference#linked-content "depth")|`depth 0`|?depth=0
-|[language](https://developer.kenticocloud.com/docs/understanding-language-fallbacks "language")|`language 'en'`|?language=en
+|[order_by](https://docs.kontent.ai/reference/delivery-api#operation/list-content-items "order_by")|`order_by 'system.last_modified' '[desc]'`|?order=system.last_modified[desc]
+|[skip](https://docs.kontent.ai/reference/delivery-api#operation/list-content-items "skip")|`skip 5`|?skip=5
+|[limit](https://docs.kontent.ai/reference/delivery-api#operation/list-content-items "limit")|`limit 5`|?limit=5
+|[elements](https://docs.kontent.ai/reference/delivery-api#tag/Projection "elements")|`elements %w[price product_name image]`|?elements=price,product_name,image
+|[depth](https://docs.kontent.ai/reference/delivery-api#tag/Linked-content-and-components/linked-content-depth "depth")|`depth 0`|?depth=0
+|[language](https://docs.kontent.ai/tutorials/set-up-projects/set-up-languages/localization-in-kentico-kontent#a-understanding-language-fallbacks "language")|`language 'en'`|?language=en
 
 For example:
 
@@ -224,7 +224,7 @@ price = response.item.elements.price.value
 
 ### Requesting the latest content
 
-Kentico caches content using Fastly, so requests made to Kentico Kontent may not be up-to-date. In some cases, such as when reacting to [webhook](https://developer.kenticocloud.com/docs/webhooks) notifications, you might want to request the latest content from your Kentico Kontent project.
+Kentico caches content using Fastly, so requests made to Kentico Kontent may not be up-to-date. In some cases, such as when reacting to [webhook](https://docs.kontent.ai/tutorials/develop-apps/integrate/using-webhooks-for-automatic-updates) notifications, you might want to request the latest content from your Kentico Kontent project.
 
 You can check the headers of the response for the **X-Stale-Content** header to check if the response was served from cache:
 
@@ -294,7 +294,7 @@ end
 
 ### Pagination
 
-The `DeliveryItemListingResponse` also contains a `pagination` attribute to access the [paging](https://developer.kenticocloud.com/v1/reference#listing-response-paging "paging") data for the Delivery query. This object contains the following attributes:
+The `DeliveryItemListingResponse` also contains a `pagination` attribute to access the [paging](https://docs.kontent.ai/reference/delivery-api#operation/list-content-items "paging") data for the Delivery query. This object contains the following attributes:
 
 - **skip**
 - **limit**
@@ -320,7 +320,7 @@ delivery_client.items
 
 Use the `items_feed` method to retrieve a dynamically paginated list of content items in your project. The result will have a `more_results?` method which indicates that more items can be retrieved from the feed, using the `next_result` method.
 
-This method accepts all [filtering](https://github.com/Kentico/kontent-delivery-sdk-ruby#filtering) and [parameters](https://github.com/Kentico/kontent-delivery-sdk-ruby#parameters) except _depth_, _skip_, and _limit_. You can read more about the /items-feed endpoint in the [Kontent documentation](https://docs.kontent.ai/reference/delivery-api#operation/enumerate-content-items)
+This method accepts all [filtering](#filtering) and [parameters](https://github.com/Kentico/kontent-delivery-sdk-ruby#parameters) except _depth_, _skip_, and _limit_. You can read more about the /items-feed endpoint in the [Kontent documentation](https://docs.kontent.ai/reference/delivery-api#operation/enumerate-content-items)
 
 Below is an example that will load all content items of a project into a single array:
 
@@ -407,7 +407,7 @@ end
 
 ## Retrieving content type elements
 
-Kentico Kontent provides an [endpoint](https://developer.kenticocloud.com/v1/reference#view-a-content-type-element) for obtaining details about a specific element of a content type. In the Ruby SDK, you can use the `.element` method:
+Kentico Kontent provides an [endpoint](https://docs.kontent.ai/reference/delivery-api#operation/retrieve-a-content-element) for obtaining details about a specific element of a content type. In the Ruby SDK, you can use the `.element` method:
 
 ```ruby
 delivery_client.element('brewer', 'product_status').execute do |response|
@@ -417,7 +417,7 @@ end
 
 This returns a `Kentico::Kontent::Delivery::Responses::DeliveryElementResponse` where the `element` attribute is a dynamic OStruct representation of the JSON response. This means that you can access any property of the element by simply typing the name as in the above example.
 
-The element will always contain __codename__, __type__, and __name__, but multiple choice elements will also contain __options__ and taxonomy elements will contain __taxonomy_group__. The Ruby SDK fully supports obtaining [custom elements](https://developer.kenticocloud.com/v1/reference#custom-elements-api) using this approach and any other methods.
+The element will always contain __codename__, __type__, and __name__, but multiple choice elements will also contain __options__ and taxonomy elements will contain __taxonomy_group__. The Ruby SDK fully supports obtaining [custom elements](https://docs.kontent.ai/reference/custom-elements-js-api) using this approach and any other methods.
 
 ## Resolving links
 
@@ -536,7 +536,7 @@ end
 
 ## Image transformation
 
-When you've obtained the URL for an asset, you can use our [Image Transformation API](https://developer.kenticocloud.com/v1/reference#image-transformation) to make on-the-fly modifications to the image. To do this, use the static `.transform` method of `Kentico::Kontent::Delivery::Builders::ImageTransformationBuilder`, then call the transformation methods. When you're done, call the `.url` method to get the new URL:
+When you've obtained the URL for an asset, you can use our [Image Transformation API](https://docs.kontent.ai/reference/image-transformation) to make on-the-fly modifications to the image. To do this, use the static `.transform` method of `Kentico::Kontent::Delivery::Builders::ImageTransformationBuilder`, then call the transformation methods. When you're done, call the `.url` method to get the new URL:
 
 ```ruby
 url = response.item.get_assets('teaser_image').first.url
