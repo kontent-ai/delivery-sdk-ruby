@@ -11,26 +11,7 @@
 
 The Delivery Ruby SDK can be used in Ruby/Rails projects to retrieve content from Kentico Kontent. This is a community project and not an official Kentico SDK. If you find a bug in the SDK or have a feature request, please submit a GitHub issue.
 
-See [How to setup a development environment on Windows](https://github.com/Kentico/kontent-delivery-sdk-ruby/wiki/How-to-setup-development-environment-on-Windows) for local development.
-
-
-## Demo Rails application
-
-This repository contains a very basic Rails application that you can run locally to see how the SDK can be used. To run the Dancing Goat demo application, clone this repository and open `/dancing_goat/app/controllers/application_controller.rb`. Add your project ID to the file here:
-
-```ruby
-class ApplicationController < ActionController::Base
-  PROJECT_ID = '<your-project-id>'.freeze
-```
-
-If you don't have the sample project installed in Kentico Kontent, you can [generate a new sample project](https://docs.kontent.ai/tutorials/set-up-projects/manage-projects/managing-projects#a-creating-a-sample-project). Save the file, then open a terminal in the `/dancing_goat` directory and run the following commands:
-
-```
-bundle install
-rails server
-```
-
-The site should be accessible at localhost:3000. You can also follow a step-by-step guide to creating a basic Rails application on the [Kentico Kontent Blog](https://kontent.ai/blog/creating-a-kentico-cloud-ruby-on-rails-application).
+See [How to setup a development environment on Windows](https://github.com/Kentico/kontent-delivery-sdk-ruby/wiki/How-to-setup-development-environment-on-Windows) for local development, and check out the [Kentico Kontent Blog](https://kontent.ai/blog/creating-a-kentico-cloud-ruby-on-rails-application) for a tutorial on creating a Rails application.
 
 ## Installation
 

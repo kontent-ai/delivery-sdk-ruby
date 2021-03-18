@@ -31,11 +31,11 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  spec.add_runtime_dependency("dotenv", "~> 2.7.0")
-  spec.add_runtime_dependency("nokogiri", "~> 1.10.8", ">= 1.8.4")
+  spec.add_runtime_dependency("dotenv", "~> 2.7", ">= 2.7.0")
+  spec.add_runtime_dependency("nokogiri", "~> 1.11", ">= 1.11.0")
   spec.add_runtime_dependency("rest-client", "~> 2.1.0.rc1", ">= 2.1.0.rc1")
   spec.add_development_dependency("bundler", "~> 2.0")
-  spec.add_development_dependency("rake", ">= 12.3.3")
+  spec.add_development_dependency("rake", "~> 12.3", ">= 12.3.3")
   spec.add_development_dependency("rspec", "~> 3.8")
-  spec.add_development_dependency("simplecov", "~> 0.20.0")
+  spec.add_development_dependency("simplecov", "0.17.1", "< 0.18")
 end
