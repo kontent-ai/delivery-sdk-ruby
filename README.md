@@ -1,13 +1,10 @@
-[![Build Status](https://api.travis-ci.com/Kentico/kontent-delivery-sdk-ruby.svg?branch=master)](https://travis-ci.com/Kentico/kontent-delivery-sdk-ruby)
 [![Join the chat at https://kentico-community.slack.com](https://img.shields.io/badge/join-slack-E6186D.svg)](https://kentico-community.slack.com)
 [![Stack Overflow](https://img.shields.io/badge/Stack%20Overflow-ASK%20NOW-FE7A16.svg?logo=stackoverflow&logoColor=white)](https://stackoverflow.com/tags/kentico-kontent)
  [![Version](https://img.shields.io/gem/v/kontent-delivery-sdk-ruby.svg?style=flat)](https://rubygems.org/gems/kontent-delivery-sdk-ruby)
-[![Maintainability](https://api.codeclimate.com/v1/badges/c83f2067f9cae9bde737/maintainability)](https://codeclimate.com/github/Kentico/kontent-delivery-sdk-ruby/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/c83f2067f9cae9bde737/test_coverage)](https://codeclimate.com/github/Kentico/kontent-delivery-sdk-ruby/test_coverage)
 
 # Delivery Ruby SDK
 
-![Banner](https://github.com/Kentico/kontent-delivery-sdk-ruby/blob/master/banner.png)
+![Banner](/banner.png)
 
 The Delivery Ruby SDK can be used in Ruby/Rails projects to retrieve content from Kentico Kontent. This is a community project and not an official Kentico SDK. If you find a bug in the SDK or have a feature request, please submit a GitHub issue.
 
