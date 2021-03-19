@@ -1,6 +1,5 @@
 require 'delivery/builders/url_builder'
 require 'delivery/query_parameters/query_string'
-require 'delivery/version'
 
 module Kentico
   module Kontent
@@ -294,7 +293,8 @@ module Kentico
         end
 
         def provide_sdk_header
-          "rubygems.org;kontent-delivery-sdk-ruby;#{Kentico::Kontent::Delivery::VERSION}"
+          spec = Gem::Specification::load('kontent-delivery-sdk-ruby.gemspec')
+          'rubygems.org;kontent-delivery-sdk-ruby;' + spec.version.to_s
         end
       end
     end

@@ -1,10 +1,9 @@
 lib = File.expand_path('../lib', __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'delivery/version'
 
 Gem::Specification.new do |spec|
   spec.name          = 'kontent-delivery-sdk-ruby'
-  spec.version       = Kentico::Kontent::Delivery::VERSION
+  spec.version       = '2.0.19'
   spec.authors       = ['Eric Dugre']
   spec.email         = ['EricD@kentico.com']
   spec.summary       = 'Kentico Kontent Delivery SDK for Ruby'
