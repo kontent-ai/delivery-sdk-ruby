@@ -77,6 +77,14 @@ RSpec.describe Kentico::Kontent::Delivery::ContentItem do
     end
   end
 
+  describe '.workflow_step' do
+    it 'returns the item step' do
+      @dc.items.execute do |response|
+        expect(response.items.first.system.workflow_step).to eq('published')
+      end
+    end
+  end
+
   describe '.include_total_count' do
     it 'adds pagination attribute' do
       @dc.items.include_total_count.execute do |response|
