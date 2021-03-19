@@ -55,7 +55,7 @@ end
 RSpec.describe Kentico::Kontent::Delivery::ContentItem do
   before(:all) do
     @dc = Kentico::Kontent::Delivery::DeliveryClient.new project_id: PROJECT_ID,
-                                                     secure_key: SECURE_KEY
+                                                         secure_key: SECURE_KEY
   end
 
   describe '.pagination' do
@@ -133,7 +133,7 @@ end
 RSpec.describe Kentico::Kontent::Delivery::DeliveryClient do
   before(:all) do
     @dc = Kentico::Kontent::Delivery::DeliveryClient.new project_id: PROJECT_ID,
-                                                     secure_key: SECURE_KEY
+                                                         secure_key: SECURE_KEY
   end
 
   describe 'retry policy' do
@@ -216,7 +216,7 @@ end
 RSpec.describe Kentico::Kontent::Delivery::QueryParameters::ParameterBase do
   before(:all) do
     @dc = Kentico::Kontent::Delivery::DeliveryClient.new project_id: PROJECT_ID,
-                                                     secure_key: SECURE_KEY
+                                                         secure_key: SECURE_KEY
   end
 
   describe '<string>.gt' do
@@ -230,7 +230,7 @@ end
 RSpec.describe Kentico::Kontent::Delivery::Resolvers::ContentLinkResolver do
   before(:all) do
     @dc = Kentico::Kontent::Delivery::DeliveryClient.new project_id: PROJECT_ID,
-                                                     secure_key: SECURE_KEY
+                                                         secure_key: SECURE_KEY
   end
 
   describe 'get_string' do
@@ -271,8 +271,8 @@ RSpec.describe Kentico::Kontent::Delivery::Resolvers::InlineContentItemResolver 
       return "<div>$#{item.elements.price.value}</div>" if item.system.type.eql? 'brewer'
     end)
     @dc = Kentico::Kontent::Delivery::DeliveryClient.new project_id: PROJECT_ID,
-                                                     secure_key: SECURE_KEY,
-                                                     inline_content_item_resolver: lambda_resolver
+                                                         secure_key: SECURE_KEY,
+                                                         inline_content_item_resolver: lambda_resolver
   end
 
   describe 'get_string' do
