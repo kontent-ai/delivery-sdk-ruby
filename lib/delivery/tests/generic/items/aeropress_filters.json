@@ -6,10 +6,10 @@
       "codename": "aeropress_filters",
       "language": "en-US",
       "type": "accessory",
-      "sitemap_locations": [
-        "accessories"
-      ],
-      "last_modified": "2018-02-27T19:02:35.617Z"
+      "collection": "default",
+      "sitemap_locations": [],
+      "last_modified": "2019-03-27T13:11:06.537Z",
+      "workflow_step": "published"
     },
     "elements": {
       "product_name": {
@@ -28,10 +28,12 @@
         "value": [
           {
             "name": "aero-press-filters.jpg",
+            "description": "AeroPress Paper Filter",
             "type": "image/jpeg",
             "size": 36967,
-            "description": "AeroPress Paper Filter",
-            "url": "https://assets-us-01.kc-usercontent.com:443/faf446d2-0544-0039-bb43-5d6ef816661a/fdd5befd-e730-4c74-a128-b5404ccb7640/aero-press-filters.jpg"
+            "url": "https://assets-us-01.kc-usercontent.com:443/cbb8fcc6-9201-000d-a115-b1050abd8f34/fdd5befd-e730-4c74-a128-b5404ccb7640/aero-press-filters.jpg",
+            "width": 1080,
+            "height": 1080
           }
         ]
       },
@@ -67,6 +69,17 @@
         "name": "URL pattern",
         "value": "aeropress-filters"
       },
+      "sitemap": {
+        "type": "taxonomy",
+        "name": "Sitemap",
+        "taxonomy_group": "sitemap_538125f",
+        "value": [
+          {
+            "name": "Accessories",
+            "codename": "accessories"
+          }
+        ]
+      },
       "metadata__meta_title": {
         "type": "text",
         "name": "Meta title",
@@ -93,10 +106,12 @@
         "value": [
           {
             "name": "aero-press-filters.jpg",
+            "description": "AeroPress Paper Filter",
             "type": "image/jpeg",
             "size": 36967,
-            "description": "AeroPress Paper Filter",
-            "url": "https://assets-us-01.kc-usercontent.com:443/faf446d2-0544-0039-bb43-5d6ef816661a/fdd5befd-e730-4c74-a128-b5404ccb7640/aero-press-filters.jpg"
+            "url": "https://assets-us-01.kc-usercontent.com:443/cbb8fcc6-9201-000d-a115-b1050abd8f34/fdd5befd-e730-4c74-a128-b5404ccb7640/aero-press-filters.jpg",
+            "width": 1080,
+            "height": 1080
           }
         ]
       },
@@ -108,7 +123,7 @@
       "metadata__twitter_creator": {
         "type": "text",
         "name": "twitter:creator",
-        "value": "@kenticokontent"
+        "value": "@kenticoCloud"
       },
       "metadata__twitter_title": {
         "type": "text",
@@ -126,10 +141,12 @@
         "value": [
           {
             "name": "aero-press-filters.jpg",
+            "description": "AeroPress Paper Filter",
             "type": "image/jpeg",
             "size": 36967,
-            "description": "AeroPress Paper Filter",
-            "url": "https://assets-us-01.kc-usercontent.com:443/faf446d2-0544-0039-bb43-5d6ef816661a/fdd5befd-e730-4c74-a128-b5404ccb7640/aero-press-filters.jpg"
+            "url": "https://assets-us-01.kc-usercontent.com:443/cbb8fcc6-9201-000d-a115-b1050abd8f34/fdd5befd-e730-4c74-a128-b5404ccb7640/aero-press-filters.jpg",
+            "width": 1080,
+            "height": 1080
           }
         ]
       }

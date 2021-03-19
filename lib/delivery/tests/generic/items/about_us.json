@@ -6,10 +6,10 @@
       "codename": "about_us",
       "language": "en-US",
       "type": "about_us",
-      "sitemap_locations": [
-        "about_us"
-      ],
-      "last_modified": "2018-08-18T13:19:18.933Z"
+      "collection": "default",
+      "sitemap_locations": [],
+      "last_modified": "2019-03-27T13:10:01.791Z",
+      "workflow_step": "published"
     },
     "elements": {
       "facts": {
@@ -25,6 +25,12 @@
         "type": "url_slug",
         "name": "URL pattern",
         "value": "about-us"
+      },
+      "sitemap": {
+        "type": "taxonomy",
+        "name": "Sitemap",
+        "taxonomy_group": "sitemap_538125f",
+        "value": []
       },
       "metadata__meta_title": {
         "type": "text",
@@ -52,10 +58,12 @@
         "value": [
           {
             "name": "on-roasts-1080px.jpg",
+            "description": "Coffee Roastery",
             "type": "image/jpeg",
             "size": 121946,
-            "description": "Coffee Roastery",
-            "url": "https://assets-us-01.kc-usercontent.com:443/faf446d2-0544-0039-bb43-5d6ef816661a/f6daed1f-3f3b-4036-a9c7-9519359b9601/on-roasts-1080px.jpg"
+            "url": "https://assets-us-01.kc-usercontent.com:443/cbb8fcc6-9201-000d-a115-b1050abd8f34/f6daed1f-3f3b-4036-a9c7-9519359b9601/on-roasts-1080px.jpg",
+            "width": 1000,
+            "height": 666
           }
         ]
       },
@@ -67,7 +75,7 @@
       "metadata__twitter_creator": {
         "type": "text",
         "name": "twitter:creator",
-        "value": "@kenticokontent"
+        "value": "@kenticoCloud"
       },
       "metadata__twitter_title": {
         "type": "text",
@@ -85,10 +93,12 @@
         "value": [
           {
             "name": "on-roasts-1080px.jpg",
+            "description": "Coffee Roastery",
             "type": "image/jpeg",
             "size": 121946,
-            "description": "Coffee Roastery",
-            "url": "https://assets-us-01.kc-usercontent.com:443/faf446d2-0544-0039-bb43-5d6ef816661a/f6daed1f-3f3b-4036-a9c7-9519359b9601/on-roasts-1080px.jpg"
+            "url": "https://assets-us-01.kc-usercontent.com:443/cbb8fcc6-9201-000d-a115-b1050abd8f34/f6daed1f-3f3b-4036-a9c7-9519359b9601/on-roasts-1080px.jpg",
+            "width": 1000,
+            "height": 666
           }
         ]
       }
@@ -102,10 +112,10 @@
         "codename": "how_we_roast_our_coffees",
         "language": "en-US",
         "type": "fact_about_us",
-        "sitemap_locations": [
-          "about_us"
-        ],
-        "last_modified": "2017-04-04T11:48:26.187Z"
+        "collection": "default",
+        "sitemap_locations": [],
+        "last_modified": "2019-03-27T13:17:22.27Z",
+        "workflow_step": "published"
       },
       "elements": {
         "title": {
@@ -133,10 +143,23 @@
           "value": [
             {
               "name": "roaster.jpg",
+              "description": "Coffee Roaster",
               "type": "image/jpeg",
               "size": 50240,
-              "description": "Coffee Roaster",
-              "url": "https://assets-us-01.kc-usercontent.com:443/faf446d2-0544-0039-bb43-5d6ef816661a/66d73245-10e5-4478-93e7-5609fee3cdf7/roaster.jpg"
+              "url": "https://assets-us-01.kc-usercontent.com:443/cbb8fcc6-9201-000d-a115-b1050abd8f34/66d73245-10e5-4478-93e7-5609fee3cdf7/roaster.jpg",
+              "width": 600,
+              "height": 457
+            }
+          ]
+        },
+        "sitemap": {
+          "type": "taxonomy",
+          "name": "Sitemap",
+          "taxonomy_group": "sitemap_538125f",
+          "value": [
+            {
+              "name": "About us",
+              "codename": "about_us"
             }
           ]
         }
@@ -149,10 +172,10 @@
         "codename": "how_we_source_our_coffees",
         "language": "en-US",
         "type": "fact_about_us",
-        "sitemap_locations": [
-          "about_us"
-        ],
-        "last_modified": "2016-10-20T12:47:13.65Z"
+        "collection": "default",
+        "sitemap_locations": [],
+        "last_modified": "2019-03-27T13:17:52.881Z",
+        "workflow_step": "published"
       },
       "elements": {
         "title": {
@@ -174,10 +197,23 @@
           "value": [
             {
               "name": "sources.jpg",
+              "description": "Coffee Berries",
               "type": "image/jpeg",
               "size": 46469,
-              "description": "Coffee Berries",
-              "url": "https://assets-us-01.kc-usercontent.com:443/faf446d2-0544-0039-bb43-5d6ef816661a/3e76909f-599f-4742-b472-77fd4b510e92/sources.jpg"
+              "url": "https://assets-us-01.kc-usercontent.com:443/cbb8fcc6-9201-000d-a115-b1050abd8f34/3e76909f-599f-4742-b472-77fd4b510e92/sources.jpg",
+              "width": 640,
+              "height": 457
+            }
+          ]
+        },
+        "sitemap": {
+          "type": "taxonomy",
+          "name": "Sitemap",
+          "taxonomy_group": "sitemap_538125f",
+          "value": [
+            {
+              "name": "About us",
+              "codename": "about_us"
             }
           ]
         }
@@ -190,10 +226,10 @@
         "codename": "our_philosophy",
         "language": "en-US",
         "type": "fact_about_us",
-        "sitemap_locations": [
-          "about_us"
-        ],
-        "last_modified": "2016-10-20T12:06:18.34Z"
+        "collection": "default",
+        "sitemap_locations": [],
+        "last_modified": "2019-03-27T13:22:11.857Z",
+        "workflow_step": "published"
       },
       "elements": {
         "title": {
@@ -215,10 +251,23 @@
           "value": [
             {
               "name": "about.jpg",
+              "description": "Dancing Goat Café - Los Angeles",
               "type": "image/jpeg",
               "size": 56264,
-              "description": "Dancing Goat Café - Los Angeles",
-              "url": "https://assets-us-01.kc-usercontent.com:443/faf446d2-0544-0039-bb43-5d6ef816661a/512047f1-2f7f-45fd-9e90-e71b8feae017/about.jpg"
+              "url": "https://assets-us-01.kc-usercontent.com:443/cbb8fcc6-9201-000d-a115-b1050abd8f34/512047f1-2f7f-45fd-9e90-e71b8feae017/about.jpg",
+              "width": 640,
+              "height": 426
+            }
+          ]
+        },
+        "sitemap": {
+          "type": "taxonomy",
+          "name": "Sitemap",
+          "taxonomy_group": "sitemap_538125f",
+          "value": [
+            {
+              "name": "About us",
+              "codename": "about_us"
             }
           ]
         }

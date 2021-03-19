@@ -116,12 +116,89 @@
           "terms": []
         }
       ]
+    },
+    {
+      "system": {
+        "id": "538125ff-c59c-4193-88ce-71a7016830ed",
+        "name": "Sitemap",
+        "codename": "sitemap_538125f",
+        "last_modified": "2019-03-27T13:02:50.1430000Z"
+      },
+      "terms": [
+        {
+          "name": "Home",
+          "codename": "home",
+          "terms": []
+        },
+        {
+          "name": "Products",
+          "codename": "products",
+          "terms": [
+            {
+              "name": "Coffee",
+              "codename": "coffee",
+              "terms": []
+            },
+            {
+              "name": "Brewers",
+              "codename": "brewers",
+              "terms": []
+            },
+            {
+              "name": "Accessories",
+              "codename": "accessories",
+              "terms": []
+            },
+            {
+              "name": "Grinders",
+              "codename": "grinders",
+              "terms": []
+            }
+          ]
+        },
+        {
+          "name": "Cafes",
+          "codename": "cafes",
+          "terms": [
+            {
+              "name": "North America",
+              "codename": "north_america",
+              "terms": []
+            },
+            {
+              "name": "Europe",
+              "codename": "europe",
+              "terms": []
+            },
+            {
+              "name": "Australia",
+              "codename": "australia",
+              "terms": []
+            }
+          ]
+        },
+        {
+          "name": "Articles",
+          "codename": "articles",
+          "terms": []
+        },
+        {
+          "name": "Offices",
+          "codename": "offices",
+          "terms": []
+        },
+        {
+          "name": "About us",
+          "codename": "about_us",
+          "terms": []
+        }
+      ]
     }
   ],
   "pagination": {
     "skip": 0,
     "limit": 0,
-    "count": 4,
+    "count": 5,
     "next_page": ""
   }
 }

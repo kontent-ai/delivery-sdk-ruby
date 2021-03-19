@@ -80,17 +80,12 @@ module Kentico
                 when 'includeTotalCount=1'
                   Pathname.new(File.dirname(__FILE__) + '/filtering/items_with_count.json')
                 when 'skip=0&limit=5'
-                  Pathname.new(File.dirname(__FILE__) + '/filtering/pagination_about_us.json')
-                when 'elements.price[gt]=20'
-                  Pathname.new(File.dirname(__FILE__) + '/filtering/items_gt.json')
-                when 'elements.price[gt]=20&system.type=grinder'
-                  Pathname.new(File.dirname(__FILE__) + '/filtering/multiple.json')
+                  Pathname.new(File.dirname(__FILE__) + '/filtering/pagination.json')
                 end
               OpenStruct.new(
                 headers: '',
                 body: path.read
               )
-              ##Kentico::Kontent::Delivery::Responses::ResponseBase.new 200, '', '', path.read if path.exist?
             end
 
             def respond_429

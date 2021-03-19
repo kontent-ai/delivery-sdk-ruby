@@ -8,7 +8,7 @@ SECURE_KEY = ENV['SECURE_KEY']
 RSpec.describe Kentico::Kontent::Delivery::DeliveryQuery do
   before(:all) do
     @dc = Kentico::Kontent::Delivery::DeliveryClient.new project_id: PROJECT_ID,
-                                                     secure_key: SECURE_KEY
+                                                         secure_key: SECURE_KEY
   end
 
   describe '.items' do
@@ -66,6 +66,14 @@ RSpec.describe Kentico::Kontent::Delivery::ContentItem do
          .execute do |response|
            expect(response.pagination.next_page).to be_a String
          end
+    end
+  end
+
+  describe '.collections' do
+    it 'returns the item collection' do
+      @dc.items.execute do |response|
+        expect(response.items.first.system.collection).to eq('default')
+      end
     end
   end
 
@@ -142,9 +150,9 @@ RSpec.describe Kentico::Kontent::Delivery::DeliveryClient do
   end
 
   describe '.taxonomies' do
-    it 'returns 4 groups' do
+    it 'returns 5 groups' do
       @dc.taxonomies.execute do |response|
-        expect(response.taxonomies.length).to eql(4)
+        expect(response.taxonomies.length).to eql(5)
         expect(response.taxonomies[0]).to be_a Kentico::Kontent::Delivery::TaxonomyGroup
       end
     end
@@ -168,9 +176,9 @@ RSpec.describe Kentico::Kontent::Delivery::DeliveryClient do
   end
 
   describe '.items' do
-    it 'return 31 items' do
+    it 'return 30 items' do
       @dc.items.execute do |response|
-        expect(response.items.length).to eq(31)
+        expect(response.items.length).to eq(30)
       end
     end
   end
@@ -199,35 +207,6 @@ RSpec.describe Kentico::Kontent::Delivery::DeliveryClient do
     it 'returns 13 types' do
       @dc.types.execute do |response|
         expect(response.types.length).to eq(13)
-      end
-    end
-  end
-end
-
-# Filters
-RSpec.describe Kentico::Kontent::Delivery::QueryParameters::Filter do
-  before(:all) do
-    @dc = Kentico::Kontent::Delivery::DeliveryClient.new project_id: PROJECT_ID,
-                                                     secure_key: SECURE_KEY
-  end
-
-  describe '.items with .gt filter' do
-    it 'returns 4 items' do
-      q = @dc.items('elements.price'.gt(20))
-      q.execute do |response|
-        expect(response.items.length).to eq(4)
-      end
-    end
-  end
-
-  describe '.items with multiple filters' do
-    it 'returns 2 items' do
-      q = @dc.items [
-        ('elements.price'.gt 20),
-        ('system.type'.eq 'grinder')
-      ]
-      q.execute do |response|
-        expect(response.items.length).to eq(2)
       end
     end
   end
