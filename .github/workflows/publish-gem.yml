@@ -1,0 +1,20 @@
+on:
+  push:
+    tags:
+      - '*'
+      jobs:
+        publish:
+          steps:
+          - uses: actions/checkout@v2
+          - name: Set up Ruby
+            uses: ruby/setup-ruby@v1
+            with:
+              ruby-version: 2.6
+          - name: Install dependencies
+            run: bundle install
+          - name: Run tests
+            run: bundle exec rake
+          - name: Publish gem
+            uses: dawidd6/action-publish-gem@v1
+            with:
+              api_key: ${{secrets.RUBYGEMS_API_KEY}}

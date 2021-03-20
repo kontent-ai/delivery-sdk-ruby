@@ -13,8 +13,9 @@ module Kentico
           #   - *key* (+string+) The field to filter upon
           #   - *operator* (+string+) The Kentico Kontent filter being applied to the field, in brackets
           #   - *values* (+Object+) One or more values which will appear as the value of the query string parameter
-          def initialize(key, operator, values)
-            super(key, operator, values)
+          #   - *eq_sign* (+boolean+) If false, the equals sign is not generated in the parameter
+          def initialize(key, operator, values, eq_sign = true)
+            super(key, operator, values, eq_sign)
           end
         end
       end
@@ -76,6 +77,48 @@ class String
   #   - Kentico::Kontent::Delivery::QueryParameters::Filter
   def eq(*args)
     Kentico::Kontent::Delivery::QueryParameters::Filter.new(self, '', *args)
+  end
+
+  # Represents a filter that matches a content item if the specified
+  # content element or system attribute does not have the specified value.
+  #
+  # * *Args*:
+  #   - +Object+ An object representing the value that cannot exist in the element
+  #
+  # * *Returns*:
+  #   - Kentico::Kontent::Delivery::QueryParameters::Filter
+  def not_eq(*args)
+    Kentico::Kontent::Delivery::QueryParameters::Filter.new(self, '[neq]', *args)
+  end
+
+  # Represents a filter that matches a content item if the specified
+  # content element or system attribute does not have any value.
+  #
+  # * *Returns*:
+  #   - Kentico::Kontent::Delivery::QueryParameters::Filter
+  def empty
+    Kentico::Kontent::Delivery::QueryParameters::Filter.new(self, '[empty]', nil, false)
+  end
+
+  # Represents a filter that matches a content item if the specified
+  # content element or system attribute has any value.
+  #
+  # * *Returns*:
+  #   - Kentico::Kontent::Delivery::QueryParameters::Filter
+  def not_empty
+    Kentico::Kontent::Delivery::QueryParameters::Filter.new(self, '[nempty]', nil, false)
+  end
+
+  # Represents a filter that matches a content item if the specified
+  # content element or system attribute does not have the specified value.
+  #
+  # * *Args*:
+  #   - +Object+ An object representing the value that cannot exist in the element
+  #
+  # * *Returns*:
+  #   - Kentico::Kontent::Delivery::QueryParameters::Filter
+  def not_in(*args)
+    Kentico::Kontent::Delivery::QueryParameters::Filter.new(self, '[nin]', *args)
   end
 
   # Represents a filter that matches a content item if the specified content

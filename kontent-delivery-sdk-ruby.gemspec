@@ -3,7 +3,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 Gem::Specification.new do |spec|
   spec.name          = 'kontent-delivery-sdk-ruby'
-  spec.version       = '2.0.19'
+  spec.version       = '2.0.20'
   spec.authors       = ['Eric Dugre']
   spec.email         = ['EricD@kentico.com']
   spec.summary       = 'Kentico Kontent Delivery SDK for Ruby'

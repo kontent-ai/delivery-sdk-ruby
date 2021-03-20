@@ -1,4 +1,4 @@
-![build](https://github.com/Kentico/kontent-delivery-sdk-ruby/actions/workflows/ruby.yml/badge.svg)
+![build](https://github.com/Kentico/kontent-delivery-sdk-ruby/actions/workflows/build.yml/badge.svg)
 [![Join the chat at https://kentico-community.slack.com](https://img.shields.io/badge/join-slack-E6186D.svg)](https://kentico-community.slack.com)
 [![Stack Overflow](https://img.shields.io/badge/Stack%20Overflow-ASK%20NOW-FE7A16.svg?logo=stackoverflow&logoColor=white)](https://stackoverflow.com/tags/kentico-kontent)
  [![Version](https://img.shields.io/gem/v/kontent-delivery-sdk-ruby.svg?style=flat)](https://rubygems.org/gems/kontent-delivery-sdk-ruby)
@@ -10,6 +10,31 @@
 The Delivery Ruby SDK can be used in Ruby/Rails projects to retrieve content from Kentico Kontent. This is a community project and not an official Kentico SDK. If you find a bug in the SDK or have a feature request, please submit a GitHub issue.
 
 See [How to setup a development environment on Windows](https://github.com/Kentico/kontent-delivery-sdk-ruby/wiki/How-to-setup-development-environment-on-Windows) for local development, and check out the [Kentico Kontent Blog](https://kontent.ai/blog/creating-a-kentico-cloud-ruby-on-rails-application) for a tutorial on creating a Rails application.
+
+## Table of contents
+
+- [Installation](#installation)
+- [Creating a client](#creating-a-client)
+  - [Previewing unpublished content](#previewing-unpublished-content)
+  - [Making secure requests](#making-secure-requests)
+  - [Retry policy](#retry-policy)
+- [Listing items](#listing-items)
+  - [Filtering](#filtering)
+  - [Parameters](#parameters)
+  - [Responses](#responses)
+  - [Requesting the latest content](#requesting-the-latest-content)
+  - [Providing custom headers](#providing-custom-headers)
+  - [Custom URLs](#custom-urls)
+- [Assets](#assets)
+- [Linked items](#linked-items)
+- [Pagination](#pagination)
+- [Items feed](#items-feed)
+- [Retrieving content types](#retrieving-content-types)
+- [Taxonomy](#taxonomy)
+- [Retrieving content type elements](#retrieving-content-type-elements)
+- [Resolving links](#resolving-links)
+- [Resolving inline content](#resolving-inline-content)
+- [Image transformation](#image-transformation)
 
 ## Installation
 
@@ -124,12 +149,16 @@ You can use [filtering](https://docs.kontent.ai/reference/delivery-api#tag/Filte
 |any|`'elements.processing'.any %w[dry__natural_ semi_dry]`|?elements.processing[any]=dry__natural_,semi_dry|
 |contains|`'elements.related_articles'.contains 'on_roasts'`|?elements.related_articles[contains]=on_roasts|
 |eq|`'system.type'.eq 'grinder'`|?system.type=grinder|
+|not_eq|`'elements.region'.not_eq  'USA'`|?elements.region[neq]=USA|
 |gt|`'elements.price'.gt 20`|?elements.price[gt]=20|
 |gt_or_eq|`'elements.price'.gt_or_eq 20`|?elements.price[gte]=20|
 |in|`'system.type'.in %w[coffee brewer]`|?system.type[in]=coffee,brewer|
+|not_in|`'elements.author'.not_in %w[mberry ericd anthonym]`|?elements.author[nin]=mberry,ericd,anthonym|
 |lt|`'elements.price'.lt 20`|?elements.price[lt]=20|
 |lt_or_eq|`'elements.price'.lt_or_eq 20`|?elements.price[lte]=20|
 |range|`'system.last_modified'.range %w[2018-02-01 2018-03-31]`|?system.last_modified[range]=2018-02-01,2018-03-31|
+|empty|`'elements.banned_reason'.empty`|?elements.banned_reason[empty]|
+|not_empty|`'elements.status'.not_empty`|?elements.status[nempty]|
 
 You can pass a single filter or multiple filters in the DeliveryClient methods. For example:
 
@@ -247,7 +276,7 @@ delivery_client.items
   end
 ```
 
-### Assets
+## Assets
 
 You can use `.get_assets(code_name)` to get one or more assets from the specified element. This method will always return an array, so use `.first` to get the first asset:
 
@@ -255,7 +284,7 @@ You can use `.get_assets(code_name)` to get one or more assets from the specifie
 url = response.item.get_assets('teaser_image').first.url
 ```
 
-### Linked items
+## Linked items
 
 You can get a simple array of code names by accessing the element's value:
 
@@ -271,7 +300,7 @@ response.item.get_links('facts').each do |link|
 end
 ```
 
-### Pagination
+## Pagination
 
 The `DeliveryItemListingResponse` also contains a `pagination` attribute to access the [paging](https://docs.kontent.ai/reference/delivery-api#operation/list-content-items "paging") data for the Delivery query. This object contains the following attributes:
 

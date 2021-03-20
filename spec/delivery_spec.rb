@@ -232,6 +232,26 @@ RSpec.describe Kentico::Kontent::Delivery::QueryParameters::ParameterBase do
       expect('system.codename'.gt(5)).to be_a Kentico::Kontent::Delivery::QueryParameters::Filter
     end
   end
+
+  describe '<string>.empty' do
+    it 'parameter contains no equal sign' do
+      url = @dc.items(
+        'elements.author'.empty
+      ).provide_url
+      params = url.split('?')[1]
+      expect(params).to eq 'elements.author%5Bempty%5D'
+    end
+  end
+
+  describe 'not_in filter' do
+    it 'evaluates an array of values' do
+      url = @dc.items(
+        'elements.author'.not_in %w[mberry ericd anthonym]
+      ).provide_url
+      params = url.split('?')[1]
+      expect(params).to eq 'elements.author%5Bnin%5D=mberry%2Cericd%2Canthonym'
+    end
+  end
 end
 
 # ContentLinkResolver
