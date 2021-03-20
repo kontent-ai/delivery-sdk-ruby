@@ -1,5 +1,5 @@
-#require 'simplecov'
-#SimpleCov.start
+require 'simplecov'
+SimpleCov.start
 require 'bundler/setup'
 require 'kontent-delivery-sdk-ruby'
 
