@@ -6,6 +6,11 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    env:
+      TEST_SECURE_API_ENABLED: true
+      PROJECT_ID: faf446d2-0544-0039-bb43-5a6ef816661a
+      PREVIEW_KEY: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI4NmY3MDQ2Y2U4YWI0ZjY4OWRjNDdjZmNiOWNjZWVmYyIsImlhdCI6IjE1NTIwMzg3NjYiLCJleHAiOiIxODk3NjM4NzY2IiwicHJvamVjdF9pZCI6ImZhZjQ0NmQyMDU0NDAwMzliYjQzNWQ2ZWY4MTY2NjFhIiwidmVyIjoiMS4wLjAiLCJhdWQiOiJwcmV2aWV3LmRlbGl2ZXIua2VudGljb2Nsb3VkLmNvbSJ9.NpFvn45TfhlRhtOmexEAD0rRa-mnc1XA0ltU62EDPtE
+      SECURE_KEY: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIwNzI0NzQ4NDQ5ZDY0OGUwOTFiMzgzZjJjY2JlOTViZCIsImlhdCI6IjE1NTIwMzg3ODUiLCJleHAiOiIxODk3NjM4Nzg1IiwicHJvamVjdF9pZCI6ImZhZjQ0NmQyMDU0NDAwMzliYjQzNWQ2ZWY4MTY2NjFhIiwidmVyIjoiMS4wLjAiLCJhdWQiOiJkZWxpdmVyLmtlbnRpY29jbG91ZC5jb20ifQ.qZ2W4VojrwFaApajkyesUy4aNcG8OUu6C2ZlF84aL0M
     steps:
     - uses: actions/checkout@v2
     - name: Set up Ruby
