@@ -14,6 +14,7 @@ module Kentico
           URL_TEMPLATE_TAXONOMY = '/taxonomies/%s'.freeze
           URL_TEMPLATE_TAXONOMIES = '/taxonomies'.freeze
           URL_TEMPLATE_ITEMS_FEED = '/items-feed'.freeze
+          URL_TEMPLATE_LANGUAGES = '/languages'.freeze
 
           URL_MAX_LENGTH = 65_519
           MSG_LONG_QUERY = 'The request url is too long. Split your query into multiple calls.'.freeze
@@ -66,6 +67,8 @@ module Kentico
                 provide_type query
               when Kentico::Kontent::Delivery::QUERY_TYPE_TAXONOMIES
                 provide_taxonomy query
+              when Kentico::Kontent::Delivery::QUERY_TYPE_LANGUAGES
+                URL_TEMPLATE_LANGUAGES
               when Kentico::Kontent::Delivery::QUERY_TYPE_ELEMENT
                 format(URL_TEMPLATE_ELEMENTS, query.content_type, query.code_name)
               when Kentico::Kontent::Delivery::QUERY_TYPE_ITEMS_FEED

@@ -11,6 +11,7 @@ module Kentico
       QUERY_TYPE_TAXONOMIES = 'QUERY_TYPE_TAXONOMIES'.freeze
       QUERY_TYPE_ELEMENT = 'QUERY_TYPE_ELEMENT'.freeze
       QUERY_TYPE_ITEMS_FEED = 'QUERY_TYPE_ITEMS_FEED'.freeze
+      QUERY_TYPE_LANGUAGES = 'QUERY_TYPE_LANGUAGES'.freeze
 
       # Executes requests against the Kentico Kontent Delivery API.
       class DeliveryClient
@@ -168,6 +169,13 @@ module Kentico
                             code_name: element,
                             content_type: content_type,
                             query_type: QUERY_TYPE_ELEMENT,
+                            with_retry_policy: @with_retry_policy
+        end
+
+        def languages
+          DeliveryQuery.new project_id: @project_id,
+                            secure_key: @secure_key,
+                            query_type: QUERY_TYPE_LANGUAGES,
                             with_retry_policy: @with_retry_policy
         end
       end

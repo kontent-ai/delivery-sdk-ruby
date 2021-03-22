@@ -18,22 +18,24 @@ See [How to setup a development environment on Windows](https://github.com/Kenti
   - [Previewing unpublished content](#previewing-unpublished-content)
   - [Making secure requests](#making-secure-requests)
   - [Retry policy](#retry-policy)
+  - [Custom URLs](#custom-urls)
 - [Listing items](#listing-items)
   - [Filtering](#filtering)
   - [Parameters](#parameters)
   - [Responses](#responses)
   - [Requesting the latest content](#requesting-the-latest-content)
   - [Providing custom headers](#providing-custom-headers)
-  - [Custom URLs](#custom-urls)
-- [Assets](#assets)
-- [Linked items](#linked-items)
-- [Pagination](#pagination)
+  - [Pagination](#pagination)
+- [Working with content items](#working-with-content-items)
+  - [Assets](#assets)
+  - [Linked items](#linked-items)
+  - [Resolving inline content](#resolving-inline-content)
+  - [Resolving links](#resolving-links)
 - [Items feed](#items-feed)
 - [Retrieving content types](#retrieving-content-types)
-- [Taxonomy](#taxonomy)
+- [Retrieving taxonomy](#retrieving-taxonomy)
 - [Retrieving content type elements](#retrieving-content-type-elements)
-- [Resolving links](#resolving-links)
-- [Resolving inline content](#resolving-inline-content)
+- [Retrieving languages](#retrieving-languages)
 - [Image transformation](#image-transformation)
 
 ## Installation
@@ -118,6 +120,18 @@ To disable the retry policy, you can use the `with_retry_policy` argument:
 Kentico::Kontent::Delivery::DeliveryClient.new project_id: '<your-project-id>',
                                            secure_key: '<your-secure-key>',
                                            with_retry_policy: false
+```
+
+### Custom URLs
+
+When you have a URL (i.e. `next_page` for paging, for testing purposes, or if you prefer to build it on your own) and still want to leverage SDK functionality such as rich text resolving, use the .url method:
+
+```ruby
+delivery_client.items
+  .url('https://deliver.kontent.ai/<your-project-id>/items?system.type=grinder')
+  .execute do |response|
+    # Do something
+  end
 ```
 
 ## Listing items
@@ -264,45 +278,9 @@ delivery_client.items
   .execute
 ```
 
-### Custom URLs
+### Pagination
 
-When you have a URL (i.e. `next_page` for paging, for testing purposes, or if you prefer to build it on your own) and still want to leverage SDK functionality such as rich text resolving, use the .url method:
-
-```ruby
-delivery_client.items
-  .url('https://deliver.kontent.ai/<your-project-id>/items?system.type=grinder')
-  .execute do |response|
-    # Do something
-  end
-```
-
-## Assets
-
-You can use `.get_assets(code_name)` to get one or more assets from the specified element. This method will always return an array, so use `.first` to get the first asset:
-
-```ruby
-url = response.item.get_assets('teaser_image').first.url
-```
-
-## Linked items
-
-You can get a simple array of code names by accessing the element's value:
-
-```ruby
-links = response.item.elements.facts.value
-```
-
-The `.get_links(element)` method will return an array of ContentItems instead:
-
-```ruby
-response.item.get_links('facts').each do |link|
-  title = link.elements.title.value
-end
-```
-
-## Pagination
-
-The `DeliveryItemListingResponse` also contains a `pagination` attribute to access the [paging](https://docs.kontent.ai/reference/delivery-api#operation/list-content-items "paging") data for the Delivery query. This object contains the following attributes:
+Most responses also contain a `pagination` attribute to access the [paging](https://docs.kontent.ai/reference/delivery-api#operation/list-content-items "paging") data for the Delivery query. This object contains the following attributes:
 
 - **skip**
 - **limit**
@@ -324,110 +302,78 @@ delivery_client.items
 
 :warning: Note that using the `include_total_count` method may increase the response time and should only be used if necessary.
 
-## Items feed
+## Working with content items
 
-Use the `items_feed` method to retrieve a dynamically paginated list of content items in your project. The result will have a `more_results?` method which indicates that more items can be retrieved from the feed, using the `next_result` method.
+### Assets
 
-This method accepts all [filtering](#filtering) and [parameters](https://github.com/Kentico/kontent-delivery-sdk-ruby#parameters) except _depth_, _skip_, and _limit_. You can read more about the /items-feed endpoint in the [Kontent documentation](https://docs.kontent.ai/reference/delivery-api#operation/enumerate-content-items)
-
-Below is an example that will load all content items of a project into a single array:
+You can use `.get_assets(code_name)` to get one or more assets from the specified element. This method will always return an array, so use `.first` to get the first asset:
 
 ```ruby
-result = delivery_client.items_feed.execute
-items = result.items
-if result.more_results?
-  loop do
-    result = result.next_result
-    items.push *result.items
-    break unless result.more_results?
+url = response.item.get_assets('teaser_image').first.url
+```
+
+### Linked items
+
+You can get a simple array of code names by accessing the element's value:
+
+```ruby
+links = response.item.elements.facts.value
+```
+
+The `.get_links(element)` method will return an array of ContentItems instead:
+
+```ruby
+response.item.get_links('facts').each do |link|
+  title = link.elements.title.value
+end
+```
+### Resolving inline content
+
+Existing content items can be inserted into a rich text element, or you can create new content items as components. You need to resolve these in your application just as with content links. You can register a resolver when you instantiate the client by passing it with the hash key `inline_content_item_resolver`:
+
+```ruby
+item_resolver = Kentico::Kontent::Delivery::Resolvers::InlineContentItemResolver.new(lambda do |item|
+      return "<h1>#{item.elements.zip_code.value}</h1>" if item.system.type.eql? 'cafe'
+      return "<div>$#{item.elements.price.value}</div>" if item.system.type.eql? 'brewer'
+    end)
+delivery_client = Kentico::Kontent::Delivery::DeliveryClient.new project_id: '<your-project-id>',
+                                                             inline_content_item_resolver: item_resolver
+```
+
+The object passed to the resolving method is a complete ContentItem. Similar to content link resolvers, you can create your own class which extends `Kentico::Kontent::Delivery::Resolvers::InlineContentItemResolver` and implements the `resolve_item` method:
+
+```ruby
+class MyItemResolver < Kentico::Kontent::Delivery::Resolvers::InlineContentItemResolver
+  def resolve_item(item)
+    return "<h1>#{item.elements.zip_code.value}</h1>" if item.system.type.eql? 'cafe'
+    return "<div>$#{item.elements.price.value}</div>" if item.system.type.eql? 'brewer'
   end
 end
 ```
 
-## Retrieving content types
-
-You can use the `.type` and `.types` methods to request your content types from Kentico Kontent:
+You can also set the inline content resolver per-query:
 
 ```ruby
-delivery_client.types.execute do |response|
-  # Do something
-end
-delivery_client.type('coffee').execute do |response|
-  # Do something
+delivery_client = Kentico::Kontent::Delivery::DeliveryClient.new project_id: '<your-project-id>'
+# Client doesn't use InlineContentItemResolver, but query below will
+delivery_client.items
+               .with_inline_content_item_resolver MyItemResolver.new
+```
+
+To resolve inline content in elements, you must call `get_string` similar to content item links:
+
+```ruby
+item_resolver = Kentico::Kontent::Delivery::Resolvers::InlineContentItemResolver.new(lambda do |item|
+  return "<div>$#{item.elements.price.value}</div>" if item.system.type.eql? 'brewer'
+end)
+delivery_client = Kentico::Kontent::Delivery::DeliveryClient.new project_id: PROJECT_ID,
+                                                    inline_content_item_resolver: item_resolver
+delivery_client.item('our_brewers').execute do |response|
+  text = response.item.get_string 'body_copy'
 end
 ```
 
-### Responses
-
-As with content item queries, all content type queries will return a `Kentico::Kontent::Delivery::Responses::ResponseBase` of the class `DeliveryTypeResponse` or `DeliveryTypeListingResponse` for single and multiple type queries, respectively.
-
-For multiple type queries, you can access the array of `ContentType` objects at `.types`, and at `.type` for singe type queries. You can access information about the type(s) dynamically:
-
-```ruby
-delivery_client.type('coffee').execute do |response|
-  field_type = response.type.elements.product_status.type # taxonomy
-end
-```
-The DeliveryTypeListingResponse also contains pagination data, similar to DeliveryItemListingResponse.
-
-## Taxonomy
-
-Use the `.taxonomies` and `.taxonomy(code_name)` endpoints to get information about the taxonomy in your project:
-
-```ruby
-# Get all taxonomies
-delivery_client.taxonomies.execute do |response|
-  response.taxonomies.each do |tax|
-    puts "#{tax.system.name} (#{tax.terms.length})"
-  end
-end
-
-# Get terms of specific taxonomy
-delivery_client.taxonomy('personas').execute do |response|
-  puts response.taxonomy.terms.length
-end
-```
-
-Each response will return either a single `Kentico::Kontent::Delivery::TaxonomyGroup` or an array of groups. The taxonomy group(s) are accessible at `.taxonomy` and `.taxonomies` for single and multiple queries, respectively.
-
-The `TaxonomyGroup` object contains two attributes `.system` and `.terms` which are dynamic OStruct objects containing the same elements as a standard JSON reponse. For example, given a successful query you could access information about the first term of a group using:
-
-```ruby
-taxonomy_group.terms[0].codename
-```
-
-Note that the terms of a taxonomy group may also contain terms, for example in Dancing Goat's __Personas__ taxonomy group, which looks like this:
-
-- Coffee expert
-  - Barista
-  - Cafe owner
-- Coffee enthusiast
-  - Coffee lover
-  - Coffee blogger
-
-To get the code name of the first term under the "Coffee expert" term, you could do this:
-
-```ruby
-delivery_client.taxonomy('personas').execute do |response|
-  puts response.taxonomy.terms[0].terms[0].codename
-end
-```
-
-## Retrieving content type elements
-
-Kentico Kontent provides an [endpoint](https://docs.kontent.ai/reference/delivery-api#operation/retrieve-a-content-element) for obtaining details about a specific element of a content type. In the Ruby SDK, you can use the `.element` method:
-
-```ruby
-delivery_client.element('brewer', 'product_status').execute do |response|
-  puts response.element.type # taxonomy
-end
-```
-
-This returns a `Kentico::Kontent::Delivery::Responses::DeliveryElementResponse` where the `element` attribute is a dynamic OStruct representation of the JSON response. This means that you can access any property of the element by simply typing the name as in the above example.
-
-The element will always contain __codename__, __type__, and __name__, but multiple choice elements will also contain __options__ and taxonomy elements will contain __taxonomy_group__. The Ruby SDK fully supports obtaining [custom elements](https://docs.kontent.ai/reference/custom-elements-js-api) using this approach and any other methods.
-
-## Resolving links
+### Resolving links
 
 If a rich text element contains links to other content items, you will need to generate the URLs to those items. You can do this by registering a `Kentico::Kontent::Delivery::Resolvers::ContentLinkResolver` when you instantiate the DeliveryClient. When you create a ContentLinkResolver, you must pass a method that will return the URL, and you may pass another method that will be called if the content contains a link, but the content item is not present in the response:
 
@@ -496,49 +442,122 @@ delivery_client.item('coffee_processing_techniques').execute do |response|
 end
 ```
 
-## Resolving inline content
+## Items feed
 
-Existing content items can be inserted into a rich text element, or you can create new content items as components. You need to resolve these in your application just as with content links. You can register a resolver when you instantiate the client by passing it with the hash key `inline_content_item_resolver`:
+Use the `items_feed` method to retrieve a dynamically paginated list of content items in your project. The result will have a `more_results?` method which indicates that more items can be retrieved from the feed, using the `next_result` method.
 
-```ruby
-item_resolver = Kentico::Kontent::Delivery::Resolvers::InlineContentItemResolver.new(lambda do |item|
-      return "<h1>#{item.elements.zip_code.value}</h1>" if item.system.type.eql? 'cafe'
-      return "<div>$#{item.elements.price.value}</div>" if item.system.type.eql? 'brewer'
-    end)
-delivery_client = Kentico::Kontent::Delivery::DeliveryClient.new project_id: '<your-project-id>',
-                                                             inline_content_item_resolver: item_resolver
-```
+This method accepts all [filtering](#filtering) and [parameters](https://github.com/Kentico/kontent-delivery-sdk-ruby#parameters) except _depth_, _skip_, and _limit_. You can read more about the /items-feed endpoint in the [Kontent documentation](https://docs.kontent.ai/reference/delivery-api#operation/enumerate-content-items)
 
-The object passed to the resolving method is a complete ContentItem. Similar to content link resolvers, you can create your own class which extends `Kentico::Kontent::Delivery::Resolvers::InlineContentItemResolver` and implements the `resolve_item` method:
+Below is an example that will load all content items of a project into a single array:
 
 ```ruby
-class MyItemResolver < Kentico::Kontent::Delivery::Resolvers::InlineContentItemResolver
-  def resolve_item(item)
-    return "<h1>#{item.elements.zip_code.value}</h1>" if item.system.type.eql? 'cafe'
-    return "<div>$#{item.elements.price.value}</div>" if item.system.type.eql? 'brewer'
+result = delivery_client.items_feed.execute
+items = result.items
+if result.more_results?
+  loop do
+    result = result.next_result
+    items.push *result.items
+    break unless result.more_results?
   end
 end
 ```
 
-You can also set the inline content resolver per-query:
+## Retrieving content types
+
+You can use the `.type` and `.types` methods to request your content types from Kentico Kontent:
 
 ```ruby
-delivery_client = Kentico::Kontent::Delivery::DeliveryClient.new project_id: '<your-project-id>'
-# Client doesn't use InlineContentItemResolver, but query below will
-delivery_client.items
-               .with_inline_content_item_resolver MyItemResolver.new
+delivery_client.types.execute do |response|
+  # Do something
+end
+delivery_client.type('coffee').execute do |response|
+  # Do something
+end
 ```
 
-To resolve inline content in elements, you must call `get_string` similar to content item links:
+As with content item queries, all content type queries will return a `Kentico::Kontent::Delivery::Responses::ResponseBase` of the class `DeliveryTypeResponse` or `DeliveryTypeListingResponse` for single and multiple type queries, respectively.
+
+For multiple type queries, you can access the array of `ContentType` objects at `.types`, and at `.type` for singe type queries. You can access information about the type(s) dynamically:
 
 ```ruby
-item_resolver = Kentico::Kontent::Delivery::Resolvers::InlineContentItemResolver.new(lambda do |item|
-  return "<div>$#{item.elements.price.value}</div>" if item.system.type.eql? 'brewer'
-end)
-delivery_client = Kentico::Kontent::Delivery::DeliveryClient.new project_id: PROJECT_ID,
-                                                    inline_content_item_resolver: item_resolver
-delivery_client.item('our_brewers').execute do |response|
-  text = response.item.get_string 'body_copy'
+delivery_client.type('coffee').execute do |response|
+  field_type = response.type.elements.product_status.type # taxonomy
+end
+```
+The DeliveryTypeListingResponse also contains pagination data, similar to DeliveryItemListingResponse.
+
+## Retrieving taxonomy
+
+Use the `.taxonomies` and `.taxonomy(code_name)` endpoints to get information about the taxonomy in your project:
+
+```ruby
+# Get all taxonomies
+delivery_client.taxonomies.execute do |response|
+  response.taxonomies.each do |tax|
+    puts "#{tax.system.name} (#{tax.terms.length})"
+  end
+end
+
+# Get terms of specific taxonomy
+delivery_client.taxonomy('personas').execute do |response|
+  puts response.taxonomy.terms.length
+end
+```
+
+Each response will return either a single `Kentico::Kontent::Delivery::TaxonomyGroup` or an array of groups. The taxonomy group(s) are accessible at `.taxonomy` and `.taxonomies` for single and multiple queries, respectively.
+
+The `TaxonomyGroup` object contains two attributes `.system` and `.terms` which are dynamic OStruct objects containing the same elements as a standard JSON reponse. For example, given a successful query you could access information about the first term of a group using:
+
+```ruby
+taxonomy_group.terms[0].codename
+```
+
+Note that the terms of a taxonomy group may also contain terms, for example in Dancing Goat's __Personas__ taxonomy group, which looks like this:
+
+- Coffee expert
+  - Barista
+  - Cafe owner
+- Coffee enthusiast
+  - Coffee lover
+  - Coffee blogger
+
+To get the code name of the first term under the "Coffee expert" term, you could do this:
+
+```ruby
+delivery_client.taxonomy('personas').execute do |response|
+  puts response.taxonomy.terms[0].terms[0].codename
+end
+```
+
+## Retrieving content type elements
+
+Kentico Kontent provides an [endpoint](https://docs.kontent.ai/reference/delivery-api#operation/retrieve-a-content-element) for obtaining details about a specific element of a content type. In the Ruby SDK, you can use the `.element` method:
+
+```ruby
+delivery_client.element('brewer', 'product_status').execute do |response|
+  puts response.element.type # taxonomy
+end
+```
+
+This returns a `Kentico::Kontent::Delivery::Responses::DeliveryElementResponse` where the `element` attribute is a dynamic OStruct representation of the JSON response. This means that you can access any property of the element by simply typing the name as in the above example.
+
+The element will always contain __codename__, __type__, and __name__, but multiple choice elements will also contain __options__ and taxonomy elements will contain __taxonomy_group__. The Ruby SDK fully supports obtaining [custom elements](https://docs.kontent.ai/reference/custom-elements-js-api) using this approach and any other methods.
+
+## Retrieving languages
+
+Use the `.languages` method to list all of the languages in the project:
+
+```ruby
+delivery_client.languages.execute do |response|
+  puts response.languages.length # number of languages
+end
+```
+
+The response is a `Kentico::Kontent::Delivery::Responses::DeliveryLanguageListingResponse` where `languages` is an array of all langauges. You can access the system properties of each language as they are returned by Kontent:
+
+```ruby
+delivery_client.languages.execute do |response|
+  puts response.languages[0].system.codename # en-us
 end
 ```
 

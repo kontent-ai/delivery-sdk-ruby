@@ -85,6 +85,8 @@ module Kentico
               respond_taxonomy response
             when Kentico::Kontent::Delivery::QUERY_TYPE_ELEMENT
               Kentico::Kontent::Delivery::Responses::DeliveryElementResponse.new response.headers, response.body
+            when Kentico::Kontent::Delivery::QUERY_TYPE_LANGUAGES
+              Kentico::Kontent::Delivery::Responses::DeliveryLanguageListingResponse.new response.headers, response.body
             end
           end
 

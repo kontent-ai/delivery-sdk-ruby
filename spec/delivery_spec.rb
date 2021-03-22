@@ -463,3 +463,25 @@ RSpec.describe Kentico::Kontent::Delivery::Builders::ImageTransformationBuilder 
     end
   end
 end
+
+# Languages
+RSpec.describe Kentico::Kontent::Delivery::Language do
+  before(:all) do
+    @dc = Kentico::Kontent::Delivery::DeliveryClient.new project_id: PROJECT_ID,
+                                                         secure_key: SECURE_KEY
+  end
+
+  describe '.languages' do
+    it 'returns a DeliveryLanguageListingResponse' do
+      @dc.languages.execute do |response|
+        expect(response).to be_a Kentico::Kontent::Delivery::Responses::DeliveryLanguageListingResponse
+      end
+    end
+
+    it 'contains system attributes' do
+      @dc.languages.execute do |response|
+        expect(response.languages[0].system.codename).to eq('en-US')
+      end
+    end
+  end
+end

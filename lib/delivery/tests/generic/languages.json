@@ -1,0 +1,24 @@
+{
+    "languages": [
+      {
+        "system": {
+          "id": "00000000-0000-0000-0000-000000000000",
+          "name": "English (United States)",
+          "codename": "en-US"
+        }
+      },
+      {
+        "system": {
+          "id": "d1f95fde-af02-b3b5-bd9e-f232311ccab8",
+          "name": "Spanish (Spain)",
+          "codename": "es-ES"
+        }
+      }
+    ],
+    "pagination": {
+      "skip": 0,
+      "limit": 0,
+      "count": 2,
+      "next_page": ""
+    }
+  }
