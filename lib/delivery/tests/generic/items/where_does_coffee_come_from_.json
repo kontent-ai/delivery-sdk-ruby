@@ -8,7 +8,7 @@
       "type": "article",
       "collection": "default",
       "sitemap_locations": [],
-      "last_modified": "2019-03-27T13:07:32.29Z",
+      "last_modified": "2021-03-20T02:44:46.6377632Z",
       "workflow_step": "published"
     },
     "elements": {
@@ -47,8 +47,10 @@
         "name": "Body Copy",
         "images": {},
         "links": {},
-        "modular_content": [],
-        "value": "<p>The history of coffee is patchy and full of myth and hearsay.</p>\n<p>One of the most popular story goes that Kaldi, an Ethiopian goatherd, saw his goats eating coffee berries and as a result becoming elated. So, Kaldi then tried them himself and thus discovered the potential of coffee. And that's where we got our name - Dancing Goat.</p>\n<p>Although it's far more likely that uses for coffee were developed over time and were discovered by people tasting various parts of the cherry, &nbsp;the old fables do add a bit of romance and are very cute.</p>\n<p>Coffee requires a warm climate and lots of moisture, so it is produced within a belt extending around the world between the Tropic of Cancer and the Tropic of Capricorn.</p>\n<p>Coffee grows on trees that flower and produce fleshy red fruit (orange or yellow is also possible) called a drupe though it is popularly referred to as the ‘berry’ or ‘cherry’. What we refer to as coffee beans are actually seeds, which are produced in the centre of the drupe, often in pairs. After harvesting, the flesh of the drupe is washed or dried and the ‘beans’ extracted.</p>\n<p>Coffee beans vary in their shape, size, color as well as flavor depending on the region and conditions in which they were grown. The difference of aromas and flavors between various regional varietals is as vast as the regions they grow in. Just like the teas and wines of the world, and even more so. It is always worth trying new varietals that may stimulate your taste buds in a different way.</p>\n<p>The two major species of coffee are <em>Coffea arabica</em> and <em>Coffea canephora</em> (also called <em>Coffea robusta</em>).</p>\n<p>Arabica is believed to be the first species of coffee to have been cultivated.</p>\n<p>It requires more care during cultivation and is considered to produce better coffee than robusta. Arabica plants grow at high altitudes of around 1,000 to 2,000 meters, approximately 3,200 to 6,500 ft, above sea level in regions across South and Central America as well as Africa. Arabica is costlier to grow as it produces lower yields than Robusta despite requiring more labor. Despite all that, it is considered superior to robusta. The high demand and lower availability drives the price high. Arabica is the species most associated with specialty (sometimes referred to as gourmet) coffees.</p>\n<p>The only place where Arabica coffee grows indigenously is Ethiopia. It is the birthplace of coffee and also the only place in which it truly grows wild. All countries that produce Arabica coffees have transplanted plant stock directly from Ethiopia or from other countries that had already done so.</p>"
+        "modular_content": [
+          "london_"
+        ],
+        "value": "<object type=\"application/kenticocloud\" data-type=\"item\" data-rel=\"link\" data-codename=\"london_\"></object>\n<p>The history of coffee is patchy and full of myth and hearsay.</p>\n<p>One of the most popular story goes that Kaldi, an Ethiopian goatherd, saw his goats eating coffee berries and as a result becoming elated. So, Kaldi then tried them himself and thus discovered the potential of coffee. And that's where we got our name - Dancing Goat.</p>\n<p>Although it's far more likely that uses for coffee were developed over time and were discovered by people tasting various parts of the cherry, &nbsp;the old fables do add a bit of romance and are very cute.</p>\n<p>Coffee requires a warm climate and lots of moisture, so it is produced within a belt extending around the world between the Tropic of Cancer and the Tropic of Capricorn.</p>\n<p>Coffee grows on trees that flower and produce fleshy red fruit (orange or yellow is also possible) called a drupe though it is popularly referred to as the ‘berry’ or ‘cherry’. What we refer to as coffee beans are actually seeds, which are produced in the centre of the drupe, often in pairs. After harvesting, the flesh of the drupe is washed or dried and the ‘beans’ extracted.</p>\n<p>Coffee beans vary in their shape, size, color as well as flavor depending on the region and conditions in which they were grown. The difference of aromas and flavors between various regional varietals is as vast as the regions they grow in. Just like the teas and wines of the world, and even more so. It is always worth trying new varietals that may stimulate your taste buds in a different way.</p>\n<p>The two major species of coffee are <em>Coffea arabica</em> and <em>Coffea canephora</em> (also called <em>Coffea robusta</em>).</p>\n<p>Arabica is believed to be the first species of coffee to have been cultivated.</p>\n<p>It requires more care during cultivation and is considered to produce better coffee than robusta. Arabica plants grow at high altitudes of around 1,000 to 2,000 meters, approximately 3,200 to 6,500 ft, above sea level in regions across South and Central America as well as Africa. Arabica is costlier to grow as it produces lower yields than Robusta despite requiring more labor. Despite all that, it is considered superior to robusta. The high demand and lower availability drives the price high. Arabica is the species most associated with specialty (sometimes referred to as gourmet) coffees.</p>\n<p>The only place where Arabica coffee grows indigenously is Ethiopia. It is the birthplace of coffee and also the only place in which it truly grows wild. All countries that produce Arabica coffees have transplanted plant stock directly from Ethiopia or from other countries that had already done so.</p>"
       },
       "related_articles": {
         "type": "modular_content",
@@ -172,6 +174,86 @@
     }
   },
   "modular_content": {
+    "london_": {
+      "system": {
+        "id": "473cd60b-a2a7-4e5b-8353-5d1995dd4b50",
+        "name": "London",
+        "codename": "london_",
+        "language": "en-US",
+        "type": "cafe",
+        "collection": "default",
+        "sitemap_locations": [],
+        "last_modified": "2019-03-27T13:19:05.507Z",
+        "workflow_step": "published"
+      },
+      "elements": {
+        "street": {
+          "type": "text",
+          "name": "Street",
+          "value": "344 King's Road"
+        },
+        "city": {
+          "type": "text",
+          "name": "City",
+          "value": "London"
+        },
+        "country": {
+          "type": "text",
+          "name": "Country",
+          "value": "United Kingdom"
+        },
+        "state": {
+          "type": "text",
+          "name": "State",
+          "value": ""
+        },
+        "zip_code": {
+          "type": "text",
+          "name": "ZIP Code",
+          "value": "SW3 5UR"
+        },
+        "phone": {
+          "type": "text",
+          "name": "Phone",
+          "value": "0173-733-6375"
+        },
+        "email": {
+          "type": "text",
+          "name": "Email",
+          "value": "London@localhost.local"
+        },
+        "photo": {
+          "type": "asset",
+          "name": "Photo",
+          "value": [
+            {
+              "name": "cafe01.jpg",
+              "description": "Dancing Goat Café - London",
+              "type": "image/jpeg",
+              "size": 493724,
+              "url": "https://assets-us-01.kc-usercontent.com:443/cbb8fcc6-9201-000d-a115-b1050abd8f34/8fccb3b9-a507-48cc-bccd-0639d7fb69ec/cafe01.jpg",
+              "width": 849,
+              "height": 565
+            }
+          ]
+        },
+        "sitemap": {
+          "type": "taxonomy",
+          "name": "Sitemap",
+          "taxonomy_group": "sitemap_538125f",
+          "value": [
+            {
+              "name": "Cafes",
+              "codename": "cafes"
+            },
+            {
+              "name": "Europe",
+              "codename": "europe"
+            }
+          ]
+        }
+      }
+    },
     "on_roasts": {
       "system": {
         "id": "f4b3fc05-e988-4dae-9ac1-a94aba566474",

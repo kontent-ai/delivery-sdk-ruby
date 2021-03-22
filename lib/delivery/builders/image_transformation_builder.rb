@@ -128,6 +128,7 @@ module Kentico
             @query_string.remove_param 'fp-x'
             @query_string.remove_param 'fp-y'
             @query_string.remove_param 'fp-z'
+            @query_string.remove_param 'fit'
             @query_string.remove_param 'crop'
             @query_string.set_param 'rect', "#{x},#{y},#{width},#{height}"
             self

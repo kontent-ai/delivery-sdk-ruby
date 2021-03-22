@@ -1,0 +1,89 @@
+{
+    "system": {
+      "id": "7bc932b3-ce2a-4aa7-954e-04cbcbd214fc",
+      "name": "Brewer",
+      "codename": "brewer",
+      "last_modified": "2019-07-16T07:15:27.5660000Z"
+    },
+    "elements": {
+      "product_name": {
+        "type": "text",
+        "name": "Product name"
+      },
+      "metadata__og_description": {
+        "type": "text",
+        "name": "og:description"
+      },
+      "metadata__meta_title": {
+        "type": "text",
+        "name": "Meta title"
+      },
+      "long_description": {
+        "type": "rich_text",
+        "name": "Long description"
+      },
+      "metadata__og_title": {
+        "type": "text",
+        "name": "og:title"
+      },
+      "metadata__meta_description": {
+        "type": "text",
+        "name": "Meta description"
+      },
+      "metadata__twitter_site": {
+        "type": "text",
+        "name": "twitter:site"
+      },
+      "price": {
+        "type": "number",
+        "name": "Price"
+      },
+      "manufacturer": {
+        "type": "taxonomy",
+        "name": "Manufacturer",
+        "taxonomy_group": "manufacturer"
+      },
+      "metadata__twitter_image": {
+        "type": "asset",
+        "name": "twitter:image"
+      },
+      "metadata__twitter_creator": {
+        "type": "text",
+        "name": "twitter:creator"
+      },
+      "url_pattern": {
+        "type": "url_slug",
+        "name": "URL pattern"
+      },
+      "sitemap": {
+        "type": "taxonomy",
+        "name": "Sitemap",
+        "taxonomy_group": "sitemap_538125f"
+      },
+      "short_description": {
+        "type": "rich_text",
+        "name": "Short description"
+      },
+      "product_status": {
+        "type": "taxonomy",
+        "name": "Product status",
+        "taxonomy_group": "product_status"
+      },
+      "metadata__twitter_title": {
+        "type": "text",
+        "name": "twitter:title"
+      },
+      "metadata__twitter_description": {
+        "type": "text",
+        "name": "twitter:description"
+      },
+      "metadata__og_image": {
+        "type": "asset",
+        "name": "og:image"
+      },
+      "image": {
+        "type": "asset",
+        "name": "Image"
+      }
+    }
+  }

@@ -1,0 +1,30 @@
+{
+    "system": {
+      "id": "4ce421e9-c403-eee8-fdc2-74f09392a749",
+      "name": "Manufacturer",
+      "codename": "manufacturer",
+      "last_modified": "2017-09-07T08:15:22.7210000Z"
+    },
+    "terms": [
+      {
+        "name": "Aerobie",
+        "codename": "aerobie",
+        "terms": []
+      },
+      {
+        "name": "Chemex",
+        "codename": "chemex",
+        "terms": []
+      },
+      {
+        "name": "Espro",
+        "codename": "espro",
+        "terms": []
+      },
+      {
+        "name": "Hario",
+        "codename": "hario",
+        "terms": []
+      }
+    ]
+  }
