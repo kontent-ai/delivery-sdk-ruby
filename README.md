@@ -29,8 +29,8 @@ See [How to setup a development environment on Windows](https://github.com/Kenti
 - [Working with content items](#working-with-content-items)
   - [Assets](#assets)
   - [Linked items](#linked-items)
-  - [Resolving inline content](#resolving-inline-content)
   - [Resolving links](#resolving-links)
+  - [Resolving inline content](#resolving-inline-content)
 - [Items feed](#items-feed)
 - [Retrieving content types](#retrieving-content-types)
 - [Retrieving taxonomy](#retrieving-taxonomy)
@@ -327,51 +327,6 @@ response.item.get_links('facts').each do |link|
   title = link.elements.title.value
 end
 ```
-### Resolving inline content
-
-Existing content items can be inserted into a rich text element, or you can create new content items as components. You need to resolve these in your application just as with content links. You can register a resolver when you instantiate the client by passing it with the hash key `inline_content_item_resolver`:
-
-```ruby
-item_resolver = Kentico::Kontent::Delivery::Resolvers::InlineContentItemResolver.new(lambda do |item|
-      return "<h1>#{item.elements.zip_code.value}</h1>" if item.system.type.eql? 'cafe'
-      return "<div>$#{item.elements.price.value}</div>" if item.system.type.eql? 'brewer'
-    end)
-delivery_client = Kentico::Kontent::Delivery::DeliveryClient.new project_id: '<your-project-id>',
-                                                             inline_content_item_resolver: item_resolver
-```
-
-The object passed to the resolving method is a complete ContentItem. Similar to content link resolvers, you can create your own class which extends `Kentico::Kontent::Delivery::Resolvers::InlineContentItemResolver` and implements the `resolve_item` method:
-
-```ruby
-class MyItemResolver < Kentico::Kontent::Delivery::Resolvers::InlineContentItemResolver
-  def resolve_item(item)
-    return "<h1>#{item.elements.zip_code.value}</h1>" if item.system.type.eql? 'cafe'
-    return "<div>$#{item.elements.price.value}</div>" if item.system.type.eql? 'brewer'
-  end
-end
-```
-
-You can also set the inline content resolver per-query:
-
-```ruby
-delivery_client = Kentico::Kontent::Delivery::DeliveryClient.new project_id: '<your-project-id>'
-# Client doesn't use InlineContentItemResolver, but query below will
-delivery_client.items
-               .with_inline_content_item_resolver MyItemResolver.new
-```
-
-To resolve inline content in elements, you must call `get_string` similar to content item links:
-
-```ruby
-item_resolver = Kentico::Kontent::Delivery::Resolvers::InlineContentItemResolver.new(lambda do |item|
-  return "<div>$#{item.elements.price.value}</div>" if item.system.type.eql? 'brewer'
-end)
-delivery_client = Kentico::Kontent::Delivery::DeliveryClient.new project_id: PROJECT_ID,
-                                                            inline_content_item_resolver: item_resolver
-delivery_client.item('our_brewers').execute do |response|
-  text = response.item.get_string 'body_copy'
-end
-```
 
 ### Resolving links
 
@@ -438,6 +393,52 @@ end)
 delivery_client = Kentico::Kontent::Delivery::DeliveryClient.new project_id: '<your-project-id>',
                                                              content_link_url_resolver: item_resolver
 delivery_client.item('coffee_processing_techniques').execute do |response|
+  text = response.item.get_string 'body_copy'
+end
+```
+
+### Resolving inline content
+
+Existing content items can be inserted into a rich text element, or you can create new content items as components. You need to resolve these in your application just as with content links. You can register a resolver when you instantiate the client by passing it with the hash key `inline_content_item_resolver`:
+
+```ruby
+item_resolver = Kentico::Kontent::Delivery::Resolvers::InlineContentItemResolver.new(lambda do |item|
+      return "<h1>#{item.elements.zip_code.value}</h1>" if item.system.type.eql? 'cafe'
+      return "<div>$#{item.elements.price.value}</div>" if item.system.type.eql? 'brewer'
+    end)
+delivery_client = Kentico::Kontent::Delivery::DeliveryClient.new project_id: '<your-project-id>',
+                                                             inline_content_item_resolver: item_resolver
+```
+
+The object passed to the resolving method is a complete ContentItem. Similar to content link resolvers, you can create your own class which extends `Kentico::Kontent::Delivery::Resolvers::InlineContentItemResolver` and implements the `resolve_item` method:
+
+```ruby
+class MyItemResolver < Kentico::Kontent::Delivery::Resolvers::InlineContentItemResolver
+  def resolve_item(item)
+    return "<h1>#{item.elements.zip_code.value}</h1>" if item.system.type.eql? 'cafe'
+    return "<div>$#{item.elements.price.value}</div>" if item.system.type.eql? 'brewer'
+  end
+end
+```
+
+You can also set the inline content resolver per-query:
+
+```ruby
+delivery_client = Kentico::Kontent::Delivery::DeliveryClient.new project_id: '<your-project-id>'
+# Client doesn't use InlineContentItemResolver, but query below will
+delivery_client.items
+               .with_inline_content_item_resolver MyItemResolver.new
+```
+
+To resolve inline content in elements, you must call `get_string` similar to content item links:
+
+```ruby
+item_resolver = Kentico::Kontent::Delivery::Resolvers::InlineContentItemResolver.new(lambda do |item|
+  return "<div>$#{item.elements.price.value}</div>" if item.system.type.eql? 'brewer'
+end)
+delivery_client = Kentico::Kontent::Delivery::DeliveryClient.new project_id: PROJECT_ID,
+                                                            inline_content_item_resolver: item_resolver
+delivery_client.item('our_brewers').execute do |response|
   text = response.item.get_string 'body_copy'
 end
 ```
