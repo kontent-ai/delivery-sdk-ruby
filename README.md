@@ -96,7 +96,7 @@ If you've [secured access](https://docs.kontent.ai/tutorials/develop-apps/get-co
 
 ```ruby
 Kentico::Kontent::Delivery::DeliveryClient.new project_id: '<your-project-id>',
-                                           secure_key: '<your-secure-key>'
+                                               secure_key: '<your-secure-key>'
 ```
 
 You can then securely request published content in your project. Be sure to not expose the key if the file(s) it appears in are publicly available.
@@ -118,8 +118,8 @@ To disable the retry policy, you can use the `with_retry_policy` argument:
 
 ```ruby
 Kentico::Kontent::Delivery::DeliveryClient.new project_id: '<your-project-id>',
-                                           secure_key: '<your-secure-key>',
-                                           with_retry_policy: false
+                                               secure_key: '<your-secure-key>',
+                                               with_retry_policy: false
 ```
 
 ### Custom URLs
@@ -367,7 +367,7 @@ item_resolver = Kentico::Kontent::Delivery::Resolvers::InlineContentItemResolver
   return "<div>$#{item.elements.price.value}</div>" if item.system.type.eql? 'brewer'
 end)
 delivery_client = Kentico::Kontent::Delivery::DeliveryClient.new project_id: PROJECT_ID,
-                                                    inline_content_item_resolver: item_resolver
+                                                            inline_content_item_resolver: item_resolver
 delivery_client.item('our_brewers').execute do |response|
   text = response.item.get_string 'body_copy'
 end
@@ -568,8 +568,8 @@ When you've obtained the URL for an asset, you can use our [Image Transformation
 ```ruby
 url = response.item.get_assets('teaser_image').first.url
 url = Kentico::Kontent::Delivery::Builders::ImageTransformationBuilder.transform(url)
-                                                                  # methods...
-                                                                  .url
+                                                                      # methods...
+                                                                      .url
 ```
 
 The available methods are:
