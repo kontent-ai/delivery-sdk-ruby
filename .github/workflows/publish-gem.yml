@@ -1,8 +1,9 @@
 name: publish-gem
+
 on:
-  push:
-    tags:
-      - '*'
+  release:
+    types: [published]
+
 jobs:
   publish:
     runs-on: ubuntu-latest
