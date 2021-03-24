@@ -1,8 +1,5 @@
-require 'dotenv/load'
-
-PROJECT_ID = ENV['PROJECT_ID']
-PREVIEW_KEY = ENV['PREVIEW_KEY']
-SECURE_KEY = ENV['SECURE_KEY']
+PROJECT_ID = 'faf446d2-0544-0139-bb43-5d6ef816661a'.freeze
+SECURE_KEY = 'eyJ0eXAiOiJKV1QiLCJhbGciOcJIUzI1NiJ9.eyJqdGkiOiIwNzI0NzQ4NDQ5ZDY0OGUwOTFiMzgzZjJjY2JlOTViZCIsImlhdCI6IjE1NTIwMzg3ODUiLCJleHAiOiIxODk3NjM4Nzg1IiwicHJvamVjdF9pZCI6ImZhZjQ0NmQyMDU0NDAwMzliYjQzNWQ2ZWY4MTY2NjFhIiwidmVyIjoiMS4wLjAiLCJhdWQiOiJkZWxpdmVyLmtlbnRpY29jbG91ZC5jb20ifQ.qZ2W4VojrwFaApajkyesUy4aNcG8OUu6C2ZlF84aL0M'.freeze
 
 # DeliveryQuery
 RSpec.describe Kentico::Kontent::Delivery::DeliveryQuery do

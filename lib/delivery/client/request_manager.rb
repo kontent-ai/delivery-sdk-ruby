@@ -1,5 +1,4 @@
 require 'rest-client'
-require 'dotenv/load'
 
 module Kentico
   module Kontent
