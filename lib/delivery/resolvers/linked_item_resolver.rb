@@ -28,7 +28,13 @@ module Kentico
 
           def resolve_item(codename)
             item = @modular_content.values.find { |i| i['system']['codename'] == codename }
-            ContentItem.new JSON.parse(JSON.generate(item)), @content_link_url_resolver, @inline_content_item_resolver, self
+            unless item.nil?
+              return ContentItem.new(JSON.parse(JSON.generate(item)),
+                                     @content_link_url_resolver,
+                                     @inline_content_item_resolver,
+                                     self)
+            end
+            nil
           end
         end
       end
