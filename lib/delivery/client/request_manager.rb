@@ -1,7 +1,7 @@
 require 'rest-client'
 
-module Kentico
-  module Kontent
+module Kontent
+  module Ai
     module Delivery
       class RequestManager
         class << self
@@ -45,19 +45,19 @@ module Kentico
 
           def continue
             if ENV['TEST'] == '1'
-              resp = Kentico::Kontent::Delivery::Tests::FakeResponder.get_response @query, @url, @headers
-              return should_retry(resp) if resp.is_a? Kentico::Kontent::Delivery::Responses::ResponseBase
+              resp = Kontent::Ai::Delivery::Tests::FakeResponder.get_response @query, @url, @headers
+              return should_retry(resp) if resp.is_a? Kontent::Ai::Delivery::Responses::ResponseBase
 
               make_response resp # resp is pure JSON
             else
               begin
                 resp = RestClient.get @url, @headers
               rescue RestClient::ExceptionWithResponse => err
-                should_retry Kentico::Kontent::Delivery::Responses::ResponseBase.new err.http_code, err.response
+                should_retry Kontent::Ai::Delivery::Responses::ResponseBase.new err.http_code, err.response
               rescue RestClient::SSLCertificateNotVerified => err
-                should_retry Kentico::Kontent::Delivery::Responses::ResponseBase.new 500, err
+                should_retry Kontent::Ai::Delivery::Responses::ResponseBase.new 500, err
               rescue SocketError => err
-                should_retry Kentico::Kontent::Delivery::Responses::ResponseBase.new 500, err.message
+                should_retry Kontent::Ai::Delivery::Responses::ResponseBase.new 500, err.message
               else
                 make_response resp
               end
@@ -67,53 +67,53 @@ module Kentico
           # Converts a standard REST response based on the type of query.
           #
           # * *Returns*:
-          #   - An object derived from the Kentico::Kontent::Delivery::Responses::ResponseBase class
+          #   - An object derived from the Kontent::Ai::Delivery::Responses::ResponseBase class
           def make_response(response)
             case @query.query_type
-            when Kentico::Kontent::Delivery::QUERY_TYPE_ITEMS_FEED
-              Kentico::Kontent::Delivery::Responses::DeliveryItemsFeedResponse.new(
+            when Kontent::Ai::Delivery::QUERY_TYPE_ITEMS_FEED
+              Kontent::Ai::Delivery::Responses::DeliveryItemsFeedResponse.new(
                 response.headers,
                 response.body,
                 @query
               )
-            when Kentico::Kontent::Delivery::QUERY_TYPE_ITEMS
+            when Kontent::Ai::Delivery::QUERY_TYPE_ITEMS
               respond_item response
-            when Kentico::Kontent::Delivery::QUERY_TYPE_TYPES
+            when Kontent::Ai::Delivery::QUERY_TYPE_TYPES
               respond_type response
-            when Kentico::Kontent::Delivery::QUERY_TYPE_TAXONOMIES
+            when Kontent::Ai::Delivery::QUERY_TYPE_TAXONOMIES
               respond_taxonomy response
-            when Kentico::Kontent::Delivery::QUERY_TYPE_ELEMENT
-              Kentico::Kontent::Delivery::Responses::DeliveryElementResponse.new response.headers, response.body
-            when Kentico::Kontent::Delivery::QUERY_TYPE_LANGUAGES
-              Kentico::Kontent::Delivery::Responses::DeliveryLanguageListingResponse.new response.headers, response.body
+            when Kontent::Ai::Delivery::QUERY_TYPE_ELEMENT
+              Kontent::Ai::Delivery::Responses::DeliveryElementResponse.new response.headers, response.body
+            when Kontent::Ai::Delivery::QUERY_TYPE_LANGUAGES
+              Kontent::Ai::Delivery::Responses::DeliveryLanguageListingResponse.new response.headers, response.body
             end
           end
 
           def respond_type(response)
             if @query.code_name.nil?
-              Kentico::Kontent::Delivery::Responses::DeliveryTypeListingResponse.new response.headers, response.body
+              Kontent::Ai::Delivery::Responses::DeliveryTypeListingResponse.new response.headers, response.body
             else
-              Kentico::Kontent::Delivery::Responses::DeliveryTypeResponse.new response.headers, response.body
+              Kontent::Ai::Delivery::Responses::DeliveryTypeResponse.new response.headers, response.body
             end
           end
 
           def respond_taxonomy(response)
             if @query.code_name.nil?
-              Kentico::Kontent::Delivery::Responses::DeliveryTaxonomyListingResponse.new response.headers, response.body
+              Kontent::Ai::Delivery::Responses::DeliveryTaxonomyListingResponse.new response.headers, response.body
             else
-              Kentico::Kontent::Delivery::Responses::DeliveryTaxonomyResponse.new response.headers, response.body
+              Kontent::Ai::Delivery::Responses::DeliveryTaxonomyResponse.new response.headers, response.body
             end
           end
 
           def respond_item(response)
             if @query.code_name.nil?
-              Kentico::Kontent::Delivery::Responses::DeliveryItemListingResponse.new(
+              Kontent::Ai::Delivery::Responses::DeliveryItemListingResponse.new(
                 response.headers,
                 response.body,
                 @query
               )
             else
-              Kentico::Kontent::Delivery::Responses::DeliveryItemResponse.new(
+              Kontent::Ai::Delivery::Responses::DeliveryItemResponse.new(
                 response.headers,
                 response.body,
                 @query

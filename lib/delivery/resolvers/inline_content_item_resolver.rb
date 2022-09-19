@@ -1,12 +1,12 @@
 require 'nokogiri'
 
-module Kentico
-  module Kontent
+module Kontent
+  module Ai
     module Delivery
       module Resolvers
         # Locates <object data-type="item"> tags in content and calls a user-defined
         # method to supply the output for the content item.
-        # See https://github.com/Kentico/kontent-delivery-sdk-ruby#resolving-inline-content
+        # See https://github.com/kontent-ai/delivery-sdk-ruby#resolving-inline-content
         class InlineContentItemResolver
           def initialize(callback = nil)
             @callback = callback

@@ -2,20 +2,20 @@ lib = File.expand_path('../lib', __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 Gem::Specification.new do |spec|
-  spec.name          = 'kontent-delivery-sdk-ruby'
+  spec.name          = 'kontent-ai-delivery-sdk-ruby'
   spec.version       = '2.0.25'
   spec.authors       = ['Eric Dugre']
   spec.email         = ['EricD@kentico.com']
-  spec.summary       = 'Kentico Kontent Delivery SDK for Ruby'
-  spec.description   = 'Kentico Kontent Delivery SDK for Ruby'
-  spec.homepage      = 'https://github.com/Kentico/kontent-delivery-sdk-ruby'
+  spec.summary       = 'Kontent.ai Delivery SDK for Ruby'
+  spec.description   = 'Kontent.ai Delivery SDK for Ruby'
+  spec.homepage      = 'https://github.com/kontent-ai/delivery-sdk-ruby'
   spec.license       = 'MIT'
 
   if spec.respond_to?(:metadata)
     spec.metadata['allowed_push_host'] = 'https://rubygems.org'
     spec.metadata['homepage_uri'] = spec.homepage
-    spec.metadata['source_code_uri'] = 'https://github.com/Kentico/kontent-delivery-sdk-ruby'
-    spec.metadata['changelog_uri'] = 'https://github.com/Kentico/kontent-delivery-sdk-ruby'
+    spec.metadata['source_code_uri'] = 'https://github.com/kontent-ai/delivery-sdk-ruby'
+    spec.metadata['changelog_uri'] = 'https://github.com/kontent-ai/delivery-sdk-ruby'
   else
     raise 'RubyGems 2.0 or newer is required to protect against ' \
       'public gem pushes.'

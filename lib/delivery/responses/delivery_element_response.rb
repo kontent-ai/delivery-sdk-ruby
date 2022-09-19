@@ -1,14 +1,14 @@
 require 'delivery/responses/response_base'
 
-module Kentico
-  module Kontent
+module Kontent
+  module Ai
     module Delivery
       module Responses
         # The response of a successful query of a content type's element
-        # See https://github.com/Kentico/kontent-delivery-sdk-ruby#retrieving-content-type-elements
+        # See https://github.com/kontent-ai/delivery-sdk-ruby#retrieving-content-type-elements
         class DeliveryElementResponse < ResponseBase
           # An element's definition from a
-          # Kentico::Kontent::Delivery::DeliveryClient.element call
+          # Kontent::Ai::Delivery::DeliveryClient.element call
           #
           # * *Returns*:
           #   - +OpenStruct+ The element of a content item

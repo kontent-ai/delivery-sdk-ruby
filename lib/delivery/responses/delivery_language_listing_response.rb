@@ -1,8 +1,8 @@
 require 'delivery/models/language'
 require 'delivery/responses/response_base'
 
-module Kentico
-  module Kontent
+module Kontent
+  module Ai
     module Delivery
       module Responses
         # The response of a successful query for project languages.
@@ -10,22 +10,22 @@ module Kentico
           # Parses the 'pagination' JSON node of the response.
           #
           # * *Returns*:
-          #   - Kentico::Kontent::Delivery::Pagination
+          #   - Kontent::Ai::Delivery::Pagination
           def pagination
             @pagination unless @pagination.nil?
             @pagination = Pagination.new @response['pagination']
           end
 
           # Parses the 'languages' JSON node of the response from a
-          # Kentico::Kontent::Delivery::DeliveryClient.languages call.
+          # Kontent::Ai::Delivery::DeliveryClient.languages call.
           #
           # * *Returns*:
-          #   - +Array+ The content types as Kentico::Kontent::Delivery::Language objects
+          #   - +Array+ The content types as Kontent::Ai::Delivery::Language objects
           def languages
             @languages unless @languages.nil?
             languages = []
             @response['languages'].each do |n|
-              languages << Kentico::Kontent::Delivery::Language.new(n)
+              languages << Kontent::Ai::Delivery::Language.new(n)
             end
             @languages = languages
           end

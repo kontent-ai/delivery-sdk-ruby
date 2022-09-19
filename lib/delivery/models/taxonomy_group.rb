@@ -1,5 +1,5 @@
-module Kentico
-  module Kontent
+module Kontent
+  module Ai
     module Delivery
       class TaxonomyGroup
         # Parses the 'terms' JSON node as a dynamic OpenStruct object.

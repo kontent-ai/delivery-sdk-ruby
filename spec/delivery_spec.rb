@@ -2,21 +2,21 @@ PROJECT_ID = 'faf446d2-0544-0139-bb43-5d6ef816661a'.freeze
 SECURE_KEY = 'eyJ0eXAiOiJKV1QiLCJhbGciOcJIUzI1NiJ9.eyJqdGkiOiIwNzI0NzQ4NDQ5ZDY0OGUwOTFiMzgzZjJjY2JlOTViZCIsImlhdCI6IjE1NTIwMzg3ODUiLCJleHAiOiIxODk3NjM4Nzg1IiwicHJvamVjdF9pZCI6ImZhZjQ0NmQyMDU0NDAwMzliYjQzNWQ2ZWY4MTY2NjFhIiwidmVyIjoiMS4wLjAiLCJhdWQiOiJkZWxpdmVyLmtlbnRpY29jbG91ZC5jb20ifQ.qZ2W4VojrwFaApajkyesUy4aNcG8OUu6C2ZlF84aL0M'.freeze
 
 # DeliveryQuery
-RSpec.describe Kentico::Kontent::Delivery::DeliveryQuery do
+RSpec.describe Kontent::Ai::Delivery::DeliveryQuery do
   before(:all) do
-    @dc = Kentico::Kontent::Delivery::DeliveryClient.new project_id: PROJECT_ID,
+    @dc = Kontent::Ai::Delivery::DeliveryClient.new project_id: PROJECT_ID,
                                                          secure_key: SECURE_KEY
   end
 
   describe '.items' do
     it 'returns DeliveryQuery' do
-      expect(@dc.items).to be_a Kentico::Kontent::Delivery::DeliveryQuery
+      expect(@dc.items).to be_a Kontent::Ai::Delivery::DeliveryQuery
     end
   end
 
   describe '.execute' do
     it 'returns a ResponseBase' do
-      expect(@dc.items.execute).to be_a Kentico::Kontent::Delivery::Responses::ResponseBase
+      expect(@dc.items.execute).to be_a Kontent::Ai::Delivery::Responses::ResponseBase
     end
   end
 
@@ -36,22 +36,22 @@ RSpec.describe Kentico::Kontent::Delivery::DeliveryQuery do
 end
 
 # UrlBuilder
-RSpec.describe Kentico::Kontent::Delivery::Builders::UrlBuilder do
+RSpec.describe Kontent::Ai::Delivery::Builders::UrlBuilder do
   before(:all) do
-    @dc = Kentico::Kontent::Delivery::DeliveryClient.new project_id: PROJECT_ID
+    @dc = Kontent::Ai::Delivery::DeliveryClient.new project_id: PROJECT_ID
   end
 
   describe '.provide_url' do
     it 'returns String' do
-      expect(Kentico::Kontent::Delivery::Builders::UrlBuilder.provide_url(@dc.items)).to be_a String
+      expect(Kontent::Ai::Delivery::Builders::UrlBuilder.provide_url(@dc.items)).to be_a String
     end
   end
 end
 
 # ContentItem
-RSpec.describe Kentico::Kontent::Delivery::ContentItem do
+RSpec.describe Kontent::Ai::Delivery::ContentItem do
   before(:all) do
-    @dc = Kentico::Kontent::Delivery::DeliveryClient.new project_id: PROJECT_ID,
+    @dc = Kontent::Ai::Delivery::DeliveryClient.new project_id: PROJECT_ID,
                                                          secure_key: SECURE_KEY
   end
 
@@ -104,7 +104,7 @@ RSpec.describe Kentico::Kontent::Delivery::ContentItem do
         links = response.item.get_links 'facts'
         expect(links.length).to eq(3)
         links.each do |l|
-          expect(l).to be_a Kentico::Kontent::Delivery::ContentItem
+          expect(l).to be_a Kontent::Ai::Delivery::ContentItem
           expect(l.system.codename).not_to be_nil
         end
       end
@@ -135,9 +135,9 @@ RSpec.describe Kentico::Kontent::Delivery::ContentItem do
 end
 
 # DeliveryClient
-RSpec.describe Kentico::Kontent::Delivery::DeliveryClient do
+RSpec.describe Kontent::Ai::Delivery::DeliveryClient do
   before(:all) do
-    @dc = Kentico::Kontent::Delivery::DeliveryClient.new project_id: PROJECT_ID,
+    @dc = Kontent::Ai::Delivery::DeliveryClient.new project_id: PROJECT_ID,
                                                          secure_key: SECURE_KEY
   end
 
@@ -158,7 +158,7 @@ RSpec.describe Kentico::Kontent::Delivery::DeliveryClient do
     it 'returns 5 groups' do
       @dc.taxonomies.execute do |response|
         expect(response.taxonomies.length).to eql(5)
-        expect(response.taxonomies[0]).to be_a Kentico::Kontent::Delivery::TaxonomyGroup
+        expect(response.taxonomies[0]).to be_a Kontent::Ai::Delivery::TaxonomyGroup
       end
     end
 
@@ -173,7 +173,7 @@ RSpec.describe Kentico::Kontent::Delivery::DeliveryClient do
   describe '.taxonomy' do
     it 'returns a DeliveryTaxonomyResponse' do
       @dc.taxonomy('manufacturer').execute do |response|
-        expect(response).to be_a Kentico::Kontent::Delivery::Responses::DeliveryTaxonomyResponse
+        expect(response).to be_a Kontent::Ai::Delivery::Responses::DeliveryTaxonomyResponse
       end
     end
 
@@ -195,7 +195,7 @@ RSpec.describe Kentico::Kontent::Delivery::DeliveryClient do
 
   describe 'secure_key' do
     it 'results in 200 status' do
-      insecure = Kentico::Kontent::Delivery::DeliveryClient.new project_id: PROJECT_ID
+      insecure = Kontent::Ai::Delivery::DeliveryClient.new project_id: PROJECT_ID
 
       expect(insecure.items.execute.http_code).to eql(401)
       expect(@dc.items.execute.http_code).to eql(200)
@@ -213,13 +213,13 @@ RSpec.describe Kentico::Kontent::Delivery::DeliveryClient do
   describe '.items_feed' do
     it 'doesnt support certain parameters' do
       q = @dc.items_feed.depth(5).skip(5).limit(5)
-      url = Kentico::Kontent::Delivery::Builders::UrlBuilder.provide_url(q)
+      url = Kontent::Ai::Delivery::Builders::UrlBuilder.provide_url(q)
       expect(url).not_to include *%w[depth skip limit]
     end
 
     it 'returns a DeliveryItemsFeedResponse' do
       response = @dc.items_feed.execute
-      expect(response).to be_a Kentico::Kontent::Delivery::Responses::DeliveryItemsFeedResponse
+      expect(response).to be_a Kontent::Ai::Delivery::Responses::DeliveryItemsFeedResponse
     end
 
     it '.next_result returns more items' do
@@ -250,7 +250,7 @@ RSpec.describe Kentico::Kontent::Delivery::DeliveryClient do
   describe '.type' do
     it 'returns a DeliveryTypeResponse' do
       @dc.type('brewer').execute do |response|
-        expect(response).to be_a Kentico::Kontent::Delivery::Responses::DeliveryTypeResponse
+        expect(response).to be_a Kontent::Ai::Delivery::Responses::DeliveryTypeResponse
       end
     end
 
@@ -264,15 +264,15 @@ RSpec.describe Kentico::Kontent::Delivery::DeliveryClient do
 end
 
 # QueryParameters
-RSpec.describe Kentico::Kontent::Delivery::QueryParameters::ParameterBase do
+RSpec.describe Kontent::Ai::Delivery::QueryParameters::ParameterBase do
   before(:all) do
-    @dc = Kentico::Kontent::Delivery::DeliveryClient.new project_id: PROJECT_ID,
+    @dc = Kontent::Ai::Delivery::DeliveryClient.new project_id: PROJECT_ID,
                                                          secure_key: SECURE_KEY
   end
 
   describe '<string>.gt' do
     it 'returns a Filter' do
-      expect('system.codename'.gt(5)).to be_a Kentico::Kontent::Delivery::QueryParameters::Filter
+      expect('system.codename'.gt(5)).to be_a Kontent::Ai::Delivery::QueryParameters::Filter
     end
   end
 
@@ -308,15 +308,15 @@ RSpec.describe Kentico::Kontent::Delivery::QueryParameters::ParameterBase do
 end
 
 # ContentLinkResolver
-RSpec.describe Kentico::Kontent::Delivery::Resolvers::ContentLinkResolver do
+RSpec.describe Kontent::Ai::Delivery::Resolvers::ContentLinkResolver do
   before(:all) do
-    @dc = Kentico::Kontent::Delivery::DeliveryClient.new project_id: PROJECT_ID,
+    @dc = Kontent::Ai::Delivery::DeliveryClient.new project_id: PROJECT_ID,
                                                          secure_key: SECURE_KEY
   end
 
   describe 'get_string' do
     it 'resolves links' do
-      lambda_resolver = Kentico::Kontent::Delivery::Resolvers::ContentLinkResolver.new(lambda do |link|
+      lambda_resolver = Kontent::Ai::Delivery::Resolvers::ContentLinkResolver.new(lambda do |link|
         return "/coffees/#{link.url_slug}" if link.type.eql? 'coffee'
         return "/brewers/#{link.url_slug}" if link.type.eql? 'brewer'
       end, lambda do |id|
@@ -332,7 +332,7 @@ RSpec.describe Kentico::Kontent::Delivery::Resolvers::ContentLinkResolver do
   end
 
   # Example of creating a link resolver in a class instead of lambda expression
-  class MyResolver < Kentico::Kontent::Delivery::Resolvers::ContentLinkResolver
+  class MyResolver < Kontent::Ai::Delivery::Resolvers::ContentLinkResolver
     def resolve_link(link)
       return "/coffees/#{link.url_slug}" if link.type.eql? 'coffee'
       return "/brewers/#{link.url_slug}" if link.type.eql? 'brewer'
@@ -345,13 +345,13 @@ RSpec.describe Kentico::Kontent::Delivery::Resolvers::ContentLinkResolver do
 end
 
 # InlineContentItemResolver
-RSpec.describe Kentico::Kontent::Delivery::Resolvers::InlineContentItemResolver do
+RSpec.describe Kontent::Ai::Delivery::Resolvers::InlineContentItemResolver do
   before(:all) do
-    lambda_resolver = Kentico::Kontent::Delivery::Resolvers::InlineContentItemResolver.new(lambda do |item|
+    lambda_resolver = Kontent::Ai::Delivery::Resolvers::InlineContentItemResolver.new(lambda do |item|
       return "<h1>#{item.elements.zip_code.value}</h1>" if item.system.type.eql? 'cafe'
       return "<div>$#{item.elements.price.value}</div>" if item.system.type.eql? 'brewer'
     end)
-    @dc = Kentico::Kontent::Delivery::DeliveryClient.new project_id: PROJECT_ID,
+    @dc = Kontent::Ai::Delivery::DeliveryClient.new project_id: PROJECT_ID,
                                                          secure_key: SECURE_KEY,
                                                          inline_content_item_resolver: lambda_resolver
   end
@@ -366,7 +366,7 @@ RSpec.describe Kentico::Kontent::Delivery::Resolvers::InlineContentItemResolver 
   end
 
   # Example of creating an item resolver in a class instead of lambda expression
-  class MyResolver2 < Kentico::Kontent::Delivery::Resolvers::InlineContentItemResolver
+  class MyResolver2 < Kontent::Ai::Delivery::Resolvers::InlineContentItemResolver
     def resolve_item(item)
       return "<h1>#{item.elements.zip_code.value}</h1>" if item.system.type.eql? 'cafe'
       return "<div>$#{item.elements.price.value}</div>" if item.system.type.eql? 'brewer'
@@ -375,9 +375,9 @@ RSpec.describe Kentico::Kontent::Delivery::Resolvers::InlineContentItemResolver 
 end
 
 # ImageTransformationBuilder
-RSpec.describe Kentico::Kontent::Delivery::Builders::ImageTransformationBuilder do
+RSpec.describe Kontent::Ai::Delivery::Builders::ImageTransformationBuilder do
   before(:all) do
-    @dc = Kentico::Kontent::Delivery::DeliveryClient.new project_id: PROJECT_ID,
+    @dc = Kontent::Ai::Delivery::DeliveryClient.new project_id: PROJECT_ID,
                                                          secure_key: SECURE_KEY
   end
 
@@ -385,7 +385,7 @@ RSpec.describe Kentico::Kontent::Delivery::Builders::ImageTransformationBuilder 
     it 'adds width parameter' do
       @dc.item('where_does_coffee_come_from_').execute do |response|
         url = response.item.get_assets('teaser_image').first.url
-        url = Kentico::Kontent::Delivery::Builders::ImageTransformationBuilder.transform(url)
+        url = Kontent::Ai::Delivery::Builders::ImageTransformationBuilder.transform(url)
                                                                               .with_width(200)
                                                                               .url
         expect(url).to include '?w=200'
@@ -398,7 +398,7 @@ RSpec.describe Kentico::Kontent::Delivery::Builders::ImageTransformationBuilder 
       @dc.item('where_does_coffee_come_from_').execute do |response|
         url = response.item.get_assets('teaser_image').first.url
         expect {
-          url = Kentico::Kontent::Delivery::Builders::ImageTransformationBuilder.transform(url)
+          url = Kontent::Ai::Delivery::Builders::ImageTransformationBuilder.transform(url)
                                                                                 .with_focal_point(-1, 0, 0)
                                                                                 .url
       }.to raise_error(ArgumentError)
@@ -408,7 +408,7 @@ RSpec.describe Kentico::Kontent::Delivery::Builders::ImageTransformationBuilder 
     it 'sets correct parameters' do
       @dc.item('where_does_coffee_come_from_').execute do |response|
         url = response.item.get_assets('teaser_image').first.url
-        url = Kentico::Kontent::Delivery::Builders::ImageTransformationBuilder.transform(url)
+        url = Kontent::Ai::Delivery::Builders::ImageTransformationBuilder.transform(url)
                                                                               .with_focal_point(0.2, 0.3, 1.5)
                                                                               .url
         params = url.split('?')[1]
@@ -421,7 +421,7 @@ RSpec.describe Kentico::Kontent::Delivery::Builders::ImageTransformationBuilder 
     it 'removes focal point' do
       @dc.item('where_does_coffee_come_from_').execute do |response|
         url = response.item.get_assets('teaser_image').first.url
-        url = Kentico::Kontent::Delivery::Builders::ImageTransformationBuilder.transform(url)
+        url = Kontent::Ai::Delivery::Builders::ImageTransformationBuilder.transform(url)
                                                                               .with_focal_point(0.2, 0.3, 1.5)
                                                                               .with_rect(5, 6, 7, 8)
                                                                               .url
@@ -435,7 +435,7 @@ RSpec.describe Kentico::Kontent::Delivery::Builders::ImageTransformationBuilder 
     it 'sets WEBP format' do
       @dc.item('where_does_coffee_come_from_').execute do |response|
         url = response.item.get_assets('teaser_image').first.url
-        url = Kentico::Kontent::Delivery::Builders::ImageTransformationBuilder.transform(url)
+        url = Kontent::Ai::Delivery::Builders::ImageTransformationBuilder.transform(url)
                                                                               .with_lossless(1)
                                                                               .url
         params = url.split('?')[1]
@@ -447,9 +447,9 @@ RSpec.describe Kentico::Kontent::Delivery::Builders::ImageTransformationBuilder 
   describe 'multiple parameters' do
     it 'adds multiple parameters' do
       @dc.item('where_does_coffee_come_from_').execute do |response|
-        png = Kentico::Kontent::Delivery::Builders::ImageTransformationBuilder::FORMAT_PNG
+        png = Kontent::Ai::Delivery::Builders::ImageTransformationBuilder::FORMAT_PNG
         url = response.item.get_assets('teaser_image').first.url
-        url = Kentico::Kontent::Delivery::Builders::ImageTransformationBuilder.transform(url)
+        url = Kontent::Ai::Delivery::Builders::ImageTransformationBuilder.transform(url)
                                                                               .with_height(200)
                                                                               .with_output_format(png)
                                                                               .with_auto_format_selection(1)
@@ -462,16 +462,16 @@ RSpec.describe Kentico::Kontent::Delivery::Builders::ImageTransformationBuilder 
 end
 
 # Languages
-RSpec.describe Kentico::Kontent::Delivery::Language do
+RSpec.describe Kontent::Ai::Delivery::Language do
   before(:all) do
-    @dc = Kentico::Kontent::Delivery::DeliveryClient.new project_id: PROJECT_ID,
+    @dc = Kontent::Ai::Delivery::DeliveryClient.new project_id: PROJECT_ID,
                                                          secure_key: SECURE_KEY
   end
 
   describe '.languages' do
     it 'returns a DeliveryLanguageListingResponse' do
       @dc.languages.execute do |response|
-        expect(response).to be_a Kentico::Kontent::Delivery::Responses::DeliveryLanguageListingResponse
+        expect(response).to be_a Kontent::Ai::Delivery::Responses::DeliveryLanguageListingResponse
       end
     end
 

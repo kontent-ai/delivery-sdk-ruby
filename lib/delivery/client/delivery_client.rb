@@ -3,8 +3,8 @@ require 'delivery/responses/delivery_item_listing_response'
 require 'delivery/responses/delivery_item_response'
 require 'json'
 
-module Kentico
-  module Kontent
+module Kontent
+  module Ai
     module Delivery
       QUERY_TYPE_TYPES = 'QUERY_TYPE_TYPES'.freeze
       QUERY_TYPE_ITEMS = 'QUERY_TYPE_ITEMS'.freeze
@@ -13,7 +13,7 @@ module Kentico
       QUERY_TYPE_ITEMS_FEED = 'QUERY_TYPE_ITEMS_FEED'.freeze
       QUERY_TYPE_LANGUAGES = 'QUERY_TYPE_LANGUAGES'.freeze
 
-      # Executes requests against the Kentico Kontent Delivery API.
+      # Executes requests against the Kontent.ai Delivery API.
       class DeliveryClient
         attr_accessor :use_preview
 
@@ -24,8 +24,8 @@ module Kentico
         #     - project_id (+string+) _required_
         #     - preview_key (+string+)
         #     - secure_key (+string+)
-        #     - content_link_url_resolver ( Kentico::Kontent::Delivery::Resolvers::ContentLinkResolver )
-        #     - inline_content_item_resolver ( Kentico::Kontent::Delivery::Resolvers::InlineContentItemResolver )
+        #     - content_link_url_resolver ( Kontent::Ai::Delivery::Resolvers::ContentLinkResolver )
+        #     - inline_content_item_resolver ( Kontent::Ai::Delivery::Resolvers::InlineContentItemResolver )
         #     - with_retry_policy (+bool+)
         def initialize(config)
           @project_id = config.fetch(:project_id)
@@ -40,7 +40,7 @@ module Kentico
         # Return all content types of the project
         #
         # * *Returns*:
-        #   - Kentico::Kontent::Delivery::DeliveryQuery
+        #   - Kontent::Ai::Delivery::DeliveryQuery
         def types
           DeliveryQuery.new project_id: @project_id,
                             secure_key: @secure_key,
@@ -54,7 +54,7 @@ module Kentico
         #   - *code_name* (+string+) Code name of the desired content type
         #
         # * *Returns*:
-        #   - Kentico::Kontent::Delivery::DeliveryQuery
+        #   - Kontent::Ai::Delivery::DeliveryQuery
         def type(code_name)
           DeliveryQuery.new project_id: @project_id,
                             secure_key: @secure_key,
@@ -66,10 +66,10 @@ module Kentico
         # Return a paginated feed of all content items of the project
         #
         # * *Args*:
-        #   - *query_parameters* (+Array+) _optional_ One or more Kentico::Kontent::Delivery::QueryParameters::Filter objects. A single object will automatically be converted into an Array.
+        #   - *query_parameters* (+Array+) _optional_ One or more Kontent::Ai::Delivery::QueryParameters::Filter objects. A single object will automatically be converted into an Array.
         #
         # * *Returns*:
-        #   - Kentico::Kontent::Delivery::DeliveryQuery
+        #   - Kontent::Ai::Delivery::DeliveryQuery
         def items_feed(query_parameters = [])
           q = DeliveryQuery.new project_id: @project_id,
                                 secure_key: @secure_key,
@@ -86,10 +86,10 @@ module Kentico
         # Return all content items of the project
         #
         # * *Args*:
-        #   - *query_parameters* (+Array+) _optional_ One or more Kentico::Kontent::Delivery::QueryParameters::Filter objects. A single object will automatically be converted into an Array.
+        #   - *query_parameters* (+Array+) _optional_ One or more Kontent::Ai::Delivery::QueryParameters::Filter objects. A single object will automatically be converted into an Array.
         #
         # * *Returns*:
-        #   - Kentico::Kontent::Delivery::DeliveryQuery
+        #   - Kontent::Ai::Delivery::DeliveryQuery
         def items(query_parameters = [])
           q = DeliveryQuery.new project_id: @project_id,
                                 secure_key: @secure_key,
@@ -107,10 +107,10 @@ module Kentico
         #
         # * *Args*:
         #   - *code_name* (+string+) The code name of the desired content item
-        #   - *query_parameters* (+Array+) _optional_ One or more Kentico::Kontent::Delivery::QueryParameters::Filter objects. A single object will automatically be converted into an Array.
+        #   - *query_parameters* (+Array+) _optional_ One or more Kontent::Ai::Delivery::QueryParameters::Filter objects. A single object will automatically be converted into an Array.
         #
         # * *Returns*:
-        #   - Kentico::Kontent::Delivery::DeliveryQuery
+        #   - Kontent::Ai::Delivery::DeliveryQuery
         def item(code_name, query_parameters = [])
           q = DeliveryQuery.new project_id: @project_id,
                                 secure_key: @secure_key,
@@ -128,10 +128,10 @@ module Kentico
         # Return all taxonomy groups of the project
         #
         # * *Args*:
-        #   - *query_parameters* (+Array+) _optional_ One or more Kentico::Kontent::Delivery::QueryParameters::Filter objects. A single object will automatically be converted into an Array.
+        #   - *query_parameters* (+Array+) _optional_ One or more Kontent::Ai::Delivery::QueryParameters::Filter objects. A single object will automatically be converted into an Array.
         #
         # * *Returns*:
-        #   - Kentico::Kontent::Delivery::DeliveryQuery
+        #   - Kontent::Ai::Delivery::DeliveryQuery
         def taxonomies(query_parameters = [])
           DeliveryQuery.new project_id: @project_id,
                             secure_key: @secure_key,
@@ -146,7 +146,7 @@ module Kentico
         #   - *code_name* (+string+) The code name of the desired taxonomy group
         #
         # * *Returns*:
-        #   - Kentico::Kontent::Delivery::DeliveryQuery
+        #   - Kontent::Ai::Delivery::DeliveryQuery
         def taxonomy(code_name)
           DeliveryQuery.new project_id: @project_id,
                             secure_key: @secure_key,
@@ -162,7 +162,7 @@ module Kentico
         #   - *element* (+string+) The code name of the desired element
         #
         # * *Returns*:
-        #   - Kentico::Kontent::Delivery::DeliveryQuery
+        #   - Kontent::Ai::Delivery::DeliveryQuery
         def element(content_type, element)
           DeliveryQuery.new project_id: @project_id,
                             secure_key: @secure_key,

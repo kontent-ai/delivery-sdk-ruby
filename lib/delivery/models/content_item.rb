@@ -1,8 +1,8 @@
 require 'ostruct'
 require 'nokogiri'
 
-module Kentico
-  module Kontent
+module Kontent
+  module Ai
     module Delivery
       class ContentItem
         attr_accessor :content_link_url_resolver,
@@ -36,9 +36,9 @@ module Kentico
         #
         # * *Args*:
         #   - *source* (+JSON+) The response from a REST request for content items. The item may be on the root or under the 'item' node
-        #   - *content_link_url_resolver* ( Kentico::Kontent::Delivery::Resolvers::ContentLinkResolver )
-        #   - *inline_content_item_resolver* ( Kentico::Kontent::Delivery::Resolvers::InlineContentItemResolver )
-        #   - *linked_items_resolver* ( Kentico::Kontent::Delivery::Resolvers::LinkedItemResolver )
+        #   - *content_link_url_resolver* ( Kontent::Ai::Delivery::Resolvers::ContentLinkResolver )
+        #   - *inline_content_item_resolver* ( Kontent::Ai::Delivery::Resolvers::InlineContentItemResolver )
+        #   - *linked_items_resolver* ( Kontent::Ai::Delivery::Resolvers::LinkedItemResolver )
         def initialize(source, content_link_url_resolver, inline_content_item_resolver, linked_items_resolver)
           @source =
             if source['item'].nil?
@@ -54,7 +54,7 @@ module Kentico
         # Gets a string representation of the data stored in the element. Using this
         # method instead of directly accessing the +elements+ collection causes
         # the content to be resolved using the resolvers passed during instantiation.
-        # See https://github.com/Kentico/kontent-delivery-sdk-ruby#resolving-links
+        # See https://github.com/kontent-ai/delivery-sdk-ruby#resolving-links
         #
         # * *Args*:
         #   - *code_name* (+string+) The code name of the desired element

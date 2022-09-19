@@ -1,7 +1,7 @@
 require 'ostruct'
 
-module Kentico
-  module Kontent
+module Kontent
+  module Ai
     module Delivery
       class ContentType
         # Parses the 'elements' JSON object as a dynamic OpenStruct object.

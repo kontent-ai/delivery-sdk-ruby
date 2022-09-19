@@ -1,7 +1,7 @@
 require 'delivery/query_parameters/parameter_base'
 
-module Kentico
-  module Kontent
+module Kontent
+  module Ai
     module Delivery
       module QueryParameters
         # Represents the entire query string for a request to Delivery.
@@ -13,13 +13,13 @@ module Kentico
           # Adds a parameter to the query string
           #
           # * *Args*:
-          #   - *param* (+Object+) Either a string representing the key for the parameter, or a complete Kentico::Kontent::Delivery::QueryParameters::ParameterBase object
+          #   - *param* (+Object+) Either a string representing the key for the parameter, or a complete Kontent::Ai::Delivery::QueryParameters::ParameterBase object
           #   - *values* (+string+) A string or array of strings representing the values for the parameter
-          #   - *operator* (+string+) Kentico Kontent filtering parameter, placed after the key, before the equal sign
+          #   - *operator* (+string+) Kontent.ai filtering parameter, placed after the key, before the equal sign
           def set_param(param, values = '', operator = '')
             parameter_base =
               if param.is_a? String
-                Kentico::Kontent::Delivery::QueryParameters::ParameterBase.new(
+                Kontent::Ai::Delivery::QueryParameters::ParameterBase.new(
                   param,
                   operator,
                   values
@@ -48,7 +48,7 @@ module Kentico
           #   - *key* (+string+) Parameter key
           #
           # * *Returns*:
-          #   - +Object+ One or more Kentico::Kontent::Delivery::QueryParameters::ParameterBase objects
+          #   - +Object+ One or more Kontent::Ai::Delivery::QueryParameters::ParameterBase objects
           def param(key)
             @params.select { |p| p.key.eql? key }
           end
@@ -63,7 +63,7 @@ module Kentico
 
           # Generates a full query string based on the set parameters, with the
           # required '?' character at the start. Accomplished by calling the
-          # Kentico::Kontent::Delivery::QueryParameters::ParameterBase.provide_query_string_parameter
+          # Kontent::Ai::Delivery::QueryParameters::ParameterBase.provide_query_string_parameter
           # method for each parameter.
           #
           # * *Returns*:

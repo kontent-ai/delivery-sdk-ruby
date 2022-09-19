@@ -1,5 +1,5 @@
-module Kentico
-  module Kontent
+module Kontent
+  module Ai
     module Delivery
       # Holds pagination data from listing responses
       class Pagination

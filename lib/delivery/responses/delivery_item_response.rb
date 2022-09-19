@@ -1,22 +1,22 @@
 require 'delivery/models/content_item'
 require 'delivery/responses/response_base'
 
-module Kentico
-  module Kontent
+module Kontent
+  module Ai
     module Delivery
       module Responses
         # The response of a successful query for a content item.
-        # See https://github.com/Kentico/kontent-delivery-sdk-ruby#listing-items
+        # See https://github.com/kontent-ai/delivery-sdk-ruby#listing-items
         class DeliveryItemResponse < ResponseBase
-          # A Kentico::Kontent::Delivery::ContentItem object from a
-          # Kentico::Kontent::Delivery::DeliveryClient.item call.
+          # A Kontent::Ai::Delivery::ContentItem object from a
+          # Kontent::Ai::Delivery::DeliveryClient.item call.
           #
           # * *Returns*:
-          #   - Kentico::Kontent::Delivery::ContentItem
+          #   - Kontent::Ai::Delivery::ContentItem
           def item
             @item unless @item.nil?
-            linked_items_resolver = Kentico::Kontent::Delivery::Resolvers::LinkedItemResolver.new @response['modular_content'], @content_link_url_resolver, @inline_content_item_resolver
-            @item = Kentico::Kontent::Delivery::ContentItem.new(
+            linked_items_resolver = Kontent::Ai::Delivery::Resolvers::LinkedItemResolver.new @response['modular_content'], @content_link_url_resolver, @inline_content_item_resolver
+            @item = Kontent::Ai::Delivery::ContentItem.new(
               @response,
               @content_link_url_resolver,
               @inline_content_item_resolver,

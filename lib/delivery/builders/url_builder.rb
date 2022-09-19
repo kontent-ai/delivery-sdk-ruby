@@ -1,5 +1,5 @@
-module Kentico
-  module Kontent
+module Kontent
+  module Ai
     module Delivery
       module Builders
         # Internal class which generates the URL required for Delivery REST API
@@ -24,7 +24,7 @@ module Kentico
             # query string parameters configured by the +DeliveryQuery+.
             #
             # * *Args*:
-            #   - *query* ( Kentico::Kontent::Delivery::DeliveryQuery )
+            #   - *query* ( Kontent::Ai::Delivery::DeliveryQuery )
             #
             # * *Returns*:
             #   - +string+ The full URL for a Delivery request
@@ -55,23 +55,23 @@ module Kentico
             # Returns relative path part of URL depending on query type.
             #
             # * *Args*:
-            #   - *query* ( Kentico::Kontent::Delivery::DeliveryQuery )
+            #   - *query* ( Kontent::Ai::Delivery::DeliveryQuery )
             #
             # * *Returns*:
             #   - +string+ The URL path part (without protocol or domain)
             def provide_path_part(query)
               case query.query_type
-              when Kentico::Kontent::Delivery::QUERY_TYPE_ITEMS
+              when Kontent::Ai::Delivery::QUERY_TYPE_ITEMS
                 provide_item query
-              when Kentico::Kontent::Delivery::QUERY_TYPE_TYPES
+              when Kontent::Ai::Delivery::QUERY_TYPE_TYPES
                 provide_type query
-              when Kentico::Kontent::Delivery::QUERY_TYPE_TAXONOMIES
+              when Kontent::Ai::Delivery::QUERY_TYPE_TAXONOMIES
                 provide_taxonomy query
-              when Kentico::Kontent::Delivery::QUERY_TYPE_LANGUAGES
+              when Kontent::Ai::Delivery::QUERY_TYPE_LANGUAGES
                 URL_TEMPLATE_LANGUAGES
-              when Kentico::Kontent::Delivery::QUERY_TYPE_ELEMENT
+              when Kontent::Ai::Delivery::QUERY_TYPE_ELEMENT
                 format(URL_TEMPLATE_ELEMENTS, query.content_type, query.code_name)
-              when Kentico::Kontent::Delivery::QUERY_TYPE_ITEMS_FEED
+              when Kontent::Ai::Delivery::QUERY_TYPE_ITEMS_FEED
                 URL_TEMPLATE_ITEMS_FEED
               end
             end
@@ -104,7 +104,7 @@ module Kentico
             # according to the query's +use_preview+ attribute.
             #
             # * *Args*:
-            #   - *query* ( Kentico::Kontent::Delivery::DeliveryQuery )
+            #   - *query* ( Kontent::Ai::Delivery::DeliveryQuery )
             #
             # * *Returns*:
             #   - +string+ The URL with the project ID

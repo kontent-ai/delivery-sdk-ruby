@@ -2,8 +2,8 @@ require 'pathname'
 require 'cgi'
 require 'ostruct'
 
-module Kentico
-  module Kontent
+module Kontent
+  module Ai
     module Delivery
       module Tests
         class FakeResponder
@@ -33,7 +33,7 @@ module Kentico
 
               qs = url.contains('?') ? url.split('?')[1] : nil
 
-              return respond_feed if query.query_type.eql? Kentico::Kontent::Delivery::QUERY_TYPE_ITEMS_FEED
+              return respond_feed if query.query_type.eql? Kontent::Ai::Delivery::QUERY_TYPE_ITEMS_FEED
 
               return respond_filtering qs unless qs.nil? # e.g. /items/about_us?skip=0&limit=5
 
@@ -51,14 +51,14 @@ module Kentico
             def respond_feed
               if @query.continuation_exists?
                 if @query.continuation_token.include? '#RT:1#'
-                  headers = {Kentico::Kontent::Delivery::DeliveryQuery::HEADER_CONTINUATION => CONTINUATION_HEADER_2}
+                  headers = {Kontent::Ai::Delivery::DeliveryQuery::HEADER_CONTINUATION => CONTINUATION_HEADER_2}
                   path = Pathname.new(File.dirname(__FILE__) + '/items_feed/articles_feed_2.json')
                 else
                   headers = ''
                   path = Pathname.new(File.dirname(__FILE__) + '/items_feed/articles_feed_3.json')
                 end
               else
-                headers = {Kentico::Kontent::Delivery::DeliveryQuery::HEADER_CONTINUATION => CONTINUATION_HEADER_1}
+                headers = {Kontent::Ai::Delivery::DeliveryQuery::HEADER_CONTINUATION => CONTINUATION_HEADER_1}
                 path = Pathname.new(File.dirname(__FILE__) + '/items_feed/articles_feed_1.json')
               end
 
@@ -84,12 +84,12 @@ module Kentico
 
             def respond_429
               path = Pathname.new(File.dirname(__FILE__) + '/429.json')
-              Kentico::Kontent::Delivery::Responses::ResponseBase.new 429, '', '', path.read if path.exist?
+              Kontent::Ai::Delivery::Responses::ResponseBase.new 429, '', '', path.read if path.exist?
             end
 
             def respond_401
               path = Pathname.new(File.dirname(__FILE__) + '/401.json')
-              Kentico::Kontent::Delivery::Responses::ResponseBase.new 401, '', '', path.read if path.exist?
+              Kontent::Ai::Delivery::Responses::ResponseBase.new 401, '', '', path.read if path.exist?
             end
           end
         end
