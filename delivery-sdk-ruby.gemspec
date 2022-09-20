@@ -1,9 +1,10 @@
 lib = File.expand_path('../lib', __dir__)
+lib = File.expand_path('../lib', __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 Gem::Specification.new do |spec|
-  spec.name          = 'kontent-ai-delivery-sdk-ruby'
-  spec.version       = '2.0.25'
+  spec.name          = 'kontent-ai-delivery'
+  spec.version       = '2.1.0'
   spec.authors       = ['Eric Dugre']
   spec.email         = ['EricD@kentico.com']
   spec.summary       = 'Kontent.ai Delivery SDK for Ruby'
@@ -28,6 +29,7 @@ Gem::Specification.new do |spec|
 
   spec.add_runtime_dependency('nokogiri', '~> 1.11', '>= 1.11.0')
   spec.add_runtime_dependency('rest-client', '~> 2.1.0.rc1', '>= 2.1.0.rc1')
+  spec.add_runtime_dependency('ffi', '~> 1.9', '>= 1.9.10')
   spec.add_development_dependency('bundler', '~> 2.0')
   spec.add_development_dependency('rake', '~> 12.3', '>= 12.3.3')
   spec.add_development_dependency('rspec', '~> 3.8')
