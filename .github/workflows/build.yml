@@ -14,6 +14,8 @@ jobs:
       run: bundle install
     - name: Run tests
       run: bundle exec rake
+    - name: Fix test result for code coverage
+      run: sed -i 's/"line"/"covered_percent"/g' coverage/.last_run.json
     - name: Report coverage
       uses: devmasx/coverage-check-action@v1.2.0
       with:
