@@ -1,9 +1,10 @@
-![build](https://github.com/kontent-ai/delivery-sdk-ruby/actions/workflows/build.yml/badge.svg)
-[![Join us on Discord](https://img.shields.io/discord/821885171984891914?label=Discord&logo=Discord&logoColor=white)](https://discord.gg/SKCxwPtevJ)
-[![Stack Overflow](https://img.shields.io/badge/Stack%20Overflow-ASK%20NOW-FE7A16.svg?logo=stackoverflow&logoColor=white)](https://stackoverflow.com/tags/kontent-ai)
- [![Version](https://img.shields.io/gem/v/kontent-ai-delivery.svg?style=flat)](https://rubygems.org/gems/kontent-ai-delivery)
+# Kontent.ai Delivery Ruby SDK
 
-# Delivery Ruby SDK
+![build](https://github.com/kontent-ai/delivery-sdk-ruby/actions/workflows/build.yml/badge.svg)
+[![Version](https://img.shields.io/gem/v/kontent-ai-delivery.svg?style=flat)](https://rubygems.org/gems/kontent-ai-delivery)
+
+[![Stack Overflow](https://img.shields.io/badge/Stack%20Overflow-ASK%20NOW-FE7A16.svg?logo=stackoverflow&logoColor=white)](https://stackoverflow.com/tags/kontent-ai)
+[![Discord](https://img.shields.io/discord/821885171984891914?color=%237289DA&label=Kontent.ai%20Discord&logo=discord)](https://discord.gg/SKCxwPtevJ)
 
 ![Banner](/banner.png)
 
@@ -13,30 +14,36 @@ See [How to setup a development environment on Windows](./docs/How-to-setup-deve
 
 ## Table of contents
 
-- [Installation](#installation)
-- [Creating a client](#creating-a-client)
-  - [Previewing unpublished content](#previewing-unpublished-content)
-  - [Making secure requests](#making-secure-requests)
-  - [Retry policy](#retry-policy)
-  - [Custom URLs](#custom-urls)
-- [Listing items](#listing-items)
-  - [Filtering](#filtering)
-  - [Parameters](#parameters)
-  - [Responses](#responses)
-  - [Requesting the latest content](#requesting-the-latest-content)
-  - [Providing custom headers](#providing-custom-headers)
-  - [Pagination](#pagination)
-- [Working with content items](#working-with-content-items)
-  - [Assets](#assets)
-  - [Linked items](#linked-items)
-  - [Resolving links](#resolving-links)
-  - [Resolving inline content](#resolving-inline-content)
-- [Items feed](#items-feed)
-- [Retrieving content types](#retrieving-content-types)
-- [Retrieving taxonomy](#retrieving-taxonomy)
-- [Retrieving content type elements](#retrieving-content-type-elements)
-- [Retrieving languages](#retrieving-languages)
-- [Image transformation](#image-transformation)
+- [Kontent.ai Delivery Ruby SDK](#kontentai-delivery-ruby-sdk)
+  - [Table of contents](#table-of-contents)
+  - [Installation](#installation)
+  - [Creating a client](#creating-a-client)
+    - [Previewing unpublished content](#previewing-unpublished-content)
+    - [Making secure requests](#making-secure-requests)
+    - [Retry policy](#retry-policy)
+    - [Custom URLs](#custom-urls)
+  - [Listing items](#listing-items)
+    - [Filtering](#filtering)
+    - [Parameters](#parameters)
+    - [Responses](#responses)
+    - [Requesting the latest content](#requesting-the-latest-content)
+    - [Providing custom headers](#providing-custom-headers)
+    - [Pagination](#pagination)
+  - [Working with content items](#working-with-content-items)
+    - [Assets](#assets)
+    - [Linked items](#linked-items)
+    - [Resolving links](#resolving-links)
+    - [Resolving inline content](#resolving-inline-content)
+  - [Items feed](#items-feed)
+  - [Retrieving content types](#retrieving-content-types)
+  - [Retrieving taxonomy](#retrieving-taxonomy)
+  - [Retrieving content type elements](#retrieving-content-type-elements)
+  - [Retrieving languages](#retrieving-languages)
+  - [Image transformation](#image-transformation)
+  - [Feedback & Contributing](#feedback--contributing)
+  - [License](#license)
+  - [Code of Conduct](#code-of-conduct)
+  - [Wall of Fame](#wall-of-fame)
 
 ## Installation
 
@@ -105,12 +112,12 @@ You can then securely request published content in your project. Be sure to not 
 
 By default, the SDK uses a retry policy, asking for requested content again in case of an error. The default policy retries the HTTP request if the following status codes are returned:
 
-* 408 - `RequestTimeout`
-* 429 - `TooManyRequests`
-* 500 - `InternalServerError`
-* 502 - `BadGateway`
-* 503 - `ServiceUnavailable`
-* 504 - `GatewayTimeout`
+- 408 - `RequestTimeout`
+- 429 - `TooManyRequests`
+- 500 - `InternalServerError`
+- 502 - `BadGateway`
+- 503 - `ServiceUnavailable`
+- 504 - `GatewayTimeout`
 
 The SDK will perform a total of 6 attempts at a maximum of 30 seconds to retrieve content before returning a `ResponseBase` object containing the error. The consecutive attempts are delayed with [exponential backoff and jitter](https://aws.amazon.com/blogs/architecture/exponential-backoff-and-jitter/).
 
@@ -136,7 +143,6 @@ delivery_client.items
 
 ## Listing items
 
-
 Use `.item` or `.items` to create a `Kontent::Ai::Delivery::DeliveryQuery`, then call `.execute` to perform the request.
 
 ```ruby
@@ -157,22 +163,22 @@ response = delivery_client.items.execute
 
 You can use [filtering](https://kontent.ai/learn/reference/delivery-api#tag/Filtering-content "See content filtering options in Delivery API") to retrieve particular items. The filtering methods are applied directly to a string and the available methods are:
 
-|Method|Example|REST equivalent|
-|--|--|--|
-|all|`'elements.product_status'.all %w[bestseller on_sale]`|?elements.product_status[all]=bestseller,on_sale|
-|any|`'elements.processing'.any %w[dry__natural_ semi_dry]`|?elements.processing[any]=dry__natural_,semi_dry|
-|contains|`'elements.related_articles'.contains 'on_roasts'`|?elements.related_articles[contains]=on_roasts|
-|eq|`'system.type'.eq 'grinder'`|?system.type=grinder|
-|not_eq|`'elements.region'.not_eq  'USA'`|?elements.region[neq]=USA|
-|gt|`'elements.price'.gt 20`|?elements.price[gt]=20|
-|gt_or_eq|`'elements.price'.gt_or_eq 20`|?elements.price[gte]=20|
-|in|`'system.type'.in %w[coffee brewer]`|?system.type[in]=coffee,brewer|
-|not_in|`'elements.author'.not_in %w[mberry ericd anthonym]`|?elements.author[nin]=mberry,ericd,anthonym|
-|lt|`'elements.price'.lt 20`|?elements.price[lt]=20|
-|lt_or_eq|`'elements.price'.lt_or_eq 20`|?elements.price[lte]=20|
-|range|`'system.last_modified'.range %w[2018-02-01 2018-03-31]`|?system.last_modified[range]=2018-02-01,2018-03-31|
-|empty|`'elements.banned_reason'.empty`|?elements.banned_reason[empty]|
-|not_empty|`'elements.status'.not_empty`|?elements.status[nempty]|
+| Method    | Example                                                  | REST equivalent                                    |
+| --------- | -------------------------------------------------------- | -------------------------------------------------- |
+| all       | `'elements.product_status'.all %w[bestseller on_sale]`   | ?elements.product_status[all]=bestseller,on_sale   |
+| any       | `'elements.processing'.any %w[dry__natural_ semi_dry]`   | ?elements.processing[any]=dry\__natural_,semi_dry  |
+| contains  | `'elements.related_articles'.contains 'on_roasts'`       | ?elements.related_articles[contains]=on_roasts     |
+| eq        | `'system.type'.eq 'grinder'`                             | ?system.type=grinder                               |
+| not_eq    | `'elements.region'.not_eq 'USA'`                         | ?elements.region[neq]=USA                          |
+| gt        | `'elements.price'.gt 20`                                 | ?elements.price[gt]=20                             |
+| gt_or_eq  | `'elements.price'.gt_or_eq 20`                           | ?elements.price[gte]=20                            |
+| in        | `'system.type'.in %w[coffee brewer]`                     | ?system.type[in]=coffee,brewer                     |
+| not_in    | `'elements.author'.not_in %w[mberry ericd anthonym]`     | ?elements.author[nin]=mberry,ericd,anthonym        |
+| lt        | `'elements.price'.lt 20`                                 | ?elements.price[lt]=20                             |
+| lt_or_eq  | `'elements.price'.lt_or_eq 20`                           | ?elements.price[lte]=20                            |
+| range     | `'system.last_modified'.range %w[2018-02-01 2018-03-31]` | ?system.last_modified[range]=2018-02-01,2018-03-31 |
+| empty     | `'elements.banned_reason'.empty`                         | ?elements.banned_reason[empty]                     |
+| not_empty | `'elements.status'.not_empty`                            | ?elements.status[nempty]                           |
 
 You can pass a single filter or multiple filters in the DeliveryClient methods. For example:
 
@@ -191,14 +197,14 @@ delivery_client.items [
 
 The `.item` and `.items` methods return a `Kontent::Ai::Delivery::DeliveryQuery` object which you can further configure before executing. The methods you can call are:
 
-|Method|Example|REST equivalent
-|--|--|--|
-|[order_by](https://kontent.ai/learn/reference/delivery-api#operation/list-content-items "order_by")|`order_by 'system.last_modified' '[desc]'`|?order=system.last_modified[desc]
-|[skip](https://kontent.ai/learn/reference/delivery-api#operation/list-content-items "skip")|`skip 5`|?skip=5
-|[limit](https://kontent.ai/learn/reference/delivery-api#operation/list-content-items "limit")|`limit 5`|?limit=5
-|[elements](https://kontent.ai/learn/reference/delivery-api#tag/Projection "elements")|`elements %w[price product_name image]`|?elements=price,product_name,image
-|[depth](https://kontent.ai/learn/reference/delivery-api#tag/Linked-content-and-components/linked-content-depth "depth")|`depth 0`|?depth=0
-|[language](https://kontent.ai/learn/tutorials/manage-kontent/projects/set-up-languages#a-language-fallbacks "language")|`language 'en'`|?language=en
+| Method                                                                                                                  | Example                                    | REST equivalent                    |
+| ----------------------------------------------------------------------------------------------------------------------- | ------------------------------------------ | ---------------------------------- |
+| [order_by](https://kontent.ai/learn/reference/delivery-api#operation/list-content-items "order_by")                     | `order_by 'system.last_modified' '[desc]'` | ?order=system.last_modified[desc]  |
+| [skip](https://kontent.ai/learn/reference/delivery-api#operation/list-content-items "skip")                             | `skip 5`                                   | ?skip=5                            |
+| [limit](https://kontent.ai/learn/reference/delivery-api#operation/list-content-items "limit")                           | `limit 5`                                  | ?limit=5                           |
+| [elements](https://kontent.ai/learn/reference/delivery-api#tag/Projection "elements")                                   | `elements %w[price product_name image]`    | ?elements=price,product_name,image |
+| [depth](https://kontent.ai/learn/reference/delivery-api#tag/Linked-content-and-components/linked-content-depth "depth") | `depth 0`                                  | ?depth=0                           |
+| [language](https://kontent.ai/learn/tutorials/manage-kontent/projects/set-up-languages#a-language-fallbacks "language") | `language 'en'`                            | ?language=en                       |
 
 For example:
 
@@ -485,6 +491,7 @@ delivery_client.type('coffee').execute do |response|
   field_type = response.type.elements.product_status.type # taxonomy
 end
 ```
+
 The DeliveryTypeListingResponse also contains pagination data, similar to DeliveryItemListingResponse.
 
 ## Retrieving taxonomy
@@ -513,7 +520,7 @@ The `TaxonomyGroup` object contains two attributes `.system` and `.terms` which 
 taxonomy_group.terms[0].codename
 ```
 
-Note that the terms of a taxonomy group may also contain terms, for example in Dancing Goat's __Personas__ taxonomy group, which looks like this:
+Note that the terms of a taxonomy group may also contain terms, for example in Dancing Goat's **Personas** taxonomy group, which looks like this:
 
 - Coffee expert
   - Barista
@@ -542,7 +549,7 @@ end
 
 This returns a `Kontent::Ai::Delivery::Responses::DeliveryElementResponse` where the `element` attribute is a dynamic OStruct representation of the JSON response. This means that you can access any property of the element by simply typing the name as in the above example.
 
-The element will always contain __codename__, __type__, and __name__, but multiple choice elements will also contain __options__ and taxonomy elements will contain __taxonomy_group__. The Ruby SDK fully supports obtaining [custom elements](https://kontent.ai/learn/reference/custom-elements-js-api) using this approach and any other methods.
+The element will always contain **codename**, **type**, and **name**, but multiple choice elements will also contain **options** and taxonomy elements will contain **taxonomy_group**. The Ruby SDK fully supports obtaining [custom elements](https://kontent.ai/learn/reference/custom-elements-js-api) using this approach and any other methods.
 
 ## Retrieving languages
 
@@ -575,19 +582,19 @@ url = Kontent::Ai::Delivery::Builders::ImageTransformationBuilder.transform(url)
 
 The available methods are:
 
-|Method|Possible values|REST example
-|--|--|--|
-|`.with_width`| positive integer, or float between 0 and 1| ?w=200
-|`.with_height`| positive integer, or float between 0 and 1| ?h=200
-|`.with_pixel_ratio`| float greater than 0 but less than 5| ?dpr=1.5
-|`.with_fit_mode`| constants available at `Kontent::Ai::Delivery::Builders::ImageTransformationBuilder` <ul><li>FITMODE_CROP</li><li>FITMODE_CLIP</li><li>FITMODE_SCALE</li></ul>| ?fit=crop
-|`.with_rect`| 4 integer values representing pixels or floats representing percentages|rect=100,100,0.7,0.7
-|`.with_focal_point`| 2 floats between 0 and 1 and one integer between 1 and 100| ?fp-x=0.2&fp-y=0.7&fp-z=5
-|`.with_background_color`| string containing 3, 4, 6, or 8 characters | ?bg=7A0099EE
-|`.with_output_format`| constants available at `Kontent::Ai::Delivery::Builders::ImageTransformationBuilder` <ul><li>FORMAT_GIF</li><li>FORMAT_PNG</li><li>FORMAT_PNG8</li><li>FORMAT_JPG</li><li>FORMAT_PJPG</li><li>FORMAT_WEBP</li></ul> | ?fm=webp
-|`.with_quality`| integer between 1 to 100 | ?quality=50
-|`.with_lossless`| 'true', 'false', 0, or 1| ?lossless=1
-|`.with_auto_format_selection`| 'true', 'false', 0, or 1 | ?auto=format
+| Method                        | Possible values                                                                                                                                                                                                     | REST example              |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------- |
+| `.with_width`                 | positive integer, or float between 0 and 1                                                                                                                                                                          | ?w=200                    |
+| `.with_height`                | positive integer, or float between 0 and 1                                                                                                                                                                          | ?h=200                    |
+| `.with_pixel_ratio`           | float greater than 0 but less than 5                                                                                                                                                                                | ?dpr=1.5                  |
+| `.with_fit_mode`              | constants available at `Kontent::Ai::Delivery::Builders::ImageTransformationBuilder` <ul><li>FITMODE_CROP</li><li>FITMODE_CLIP</li><li>FITMODE_SCALE</li></ul>                                                      | ?fit=crop                 |
+| `.with_rect`                  | 4 integer values representing pixels or floats representing percentages                                                                                                                                             | rect=100,100,0.7,0.7      |
+| `.with_focal_point`           | 2 floats between 0 and 1 and one integer between 1 and 100                                                                                                                                                          | ?fp-x=0.2&fp-y=0.7&fp-z=5 |
+| `.with_background_color`      | string containing 3, 4, 6, or 8 characters                                                                                                                                                                          | ?bg=7A0099EE              |
+| `.with_output_format`         | constants available at `Kontent::Ai::Delivery::Builders::ImageTransformationBuilder` <ul><li>FORMAT_GIF</li><li>FORMAT_PNG</li><li>FORMAT_PNG8</li><li>FORMAT_JPG</li><li>FORMAT_PJPG</li><li>FORMAT_WEBP</li></ul> | ?fm=webp                  |
+| `.with_quality`               | integer between 1 to 100                                                                                                                                                                                            | ?quality=50               |
+| `.with_lossless`              | 'true', 'false', 0, or 1                                                                                                                                                                                            | ?lossless=1               |
+| `.with_auto_format_selection` | 'true', 'false', 0, or 1                                                                                                                                                                                            | ?auto=format              |
 
 ## Feedback & Contributing
 
@@ -605,7 +612,6 @@ Everyone interacting in the Delivery project’s codebases, issue trackers, chat
 
 We would like to express our thanks to the following people who contributed and made the project possible:
 
-* [Eric Dugre](https://github.com/kentico-ericd) - the original author of the SDK
+- [Eric Dugre](https://github.com/kentico-ericd) - the original author of the SDK
 
 Would you like to become a hero too? Pick an [issue](https://github.com/kontent-ai/delivery-sdk-ruby/issues) and send us a pull request!
-
