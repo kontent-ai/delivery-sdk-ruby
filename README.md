@@ -63,13 +63,13 @@ delivery_client = Kontent::Ai::Delivery::DeliveryClient.new project_id: '<your-p
 :gem: **Pro tip:** You can alias namespaces to make them shorter, e.g.
 
 ```ruby
-KK = Kontent::Ai::Delivery
-delivery_client = KK::DeliveryClient.new project_id: '<your-project-id>'
+KA = Kontent::Ai::Delivery
+delivery_client = KA::DeliveryClient.new project_id: '<your-project-id>'
 ```
 
 ### Previewing unpublished content
 
-To [enable preview](https://kontent.ai/learn/tutorials/develop-apps/build-strong-foundation/set-up-preview "See how to configure your app and Kontent project to enable content preview"), pass the Preview API Key to the constructor:
+To [enable preview](https://kontent.ai/learn/tutorials/develop-apps/build-strong-foundation/set-up-preview "See how to configure your app and Kontent.ai project to enable content preview"), pass the Preview API Key to the constructor:
 
 ```ruby
 delivery_client = Kontent::Ai::Delivery::DeliveryClient.new project_id: '<your-project-id>',
@@ -92,7 +92,7 @@ end
 
 ### Making secure requests
 
-If you've [secured access](https://kontent.ai/learn/tutorials/develop-apps/build-strong-foundation/restrict-public-access "See how to enable secured access for your Kontent project") to your project, you need to provide the `DeliveryClient` with either the primary or secondary key:
+If you've [secured access](https://kontent.ai/learn/tutorials/develop-apps/build-strong-foundation/restrict-public-access "See how to enable secured access for your Kontent.ai project") to your project, you need to provide the `DeliveryClient` with either the primary or secondary key:
 
 ```ruby
 Kontent::Ai::Delivery::DeliveryClient.new project_id: '<your-project-id>',
@@ -591,7 +591,7 @@ The available methods are:
 
 ## Feedback & Contributing
 
-Check out the [contributing](https://github.com/kontent-ai/delivery-sdk-ruby/blob/master/CONTRIBUTING.md) page to see the best places to file issues, start discussions, and begin contributing.
+Check out the [contributing](CONTRIBUTING.md) page to see the best places to file issues, start discussions, and begin contributing.
 
 ## License
 
@@ -599,5 +599,13 @@ The gem is available as open source under the terms of the [MIT License](https:/
 
 ## Code of Conduct
 
-Everyone interacting in the Delivery project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/kontent-ai/delivery-sdk-net/blob/master/CODE_OF_CONDUCT.md).
+Everyone interacting in the Delivery project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](CODE_OF_CONDUCT.md).
+
+## Wall of Fame
+
+We would like to express our thanks to the following people who contributed and made the project possible:
+
+* [Eric Dugre](https://github.com/kentico-ericd) - the original author of the SDK
+
+Would you like to become a hero too? Pick an [issue](https://github.com/kontent-ai/delivery-sdk-ruby/issues) and send us a pull request!
 

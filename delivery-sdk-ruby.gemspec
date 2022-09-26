@@ -4,9 +4,9 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 Gem::Specification.new do |spec|
   spec.name          = 'kontent-ai-delivery'
-  spec.version       = '2.1.0'
-  spec.authors       = ['Eric Dugre']
-  spec.email         = ['EricD@kentico.com']
+  spec.version       = '3.0.0'
+  spec.authors       = ['Kontent.ai DevRel']
+  spec.email         = ['devrel@kontent.ai']
   spec.summary       = 'Kontent.ai Delivery SDK for Ruby'
   spec.description   = 'Kontent.ai Delivery SDK for Ruby'
   spec.homepage      = 'https://github.com/kontent-ai/delivery-sdk-ruby'

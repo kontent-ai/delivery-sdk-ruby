@@ -26,7 +26,8 @@ module Kontent
                       :query_type,
                       :query_string,
                       :content_type,
-                      :with_retry_policy
+                      :with_retry_policy,
+                      :default_rendition_preset
 
         # Setter for a custom URL.
         #
@@ -117,6 +118,11 @@ module Kontent
         #   - +self+
         def with_inline_content_item_resolver(resolver)
           self.inline_content_item_resolver = resolver
+          self
+        end
+
+        def with_default_rendition_preset(rendition)
+          self.default_rendition_preset = rendition
           self
         end
 
