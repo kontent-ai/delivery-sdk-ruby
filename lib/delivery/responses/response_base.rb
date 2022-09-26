@@ -1,9 +1,9 @@
-module Kentico
-  module Kontent
+module Kontent
+  module Ai
     module Delivery
       module Responses
         # Base class for all responses from a
-        # Kentico::Kontent::Delivery::DeliveryQuery.execute call.
+        # Kontent::Ai::Delivery::DeliveryQuery.execute call.
         class ResponseBase
           attr_accessor :http_code,
                         :message,

@@ -21,4 +21,4 @@
 Gemfile.lock
 
 # ignore built package 
-kontent-delivery-sdk-ruby-*.gem
+kontent-ai-delivery-*.gem

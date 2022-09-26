@@ -1,14 +1,14 @@
 require 'delivery/query_parameters/query_string'
 
-module Kentico
-  module Kontent
+module Kontent
+  module Ai
     module Delivery
       module Builders
         # Provides methods for manipulating the URL of an asset to adjust the image's
         # size, cropping behavior, background color, output format, and quality.
         #
-        # See https://developer.kenticocloud.com/v1/reference#image-transformation and
-        # https://github.com/Kentico/kontent-delivery-sdk-ruby#image-transformation.
+        # See https://kontent.ai/learn/reference/image-transformation/ and
+        # https://github.com/kontent-ai/delivery-sdk-ruby#image-transformation.
         class ImageTransformationBuilder
           FIT_MODE_CLIP = 'clip'.freeze
           FIT_MODE_SCALE = 'scale'.freeze
@@ -29,17 +29,17 @@ module Kentico
 
         class AssetURL
           INVALID_PARAMS = 'One or more of the parameters is invalid. '\
-          'See https://developer.kenticocloud.com/v1/reference#focal-point-crop'\
+          'See https://kontent.ai/learn/reference/image-transformation/#a-focal-point-crop'\
           'for more information.'.freeze
           ONE_TO_100 = 'Quality parameter must be between 1 and 100.'.freeze
           BOOLEAN_PARAM = 'The parameter must be a boolean, 0, or 1.'.freeze
 
           # Constructor. Generally, you obtain an +AssetURL+ object by calling
-          # Kentico::Kontent::Delivery::Builders::ImageTransformationBuilder.transform
+          # Kontent::Ai::Delivery::Builders::ImageTransformationBuilder.transform
           # instead of using this constructor.
           def initialize(url)
             @url = url
-            @query_string = Kentico::Kontent::Delivery::QueryParameters::QueryString.new
+            @query_string = Kontent::Ai::Delivery::QueryParameters::QueryString.new
           end
 
           # Applies all transformation options to the asset URL.
@@ -95,7 +95,7 @@ module Kentico
           # or height (or both) must be set.
           #
           # * *Args*:
-          #   - *fit* (+string+) Use constants from Kentico::Kontent::Delivery::Builders::ImageTransformationBuilder
+          #   - *fit* (+string+) Use constants from Kontent::Ai::Delivery::Builders::ImageTransformationBuilder
           #
           # * *Returns*:
           #   - +self+
@@ -173,7 +173,7 @@ module Kentico
           # Sets the output format of the request for the image.
           #
           # * *Args*:
-          #   - *format* (+string+) Use constants from Kentico::Kontent::Delivery::Builders::ImageTransformationBuilder
+          #   - *format* (+string+) Use constants from Kontent::Ai::Delivery::Builders::ImageTransformationBuilder
           #
           # * *Returns*:
           #   - +self+
@@ -223,7 +223,7 @@ module Kentico
             raise ArgumentError, BOOLEAN_PARAM unless bool? lossless
 
             @query_string.set_param 'lossless', lossless
-            @query_string.set_param 'fm', Kentico::Kontent::Delivery::Builders::ImageTransformationBuilder::FORMAT_WEBP if %w[true 1].include? lossless
+            @query_string.set_param 'fm', Kontent::Ai::Delivery::Builders::ImageTransformationBuilder::FORMAT_WEBP if %w[true 1].include? lossless
             self
           end
 

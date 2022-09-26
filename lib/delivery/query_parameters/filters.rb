@@ -1,17 +1,17 @@
 require 'delivery/query_parameters/parameter_base'
 
-module Kentico
-  module Kontent
+module Kontent
+  module Ai
     module Delivery
       module QueryParameters
         # Provides the base class for filter implementations.
-        # See https://developer.kenticocloud.com/v1/reference#content-filtering
+        # See https://kontent.ai/learn/reference/delivery-api/#tag/Filtering-content
         class Filter < ParameterBase
           # Constructor.
           #
           # * *Args*:
           #   - *key* (+string+) The field to filter upon
-          #   - *operator* (+string+) The Kentico Kontent filter being applied to the field, in brackets
+          #   - *operator* (+string+) The Kontent.ai filter being applied to the field, in brackets
           #   - *values* (+Object+) One or more values which will appear as the value of the query string parameter
           #   - *eq_sign* (+boolean+) If false, the equals sign is not generated in the parameter
           def initialize(key, operator, values, eq_sign = true)
@@ -34,9 +34,9 @@ class String
   #   - +Object+ One or more objects representing the values that must appear in the field
   #
   # * *Returns*:
-  #   - Kentico::Kontent::Delivery::QueryParameters::Filter
+  #   - Kontent::Ai::Delivery::QueryParameters::Filter
   def all(*args)
-    Kentico::Kontent::Delivery::QueryParameters::Filter.new(self, '[all]', *args)
+    Kontent::Ai::Delivery::QueryParameters::Filter.new(self, '[all]', *args)
   end
 
   # Represents a filter that matches a content item if the specified content
@@ -48,9 +48,9 @@ class String
   #   - +Object+ One or more objects representing the values that may appear in the field
   #
   # * *Returns*:
-  #   - Kentico::Kontent::Delivery::QueryParameters::Filter
+  #   - Kontent::Ai::Delivery::QueryParameters::Filter
   def any(*args)
-    Kentico::Kontent::Delivery::QueryParameters::Filter.new(self, '[any]', *args)
+    Kontent::Ai::Delivery::QueryParameters::Filter.new(self, '[any]', *args)
   end
 
   # Represents a filter that matches a content item if the specified content element
@@ -62,9 +62,9 @@ class String
   #   - +Object+ An object representing the value that must appear in the field
   #
   # * *Returns*:
-  #   - Kentico::Kontent::Delivery::QueryParameters::Filter
+  #   - Kontent::Ai::Delivery::QueryParameters::Filter
   def contains(*args)
-    Kentico::Kontent::Delivery::QueryParameters::Filter.new(self, '[contains]', *args)
+    Kontent::Ai::Delivery::QueryParameters::Filter.new(self, '[contains]', *args)
   end
 
   # Represents a filter that matches a content item if the specified
@@ -74,9 +74,9 @@ class String
   #   - +Object+ An object representing the value that must equal the value in the field
   #
   # * *Returns*:
-  #   - Kentico::Kontent::Delivery::QueryParameters::Filter
+  #   - Kontent::Ai::Delivery::QueryParameters::Filter
   def eq(*args)
-    Kentico::Kontent::Delivery::QueryParameters::Filter.new(self, '', *args)
+    Kontent::Ai::Delivery::QueryParameters::Filter.new(self, '', *args)
   end
 
   # Represents a filter that matches a content item if the specified
@@ -86,27 +86,27 @@ class String
   #   - +Object+ An object representing the value that cannot exist in the element
   #
   # * *Returns*:
-  #   - Kentico::Kontent::Delivery::QueryParameters::Filter
+  #   - Kontent::Ai::Delivery::QueryParameters::Filter
   def not_eq(*args)
-    Kentico::Kontent::Delivery::QueryParameters::Filter.new(self, '[neq]', *args)
+    Kontent::Ai::Delivery::QueryParameters::Filter.new(self, '[neq]', *args)
   end
 
   # Represents a filter that matches a content item if the specified
   # content element or system attribute does not have any value.
   #
   # * *Returns*:
-  #   - Kentico::Kontent::Delivery::QueryParameters::Filter
+  #   - Kontent::Ai::Delivery::QueryParameters::Filter
   def empty
-    Kentico::Kontent::Delivery::QueryParameters::Filter.new(self, '[empty]', nil, false)
+    Kontent::Ai::Delivery::QueryParameters::Filter.new(self, '[empty]', nil, false)
   end
 
   # Represents a filter that matches a content item if the specified
   # content element or system attribute has any value.
   #
   # * *Returns*:
-  #   - Kentico::Kontent::Delivery::QueryParameters::Filter
+  #   - Kontent::Ai::Delivery::QueryParameters::Filter
   def not_empty
-    Kentico::Kontent::Delivery::QueryParameters::Filter.new(self, '[nempty]', nil, false)
+    Kontent::Ai::Delivery::QueryParameters::Filter.new(self, '[nempty]', nil, false)
   end
 
   # Represents a filter that matches a content item if the specified
@@ -116,9 +116,9 @@ class String
   #   - +Object+ An object representing the value that cannot exist in the element
   #
   # * *Returns*:
-  #   - Kentico::Kontent::Delivery::QueryParameters::Filter
+  #   - Kontent::Ai::Delivery::QueryParameters::Filter
   def not_in(*args)
-    Kentico::Kontent::Delivery::QueryParameters::Filter.new(self, '[nin]', *args)
+    Kontent::Ai::Delivery::QueryParameters::Filter.new(self, '[nin]', *args)
   end
 
   # Represents a filter that matches a content item if the specified content
@@ -129,9 +129,9 @@ class String
   #   - +Object+ An object representing the lowest possible value of the field, non-inclusive
   #
   # * *Returns*:
-  #   - Kentico::Kontent::Delivery::QueryParameters::Filter
+  #   - Kontent::Ai::Delivery::QueryParameters::Filter
   def gt(*args)
-    Kentico::Kontent::Delivery::QueryParameters::Filter.new(self, '[gt]', *args)
+    Kontent::Ai::Delivery::QueryParameters::Filter.new(self, '[gt]', *args)
   end
 
   # Represents a filter that matches a content item if the specified content
@@ -142,9 +142,9 @@ class String
   #   - +Object+ An object representing the lowest possible value of the field
   #
   # * *Returns*:
-  #   - Kentico::Kontent::Delivery::QueryParameters::Filter
+  #   - Kontent::Ai::Delivery::QueryParameters::Filter
   def gt_or_eq(*args)
-    Kentico::Kontent::Delivery::QueryParameters::Filter.new(self, '[gte]', *args)
+    Kontent::Ai::Delivery::QueryParameters::Filter.new(self, '[gte]', *args)
   end
 
   # Represents a filter that matches a content item if the specified
@@ -155,9 +155,9 @@ class String
   #   - +Object+ One or more objects representing the required values of the field
   #
   # * *Returns*:
-  #   - Kentico::Kontent::Delivery::QueryParameters::Filter
+  #   - Kontent::Ai::Delivery::QueryParameters::Filter
   def in(*args)
-    Kentico::Kontent::Delivery::QueryParameters::Filter.new(self, '[in]', *args)
+    Kontent::Ai::Delivery::QueryParameters::Filter.new(self, '[in]', *args)
   end
 
   # Represents a filter that matches a content item if the specified content
@@ -168,9 +168,9 @@ class String
   #   - +Object+ An object representing the highest possible value of the field, non-inclusive
   #
   # * *Returns*:
-  #   - Kentico::Kontent::Delivery::QueryParameters::Filter
+  #   - Kontent::Ai::Delivery::QueryParameters::Filter
   def lt(*args)
-    Kentico::Kontent::Delivery::QueryParameters::Filter.new(self, '[lt]', *args)
+    Kontent::Ai::Delivery::QueryParameters::Filter.new(self, '[lt]', *args)
   end
 
   # Represents a filter that matches a content item if the specified content
@@ -181,9 +181,9 @@ class String
   #   - +Object+ An object representing the highest possible value of the field
   #
   # * *Returns*:
-  #   - Kentico::Kontent::Delivery::QueryParameters::Filter
+  #   - Kontent::Ai::Delivery::QueryParameters::Filter
   def lt_or_eq(*args)
-    Kentico::Kontent::Delivery::QueryParameters::Filter.new(self, '[lte]', *args)
+    Kontent::Ai::Delivery::QueryParameters::Filter.new(self, '[lte]', *args)
   end
 
   # Represents a filter that matches a content item if the specified
@@ -194,8 +194,8 @@ class String
   #   - +Object+ An object representing the lowest and highest possible values of the field
   #
   # * *Returns*:
-  #   - Kentico::Kontent::Delivery::QueryParameters::Filter
+  #   - Kontent::Ai::Delivery::QueryParameters::Filter
   def range(*args)
-    Kentico::Kontent::Delivery::QueryParameters::Filter.new(self, '[range]', *args)
+    Kontent::Ai::Delivery::QueryParameters::Filter.new(self, '[range]', *args)
   end
 end

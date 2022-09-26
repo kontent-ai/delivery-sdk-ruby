@@ -2,17 +2,17 @@ require 'rubygems'
 require 'delivery/builders/url_builder'
 require 'delivery/query_parameters/query_string'
 
-module Kentico
-  module Kontent
+module Kontent
+  module Ai
     module Delivery
-      # Responsible for executing REST requests to Kentico Kontent.
+      # Responsible for executing REST requests to Kontent.ai.
       class DeliveryQuery
         ERROR_PREVIEW = 'Preview is enabled for the query, but the key is null. '\
                         'You can set the preview_key attribute of the query, or '\
                         'when you initialize the client. See '\
-                        'https://github.com/Kentico/kontent-delivery-sdk-ruby#previewing-unpublished-content'.freeze
+                        'https://github.com/kontent-ai/delivery-sdk-ruby#previewing-unpublished-content'.freeze
         ERROR_PARAMS = 'Only filters may be passed in the .item or .items methods'\
-                        '. See https://github.com/Kentico/kontent-delivery-sdk-ruby#filtering'.freeze
+                        '. See https://github.com/kontent-ai/delivery-sdk-ruby#filtering'.freeze
         HEADER_WAIT_FOR_CONTENT = 'X-KC-Wait-For-Loading-New-Content'.freeze
         HEADER_SDK_ID = 'X-KC-SDKID'.freeze
         HEADER_CONTINUATION = 'X-Continuation'.freeze
@@ -26,7 +26,8 @@ module Kentico
                       :query_type,
                       :query_string,
                       :content_type,
-                      :with_retry_policy
+                      :with_retry_policy,
+                      :default_rendition_preset
 
         # Setter for a custom URL.
         #
@@ -41,7 +42,7 @@ module Kentico
         end
 
         # Constructor. Queries should not be instantiated using the constructor, but
-        # using one of the Kentico::Kontent::Delivery::DeliveryClient methods instead.
+        # using one of the Kontent::Ai::Delivery::DeliveryClient methods instead.
         #
         # * *Args*:
         #   - *config* (+Hash+) A hash in which each key automatically has its value paired with the corresponding attribute
@@ -53,7 +54,7 @@ module Kentico
           config.each do |k, v|
             instance_variable_set("@#{k}", v) unless v.nil?
           end
-          self.query_string = Kentico::Kontent::Delivery::QueryParameters::QueryString.new
+          self.query_string = Kontent::Ai::Delivery::QueryParameters::QueryString.new
           return if config.fetch(:qp, nil).nil?
 
           # Query parameters were passed, parse and validate
@@ -63,9 +64,9 @@ module Kentico
         # Executes the REST request.
         #
         # * *Returns*:
-        #   - Kentico::Kontent::Delivery::Responses::ResponseBase or a class extending it
+        #   - Kontent::Ai::Delivery::Responses::ResponseBase or a class extending it
         def execute
-          resp = Kentico::Kontent::Delivery::RequestManager.start self, headers
+          resp = Kontent::Ai::Delivery::RequestManager.start self, headers
           yield resp if block_given?
           resp
         end
@@ -95,10 +96,10 @@ module Kentico
         end
 
         # Sets a content link resolver to render links contained in rich text. See
-        # https://github.com/Kentico/kontent-delivery-sdk-ruby#resolving-links
+        # https://github.com/kontent-ai/delivery-sdk-ruby#resolving-links
         #
         # * *Args*:
-        #   - *resolver* ( Kentico::Kontent::Delivery::Resolvers::ContentLinkResolver ) The resolver. Replaces a resolver registered during +DeliveryClient+ instantiation, for this query only.
+        #   - *resolver* ( Kontent::Ai::Delivery::Resolvers::ContentLinkResolver ) The resolver. Replaces a resolver registered during +DeliveryClient+ instantiation, for this query only.
         #
         # * *Returns*:
         #   - +self+
@@ -108,15 +109,20 @@ module Kentico
         end
 
         # Sets an inline content itme to render content items and components in rich text.
-        # See https://github.com/Kentico/kontent-delivery-sdk-ruby#resolving-inline-content
+        # See https://github.com/kontent-ai/delivery-sdk-ruby#resolving-inline-content
         #
         # * *Args*:
-        #   - *resolver* ( Kentico::Kontent::Delivery::Resolvers::InlineContentItemResolver ) The resolver. Replaces a resolver registered during +DeliveryClient+ instantiation, for this query only.
+        #   - *resolver* ( Kontent::Ai::Delivery::Resolvers::InlineContentItemResolver ) The resolver. Replaces a resolver registered during +DeliveryClient+ instantiation, for this query only.
         #
         # * *Returns*:
         #   - +self+
         def with_inline_content_item_resolver(resolver)
           self.inline_content_item_resolver = resolver
+          self
+        end
+
+        def with_default_rendition_preset(rendition)
+          self.default_rendition_preset = rendition
           self
         end
 
@@ -134,7 +140,7 @@ module Kentico
         end
 
         # Sets the 'skip' query string parameter for paging results.
-        # See https://developer.kenticocloud.com/v1/reference#listing-response-paging
+        # See https://kontent.ai/learn/reference/delivery-api/#operation/list-content-items
         #
         # * *Args*:
         #   - *value* (+integer+) The number to skip by
@@ -142,13 +148,13 @@ module Kentico
         # * *Returns*:
         #   - +self+
         def skip(value)
-          query_string.set_param('skip', value) unless query_type.eql? Kentico::Kontent::Delivery::QUERY_TYPE_ITEMS_FEED
+          query_string.set_param('skip', value) unless query_type.eql? Kontent::Ai::Delivery::QUERY_TYPE_ITEMS_FEED
           self
         end
 
         # Sets the 'language' query string parameter. Language fallbacks will be used
         # if untranslated content items are found.
-        # See https://developer.kenticocloud.com/docs/localization#section-getting-localized-content-items
+        # See https://kontent.ai/learn/tutorials/develop-apps/get-content/localized-content-items/
         #
         # * *Args*:
         #   - *value* (+string+) The code name of the desired language
@@ -162,7 +168,7 @@ module Kentico
 
         # Sets the 'limit' query string parameter for paging results, or just to
         # return a specific number of content items.
-        # See https://developer.kenticocloud.com/v1/reference#listing-response-paging
+        # See https://kontent.ai/learn/reference/delivery-api/#operation/list-content-items
         #
         # * *Args*:
         #   - *value* (+integer+) The number of content items to return
@@ -170,13 +176,13 @@ module Kentico
         # * *Returns*:
         #   - +self+
         def limit(value)
-          query_string.set_param('limit', value) unless query_type.eql? Kentico::Kontent::Delivery::QUERY_TYPE_ITEMS_FEED
+          query_string.set_param('limit', value) unless query_type.eql? Kontent::Ai::Delivery::QUERY_TYPE_ITEMS_FEED
           self
         end
 
         # Sets the 'elements' query string parameter to limit the elements returned
         # by the query.
-        # See https://developer.kenticocloud.com/v1/reference#projection
+        # See https://kontent.ai/learn/reference/delivery-api/#tag/Projection
         #
         # * *Args*:
         #   - *value* (+Array+) A single string or array of strings specifying the desired elements, e.g. %w[price product_name image]
@@ -191,7 +197,7 @@ module Kentico
         # Sets the 'depth' query string parameter to determine how many levels of
         # linked content items should be returned. By default, only 1 level of depth
         # is used.
-        # See https://developer.kenticocloud.com/v1/reference#linked-content
+        # See https://kontent.ai/learn/reference/delivery-api/#tag/Linked-content-and-components/linked-content-depth
         #
         # * *Args*:
         #   - *value* (+integer+) Level of linked items to be returned
@@ -199,13 +205,13 @@ module Kentico
         # * *Returns*:
         #   - +self+
         def depth(value)
-          query_string.set_param('depth', value) unless query_type.eql? Kentico::Kontent::Delivery::QUERY_TYPE_ITEMS_FEED
+          query_string.set_param('depth', value) unless query_type.eql? Kontent::Ai::Delivery::QUERY_TYPE_ITEMS_FEED
           self
         end
 
         # Allows the request to bypass caching and return the latest content
-        # directly from Kentico Kontent.
-        # See https://github.com/Kentico/kontent-delivery-sdk-ruby#requesting-the-latest-content
+        # directly from Kontent.ai.
+        # See https://github.com/kontent-ai/delivery-sdk-ruby#requesting-the-latest-content
         #
         # * *Returns*:
         #   - +self+
@@ -214,7 +220,7 @@ module Kentico
           self
         end
 
-        # Uses Kentico::Kontent::Delivery::Builders::UrlBuilder.provide_url to set
+        # Uses Kontent::Ai::Delivery::Builders::UrlBuilder.provide_url to set
         # the URL for the query. The +UrlBuilder+ also validates the URL.
         #
         # * *Raises*:
@@ -223,13 +229,13 @@ module Kentico
         # * *Returns*:
         #   - +string+ The full URL for this query
         def provide_url
-          @url = Kentico::Kontent::Delivery::Builders::UrlBuilder.provide_url self if @url.nil?
-          Kentico::Kontent::Delivery::Builders::UrlBuilder.validate_url @url
+          @url = Kontent::Ai::Delivery::Builders::UrlBuilder.provide_url self if @url.nil?
+          Kontent::Ai::Delivery::Builders::UrlBuilder.validate_url @url
           @url
         end
 
         # Allows providing custom headers for client requests.
-        # See https://github.com/Kentico/kontent-delivery-sdk-ruby#providing-custom-headers
+        # See https://github.com/kontent-ai/delivery-sdk-ruby#providing-custom-headers
         #
         # * *Args*:
         #   - *headers* (+Hash+) A hash that corresponds to provided headers
@@ -275,7 +281,7 @@ module Kentico
         end
 
         # Initializes the +query_string+ attribute with the passed array of
-        # Kentico::Kontent::Delivery::QueryParameters::Filter objects.
+        # Kontent::Ai::Delivery::QueryParameters::Filter objects.
         #
         # * *Raises*:
         #   - +ArgumentError+ if one the passed objects is not a +Filter+
@@ -287,14 +293,14 @@ module Kentico
                   end
           params.each do |p|
             query_string.set_param p
-            unless p.is_a? Kentico::Kontent::Delivery::QueryParameters::Filter
+            unless p.is_a? Kontent::Ai::Delivery::QueryParameters::Filter
               raise ArgumentError, ERROR_PARAMS
             end
           end
         end
 
         def provide_sdk_header
-          'rubygems.org;kontent-delivery-sdk-ruby;'
+          'rubygems.org;delivery-sdk-ruby;'
         end
       end
     end

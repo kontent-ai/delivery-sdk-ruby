@@ -1,7 +1,7 @@
 require 'cgi'
 
-module Kentico
-  module Kontent
+module Kontent
+  module Ai
     module Delivery
       module QueryParameters
         # Base class for all parameters added to a DeliveryQuery. All
@@ -14,7 +14,7 @@ module Kentico
           #
           # * *Args*:
           #   - *key* (+string+) The field to filter upon
-          #   - *operator* (+string+) The Kentico Kontent filter being applied to the field, in brackets
+          #   - *operator* (+string+) The Kontent.ai filter being applied to the field, in brackets
           #   - *values* (+Object+) One or more values which will appear as the value of the query string parameter
           #   - *eq_sign* (+boolean+) If false, the equals sign is not generated in the parameter
           def initialize(key, operator, values, eq_sign = true)

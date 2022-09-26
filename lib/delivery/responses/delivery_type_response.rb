@@ -1,21 +1,21 @@
 require 'delivery/models/content_type'
 require 'delivery/responses/response_base'
 
-module Kentico
-  module Kontent
+module Kontent
+  module Ai
     module Delivery
       module Responses
         # The response of a successful query for a content type.
-        # See https://github.com/Kentico/kontent-delivery-sdk-ruby#retrieving-content-types
+        # See https://github.com/kontent-ai/delivery-sdk-ruby#retrieving-content-types
         class DeliveryTypeResponse < ResponseBase
-          # A Kentico::Kontent::Delivery::ContentType object from a
-          # Kentico::Kontent::Delivery::DeliveryClient.type call.
+          # A Kontent::Ai::Delivery::ContentType object from a
+          # Kontent::Ai::Delivery::DeliveryClient.type call.
           #
           # * *Returns*:
-          #   - Kentico::Kontent::Delivery::ContentType
+          #   - Kontent::Ai::Delivery::ContentType
           def type
             @type unless @type.nil?
-            @type = Kentico::Kontent::Delivery::ContentType.new(@response)
+            @type = Kontent::Ai::Delivery::ContentType.new(@response)
           end
 
           def initialize(headers, body)

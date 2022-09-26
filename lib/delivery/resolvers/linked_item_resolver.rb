@@ -1,5 +1,5 @@
-module Kentico
-  module Kontent
+module Kontent
+  module Ai
     module Delivery
       module Resolvers
         # Resolves a content item by its codename. It contains the modular content
@@ -19,7 +19,7 @@ module Kentico
           #   - *codename* (+string+) Codename of the content item
           #
           # * *Return*:
-          #   - Kentico::Kontent::Delivery::ContentItem
+          #   - Kontent::Ai::Delivery::ContentItem
           def resolve(codename)
             @resolved_items[codename] ||= resolve_item(codename)
           end
