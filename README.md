@@ -9,7 +9,7 @@
 
 The Delivery Ruby SDK can be used in Ruby/Rails projects to retrieve content from Kontent.ai. This is a community project and not an official Kontent.ai SDK. If you find a bug in the SDK or have a feature request, please submit a GitHub issue.
 
-See [How to setup a development environment on Windows](https://github.com/kontent-ai/delivery-sdk-ruby/wiki/How-to-setup-development-environment-on-Windows) for local development, and check out the [Kontent.ai Blog](https://kontent.ai/blog/creating-a-kentico-cloud-ruby-on-rails-application) for a tutorial on creating a Rails application.
+See [How to setup a development environment on Windows](./docs/How-to-setup-development-environment-on-Windows.md) for local development, and check out the [Kontent.ai Blog](https://kontent.ai/blog/creating-a-kentico-cloud-ruby-on-rails-application) for a tutorial on creating a Rails application.
 
 ## Table of contents
 
