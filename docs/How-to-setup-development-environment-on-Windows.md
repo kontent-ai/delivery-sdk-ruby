@@ -12,14 +12,6 @@ Install bundler
 # Run tests
 * `git clone https://github.com/kontent-ai/delivery-sdk-ruby.git`
 * `cd delivery-sdk-ruby`
-* Create a `.env` file with the environment variables below
-  * You could generate [your own sample project](https://kontent.ai/learn/tutorials/manage-kontent-ai/projects/manage-projects/#a-create-a-sample-project)
-  * Or, you can copy the keys from `.travis.yml`
-```
-PROJECT_ID=<PLACE PREVIEW API KEY>
-PREVIEW_KEY=<PLACE PREVIEW API KEY>
-SECURE_KEY=<PLACE SECURE API KEY>
-```
 * `bundle` (install all dependent packages)
 * `bundle exec rake` - runs all Tests
 

@@ -1,5 +1,5 @@
-PROJECT_ID = 'faf446d2-0544-0139-bb43-5d6ef816661a'.freeze
-SECURE_KEY = 'eyJ0eXAiOiJKV1QiLCJhbGciOcJIUzI1NiJ9.eyJqdGkiOiIwNzI0NzQ4NDQ5ZDY0OGUwOTFiMzgzZjJjY2JlOTViZCIsImlhdCI6IjE1NTIwMzg3ODUiLCJleHAiOiIxODk3NjM4Nzg1IiwicHJvamVjdF9pZCI6ImZhZjQ0NmQyMDU0NDAwMzliYjQzNWQ2ZWY4MTY2NjFhIiwidmVyIjoiMS4wLjAiLCJhdWQiOiJkZWxpdmVyLmtlbnRpY29jbG91ZC5jb20ifQ.qZ2W4VojrwFaApajkyesUy4aNcG8OUu6C2ZlF84aL0M'.freeze
+PROJECT_ID = 'DummyProjectId'.freeze
+SECURE_KEY = 'DummySecureApiKey'.freeze
 
 # DeliveryQuery
 RSpec.describe Kontent::Ai::Delivery::DeliveryQuery do
