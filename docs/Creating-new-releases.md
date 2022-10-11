@@ -2,7 +2,7 @@
 
 _This page is primarily for the maintainers of this repository._
 
-To publish the new version of the delivery-sdk-ruby gem, follow these steps:
+To publish the new version of the kontent-ai-delivery gem, follow these steps:
 
 1. Increase version in `/lib/delivery/version.rb`
    - Follow the [Semantic versioning system](https://semver.org)

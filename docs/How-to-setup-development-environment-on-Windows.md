@@ -27,4 +27,4 @@ If you want to run only one test, it is possible to use this command
 
 - `bundle` (install all dependent packages)
 - `rake build`
-  - creates file `delivery-sdk-ruby-<VERSION>.gem` file in the project's root folder
+  - creates file `kontent-ai-delivery-<VERSION>.gem` file in the project's root folder
