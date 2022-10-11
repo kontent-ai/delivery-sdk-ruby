@@ -300,7 +300,7 @@ module Kontent
         end
 
         def provide_sdk_header
-          'rubygems.org;delivery-sdk-ruby;'
+          'rubygems.org;kontent-ai-delivery;'
         end
       end
     end

@@ -50,13 +50,13 @@ See [How to setup a development environment on Windows](./docs/How-to-setup-deve
 To use the SDK in your own project, add the gem to your Gemfile:
 
 ```ruby
-gem 'delivery-sdk-ruby'
+gem 'kontent-ai-delivery'
 ```
 
-Then run `bundle install`. You can also download the gem from [RubyGems.org](https://rubygems.org/gems/delivery-sdk-ruby). To use the SDK in an `.rb` file, you need to require it:
+Then run `bundle install`. You can also download the gem from [RubyGems.org](https://rubygems.org/gems/kontent-ai-delivery). To use the SDK in an `.rb` file, you need to require it:
 
 ```ruby
-require 'delivery-sdk-ruby'
+require 'kontent-ai-delivery'
 ```
 
 ## Creating a client
