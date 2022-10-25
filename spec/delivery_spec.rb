@@ -4,6 +4,7 @@ SECURE_KEY = 'DummySecureApiKey'.freeze
 # DeliveryQuery
 RSpec.describe Kontent::Ai::Delivery::DeliveryQuery do
   before(:all) do
+    @spec = Gem::Specification::load('kontent-ai-delivery.gemspec')
     @dc = Kontent::Ai::Delivery::DeliveryClient.new project_id: PROJECT_ID,
                                                          secure_key: SECURE_KEY
   end
@@ -31,6 +32,10 @@ RSpec.describe Kontent::Ai::Delivery::DeliveryQuery do
       custom_headers = { 'X-KC-SDKID' => 'test' }
 
       expect(@dc.items.custom_headers(custom_headers).send(:headers)).not_to include custom_headers
+    end
+
+    it 'SDK header corresponds with gemspec' do
+      expect(Kontent::Ai::Delivery::DeliveryQuery::HEADER_SDK_VALUE).to eq('rubygems.org;' + @spec.name + ';' + @spec.version.to_s)
     end
   end
 end
