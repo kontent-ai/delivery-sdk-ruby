@@ -15,6 +15,7 @@ module Kontent
                         '. See https://github.com/kontent-ai/delivery-sdk-ruby#filtering'.freeze
         HEADER_WAIT_FOR_CONTENT = 'X-KC-Wait-For-Loading-New-Content'.freeze
         HEADER_SDK_ID = 'X-KC-SDKID'.freeze
+        HEADER_SDK_VALUE = 'rubygems.org;kontent-ai-delivery;3.0.1'.freeze
         HEADER_CONTINUATION = 'X-Continuation'.freeze
         attr_accessor :use_preview,
                       :preview_key,
@@ -269,7 +270,7 @@ module Kontent
         #   - +Hash+
         def headers
           headers = @headers.clone
-          headers[HEADER_SDK_ID] = provide_sdk_header
+          headers[HEADER_SDK_ID] = HEADER_SDK_VALUE
           headers['Authorization'] = "Bearer #{preview_key}" if should_preview
           headers['Authorization'] = "Bearer #{secure_key}" if !should_preview && secure_key
 
@@ -297,10 +298,6 @@ module Kontent
               raise ArgumentError, ERROR_PARAMS
             end
           end
-        end
-
-        def provide_sdk_header
-          'rubygems.org;kontent-ai-delivery;'
         end
       end
     end
