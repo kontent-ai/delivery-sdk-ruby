@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 Gem::Specification.new do |spec|
   spec.name          = 'kontent-ai-delivery'
-  spec.version       = '3.0.1'
+  spec.version       = '3.0.2'
   spec.authors       = ['Kontent.ai DevRel']
   spec.email         = ['devrel@kontent.ai']
   spec.summary       = 'Kontent.ai Delivery SDK for Ruby'
@@ -27,7 +27,7 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
 
-  spec.add_runtime_dependency('nokogiri', '~> 1.13', '>= 1.13.8')
+  spec.add_runtime_dependency('nokogiri', '~> 1.15.6')
   spec.add_runtime_dependency('rest-client', '~> 2.1')
   spec.add_runtime_dependency('ffi', '~> 1.9', '>= 1.9.10')
   spec.add_development_dependency('bundler', '~> 2.3', '>= 2.3.22')
