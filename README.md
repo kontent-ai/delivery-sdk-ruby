@@ -1,3 +1,8 @@
+> [!WARNING]
+> **This SDK has been archived and is no longer maintained.**
+> 
+> No further updates, bug fixes, security patches, or support will be provided. The SDK is available as-is for legacy projects, but its use in new implementations is not recommended.
+
 # Kontent.ai Delivery Ruby SDK
 
 ![build](https://github.com/kontent-ai/delivery-sdk-ruby/actions/workflows/build.yml/badge.svg)
